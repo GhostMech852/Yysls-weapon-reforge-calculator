@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>燕雲武器重鑄模擬器 v19 & 實況計數器 by 娜拉比</title>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=LJ-hlC7fjwsPs5QQRW-OBY7zUEiXZZSQumqaGDi0JnHUc735R_beGoQb463zNH7TxgcI1zZ-kOPVvBFL4HYH_lSruLWNT_H8_H1oGqy0zwxTktjeWxb6242BaBn7ND-FaCKjPq2HJ37aVKU7vpyXv9i7m1-q3qMj-seyQPDgbFZtkacOt_DJl5kqPexnmakDqmAZZ6JdSeZZPQaTd3U8OkrdXCC9ERiRDCxBB5I5SkIpLqPAhCn9k8K2kkMakN6sw2lBQBALKARx-hea_-stsiflIBY7eIFxys1KRoSbxks3ujxeJAfDslIA2261P5i0GShA5JwwwuJ6bJYM8_O2ObrMzqDptjjSyCuWgi3jd50" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pCbE1URTJOREZsWWpnNVpHSXlNV0UzTURBd05qWXdZMkZpTWpnNVpqRmtaakEzWmpVMlpUWTBZekl5TUdRME16SVNDeElIRUtqU3M2VFJDUmdCJmZpbGVuYW1lPXlhbnl1bl9yZWZvcmdlX3NpbXVsYXRvci12MTkuaHRtbCZvcGk9MTAzMTM1MDUw"/><style>
+    :root {
+      --bg-main: #0e1014;
+      --bg-panel: #161920;
+      --bg-card: #1d212b;
+      --border-default: #2d3342;
+      --text-main: #e8ecf4;
+      --text-muted: #8b95a8;
+
+      /* Grade colors */
+      --cyan: #38bdf8;
+      --cyan-bg: rgba(56, 189, 248, 0.12);
+      --cyan-glow: rgba(56, 189, 248, 0.35);
+
+      --purple: #a855f7;
+      --purple-bg: rgba(168, 85, 247, 0.14);
+      --purple-glow: rgba(168, 85, 247, 0.4);
+
+      --gold: #f5b942;
+      --gold-bg: rgba(245, 185, 66, 0.16);
+      --gold-glow: rgba(245, 185, 66, 0.5);
+
+      --rare: #fb7185;
+      --danger: #ef4444;
+      --success: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: radial-gradient(circle at top center, #1b1f2a 0%, var(--bg-main) 65%);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border-default);
+      margin-bottom: 20px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-icon {
+      min-width: 42px;
+      height: 42px;
+      padding: 0 12px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f5b942, #b45309);
+      color: #111;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 1px;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(245, 185, 66, 0.35);
+    }
+
+    .brand h1 {
+      font-size: 20px;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+    }
+
+    .brand p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Mode Tabs */
+    .mode-tabs {
+      display: flex;
+      background: var(--bg-panel);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border-default);
+      gap: 4px;
+    }
+
+    .tab-btn {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #f5b942, #d97706);
+      color: #111;
+      box-shadow: 0 2px 10px rgba(245, 185, 66, 0.3);
+    }
+
+    .view-section {
+      display: none;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    /* Layout Grid */
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 310px 1fr 300px;
+      gap: 18px;
+    }
+
+    @media (max-width: 1024px) {
+      .sim-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--border-default);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Form controls */
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    select {
+      width: 100%;
+      padding: 8px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 13px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--gold);
+    }
+
+    .setting-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .two-col-inputs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .two-col-inputs.disabled {
+      opacity: 0.45;
+      pointer-events: none;
+    }
+
+    .set-info-box {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: #12151c;
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 8px 10px;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .set-info-box strong {
+      color: var(--text-main);
+    }
+
+    /* Alert Banner for Gold Pause */
+    .gold-banner {
+      display: none;
+      background: var(--gold-bg);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .gold-banner.show {
+      display: block;
+    }
+
+    /* Progress Bar with Dynamic Color */
+    .progress-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .crit-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: var(--gold-bg);
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      margin-left: 6px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 10px;
+      background: #0d0f14;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.35s ease, background 0.35s ease, box-shadow 0.35s ease;
+      background: var(--cyan);
+    }
+
+    .progress-fill.stage-cyan {
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .progress-fill.stage-purple {
+      background: linear-gradient(90deg, #7e22ce, #a855f7);
+      box-shadow: 0 0 10px var(--purple-glow);
+    }
+
+    .progress-fill.stage-gold {
+      background: linear-gradient(90deg, #d97706, #fbbf24);
+      box-shadow: 0 0 12px var(--gold-glow);
+    }
+
+    /* 5 Slot Squares */
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 720px) {
+      .slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .slot-square {
+      background: var(--bg-card);
+      border: 2px solid var(--border-default);
+      border-radius: 12px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 185px;
+      transition: all 0.28s ease;
+      position: relative;
+    }
+
+    .slot-square.unopened {
+      opacity: 0.55;
+      border-style: dashed;
+    }
+
+    .slot-square.grade-cyan {
+      border-color: var(--cyan);
+      background: linear-gradient(180deg, var(--cyan-bg), var(--bg-card));
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.15);
+    }
+
+    .slot-square.grade-purple {
+      border-color: var(--purple);
+      background: linear-gradient(180deg, var(--purple-bg), var(--bg-card));
+      box-shadow: 0 0 16px rgba(168, 85, 247, 0.22);
+    }
+
+    .slot-square.grade-gold {
+      border-color: var(--gold);
+      background: linear-gradient(180deg, var(--gold-bg), var(--bg-card));
+      box-shadow: 0 0 20px rgba(245, 185, 66, 0.35);
+    }
+
+    .slot-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .slot-grade-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .grade-cyan .slot-grade-badge { color: var(--cyan); background: var(--cyan-bg); }
+    .grade-purple .slot-grade-badge { color: var(--purple); background: var(--purple-bg); }
+    .grade-gold .slot-grade-badge { color: var(--gold); background: var(--gold-bg); }
+
+    .slot-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 4px 0;
+    }
+
+    .slot-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .slot-rate-tag {
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .slot-rate-tag.rare {
+      color: var(--rare);
+      font-weight: 700;
+    }
+
+    .pity-bar-mini {
+      height: 5px;
+      background: #0d0f14;
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 6px 0 4px;
+    }
+
+    .pity-bar-mini-fill {
+      height: 100%;
+      width: 0%;
+      transition: width 0.25s ease, background 0.25s ease;
+    }
+
+    .pity-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .slot-actions {
+      display: flex;
+      gap: 4px;
+    }
+
+    .slot-btn {
+      flex: 1;
+      padding: 5px 4px;
+      font-size: 11px;
+      border-radius: 6px;
+      border: 1px solid var(--border-default);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .slot-btn:hover:not(:disabled) {
+      border-color: var(--gold);
+      background: rgba(245, 185, 66, 0.15);
+    }
+
+    .slot-btn.locked {
+      background: var(--gold);
+      color: #111;
+      border-color: var(--gold);
+      font-weight: 700;
+    }
+
+    .slot-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    /* Main Action Buttons */
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      padding: 11px 16px;
+      border-radius: 9px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: var(--gold);
+      transform: translateY(-1px);
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f5b942, #d97706);
+      color: #111;
+      border: none;
+      flex: 1;
+      min-width: 170px;
+      box-shadow: 0 4px 14px rgba(245, 185, 66, 0.3);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      filter: brightness(1.08);
+    }
+
+    .btn-accent {
+      border-color: var(--purple);
+      color: #d8b4fe;
+      background: var(--purple-bg);
+    }
+
+    .btn-accent:hover:not(:disabled) {
+      background: rgba(168, 85, 247, 0.25);
+      border-color: #c084fc;
+    }
+
+    .btn-resume {
+      border-color: var(--gold);
+      color: var(--gold);
+      background: var(--gold-bg);
+      box-shadow: 0 0 12px rgba(245, 185, 66, 0.25);
+    }
+
+    .btn-danger {
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: var(--danger);
+    }
+
+    /* Stats Row */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--gold);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Logs & Presets */
+    .gold-records-list {
+      max-height: 185px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .gold-record-item {
+      background: linear-gradient(135deg, rgba(245, 185, 66, 0.12), var(--bg-card));
+      border: 1px solid rgba(245, 185, 66, 0.45);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .gold-record-head {
+      display: flex;
+      justify-content: space-between;
+      color: var(--gold);
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .gold-record-others {
+      color: var(--text-muted);
+      font-size: 11px;
+    }
+
+    .log-box {
+      height: 175px;
+      overflow-y: auto;
+      background: #0d0f14;
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      margin-bottom: 14px;
+    }
+
+    .log-entry {
+      margin-bottom: 5px;
+      color: #cbd5e1;
+    }
+
+    .log-entry.gold { color: var(--gold); font-weight: 700; }
+    .log-entry.purple { color: var(--purple); }
+    .log-entry.cyan { color: var(--cyan); }
+
+    .saved-list {
+      max-height: 150px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .saved-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Real-Life Counter Layout */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .calc-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .rl-slot-row {
+      background: var(--bg-card);
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      transition: all 0.25s ease;
+    }
+
+    .rl-slot-row.unopened {
+      opacity: 0.48;
+      border-style: dashed;
+    }
+
+    .rl-slot-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .rl-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .pill-btn {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border-default);
+      background: rgba(255,255,255,0.06);
+      color: var(--text-main);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .pill-btn:hover:not(:disabled) {
+      border-color: var(--gold);
+    }
+
+    .pill-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .pill-btn.gold-hit {
+      background: var(--gold-bg);
+      border-color: var(--gold);
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 10px;
+    }
+
+    .summary-table td {
+      padding: 8px 4px;
+      border-bottom: 1px solid var(--border-default);
+    }
+
+    .summary-table td:last-child {
+      text-align: right;
+      font-weight: 700;
+      color: var(--gold);
+    }
+
+    .prob-note {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.03);
+      border-left: 3px solid var(--gold);
+      padding: 10px 12px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">落櫻樓</div>
+        <div>
+          <h1>燕雲武器重鑄模擬器 v19 & 實況計數器 by 娜拉比</h1>
+          <p id="headerModeDesc">港台服繁中官方譯名＋陸服新武器 · 律格變幻完整細分機率 · 90 抽保底 · 逐孔實況計算</p>
+        </div>
+      </div>
+
+      <div class="mode-tabs">
+        <button class="tab-btn active" onclick="switchTab('sim', this)">武器重鑄模擬器</button>
+        <button class="tab-btn" onclick="switchTab('calc', this)">實況計數 & 預算計算器</button>
+      </div>
+    </header>
+
+    <!-- ==================== TAB 1: SIMULATOR ==================== -->
+    <section id="tab-sim" class="view-section active">
+      <div class="sim-grid">
+        <!-- Left Panel: Settings -->
+        <div class="panel">
+          <div class="panel-title">重鑄設定 FORGE</div>
+
+          <div class="form-group">
+            <label>藏音武器選擇（港台服繁中 / 陸服名）</label>
+            <select id="weaponSelect" onchange="onWeaponChange()">
+              <option value="sword_2">二代｜劍｜藏音‧龍躍霄漢 (2款礪金套)</option>
+              <option value="sword_1">一代｜劍｜藏音‧千古斷雲 (3款礪金套·含0.6%稀有)</option>
+              <option value="spear_2">二代｜槍｜藏音‧潛龍在淵 (2款礪金套)</option>
+              <option value="tangdao_1">一代｜橫刀｜藏音‧羲和敲日 (2款礪金套)</option>
+              <option value="tangdao_2">二代｜橫刀｜藏音‧天地一嘯 [陸服名] (2款礪金套)</option>
+              <option value="modao_2">二代｜陌刀｜藏音‧雙靈鎮闕 [港台新上架] (2款礪金套)</option>
+              <option value="modao_1">一代｜陌刀｜藏音‧萬古悲塵 (2款礪金套)</option>
+              <option value="dual_2">二代｜雙刀｜藏音‧鸞倚九霄 (2款礪金套)</option>
+              <option value="fan_2">二代｜扇｜藏音‧霓裳天風 (2款礪金套)</option>
+              <option value="fan_1">一代｜扇｜藏音‧昆山玉碎 (3款礪金套·含0.6%稀有)</option>
+              <option value="umbrella_2">二代｜傘｜藏音‧星河欲曙 (2款礪金套)</option>
+              <option value="rope_2">二代｜繩鏢｜藏音‧龍游五色 [陸服名] (2款礪金套)</option>
+            </select>
+          </div>
+
+          <div id="weaponSetInfo" class="set-info-box"></div>
+
+          <div class="form-group">
+            <label>太一玄石初始數量</label>
+            <input type="number" id="stoneBudget" value="300" min="1" max="99999" onchange="syncBudget()" />
+          </div>
+
+          <div class="stat-box" style="margin-bottom: 12px;">
+            <div class="stat-val" id="remainingStones">300</div>
+            <div class="stat-label">剩餘太一玄石</div>
+          </div>
+
+          <!-- Soft Pity Toggle -->
+          <div class="setting-box">
+            <div class="toggle-row">
+              <span>🛡️ 啟用軟保底遞增</span>
+              <input type="checkbox" id="softPityEnabled" onchange="updatePityModeUI()" style="width:16px; height:16px; accent-color:var(--gold);" />
+            </div>
+            <div id="softPityInputs" class="two-col-inputs disabled">
+              <div>
+                <label style="font-size:11px; color:var(--text-muted);">起跳抽數</label>
+                <input type="number" id="softPityStart" value="35" min="1" max="89" step="1" onchange="updatePityModeUI()" />
+              </div>
+              <div>
+                <label style="font-size:11px; color:var(--text-muted);">每抽遞增 (%)</label>
+                <input type="number" id="softPityRamp" value="1.6" min="0.1" max="20" step="0.1" onchange="updatePityModeUI()" />
+              </div>
+            </div>
+            <div id="pityModeHint" style="font-size:11px; color:var(--text-muted); margin-top:6px;">
+              目前：純官方 3% 機率，第 90 抽硬保底必出礪金
+            </div>
+          </div>
+
+          <!-- Progress Crit Settings -->
+          <div class="setting-box">
+            <div class="toggle-row">
+              <span>⚡ 啟用開孔進度暴擊</span>
+              <input type="checkbox" id="critEnabled" onchange="updateCritModeUI()" style="width:16px; height:16px; accent-color:var(--gold);" />
+            </div>
+            <div id="critInputs" class="two-col-inputs disabled">
+              <div>
+                <label style="font-size:11px; color:var(--text-muted);">跳格暴擊率 (%)</label>
+                <input type="number" id="smallCritRate" value="15" min="0" max="100" step="1" title="觸發時進度一次跳 +2 至 +5 格" />
+              </div>
+              <div>
+                <label style="font-size:11px; color:var(--text-muted);">直接開孔率 (%)</label>
+                <input type="number" id="bigCritRate" value="2" min="0" max="100" step="0.5" title="觸發時直接跳滿並開啟下一個孔" />
+              </div>
+            </div>
+            <div id="critModeHint" style="font-size:11px; color:var(--text-muted); margin-top:6px;">
+              目前：關閉（每次固定 +1 進度，每 30 抽開一孔；暴擊僅影響開孔，不影響出金機率與 90 抽保底）
+            </div>
+          </div>
+        </div>
+
+        <!-- Center Panel: Forge Area -->
+        <div class="panel">
+          <div class="panel-title">
+            <span id="weaponTitle">藏音‧龍躍霄漢 (劍)</span>
+            <span id="statusSummary" style="font-size:12px; color:var(--text-muted);">1/5 孔 · 0 金 · 0 鎖</span>
+          </div>
+
+          <!-- Gold Pause / Alert Banner -->
+          <div id="goldBanner" class="gold-banner"></div>
+
+          <!-- Unlock Progress Bar -->
+          <div class="progress-wrapper">
+            <div class="progress-header">
+              <div>
+                <span id="unlockProgressLabel">第 2 孔開啟進度：0 / 30</span>
+                <span id="critBadge" class="crit-badge" style="display:none;"></span>
+              </div>
+              <span id="nextCostLabel" style="color:var(--gold); font-weight:700;">本次消耗：1 石</span>
+            </div>
+            <div class="progress-track">
+              <div id="unlockProgressBar" class="progress-fill stage-cyan"></div>
+            </div>
+          </div>
+
+          <!-- 5 Slot Squares -->
+          <div class="slots-grid" id="slotsContainer"></div>
+
+          <!-- Action Buttons -->
+          <div class="action-row">
+            <button class="btn btn-primary" id="reforgeBtn" onclick="doReforge()">重鑄一次 (1 石)</button>
+            <button class="btn" id="undoBtn" onclick="undoReforge()" disabled>找回上一步</button>
+            <button class="btn" id="autoUnlockBtn" onclick="autoUnlockAll()">自動開滿五孔</button>
+            <button class="btn" onclick="savePreset()">保存方案</button>
+            <button class="btn btn-danger" onclick="resetSimulator()">重開一把</button>
+          </div>
+
+          <!-- Bottom Stats -->
+          <div class="stats-grid">
+            <div class="stat-box">
+              <div class="stat-val" id="statRolls">0</div>
+              <div class="stat-label">重鑄次數</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val" id="statSpent">0</div>
+              <div class="stat-label">累計消耗</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val" id="statUnlocked">1/5</div>
+              <div class="stat-label">已開孔數</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-val" id="statGolds">0</div>
+              <div class="stat-label">當前金孔</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Panel: Logs & Saved -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>出金紀錄 GOLD RECORDS</span>
+            <span style="font-size:11px; color:var(--gold);" id="goldRecordCount">0 次</span>
+          </div>
+          <div class="gold-records-list" id="goldRecordsList">
+            <div style="font-size:12px; color:var(--text-muted);">尚無出金紀錄</div>
+          </div>
+
+          <div class="panel-title" style="margin-top: 4px;">操作日誌 LOGS</div>
+          <div class="log-box" id="simLog"></div>
+
+          <div class="panel-title" style="margin-top: 6px;">
+            <span>已保存方案</span>
+            <span style="font-size:11px; color:var(--text-muted);" id="presetCount">0 / 10</span>
+          </div>
+          <div class="saved-list" id="savedList">
+            <div style="font-size:12px; color:var(--text-muted);">暫無保存方案</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: REAL-LIFE COUNTER & CALCULATOR ==================== -->
+    <section id="tab-calc" class="view-section">
+      <div class="calc-grid">
+        <!-- Left: Live In-Game Counter -->
+        <div class="panel">
+          <div class="panel-title">
+            <span>實況重鑄計數器 (逐孔獨立水位追蹤)</span>
+            <button class="pill-btn" onclick="resetRealLife()">清空計數</button>
+          </div>
+
+          <div class="form-group">
+            <label>當前鎖孔數量（自動匹配單次太一玄石消耗）</label>
+            <div class="action-row" style="margin-bottom: 8px;">
+              <button class="pill-btn rl-lock-btn" data-locks="0" onclick="setRlLocks(0)">0 鎖 (1石)</button>
+              <button class="pill-btn rl-lock-btn" data-locks="1" onclick="setRlLocks(1)">1 鎖 (2石)</button>
+              <button class="pill-btn rl-lock-btn" data-locks="2" onclick="setRlLocks(2)">2 鎖 (5石)</button>
+              <button class="pill-btn rl-lock-btn" data-locks="3" onclick="setRlLocks(3)">3 鎖 (10石)</button>
+            </div>
+          </div>
+
+          <!-- Big Counter & Open Next Hole Buttons -->
+          <div class="action-row">
+            <button class="btn btn-primary" onclick="rlAddRoll(1)">+1 次重鑄 (當前鎖孔)</button>
+            <button class="btn" onclick="rlAddRoll(10)">+10 連點</button>
+            <button class="btn btn-accent" id="rlOpenNextBtn" onclick="rlOpenNextHole()">✨ 開啟下一孔 (目前 1/5 孔)</button>
+            <button class="btn btn-danger" onclick="rlUndo()">撤銷上次</button>
+          </div>
+
+          <!-- Real-life 5 slots sequential pity trackers -->
+          <div style="margin-top: 14px;">
+            <div class="panel-title" style="margin-bottom: 10px;">
+              <span>各孔位獨立水位追蹤 (僅已開且未鎖孔會累計)</span>
+              <span id="rlOpenedBadge" style="font-size:12px; color:var(--text-muted);">已開 1/5 孔</span>
+            </div>
+            <div id="rlSlotsContainer"></div>
+          </div>
+        </div>
+
+        <!-- Right: Cost & Budget Estimator -->
+        <div class="panel">
+          <div class="panel-title">成本與剩餘預算估算</div>
+
+          <div class="form-group">
+            <label>單顆太一玄石折合價格 (例如 HKD / RMB / TWD)</label>
+            <input type="number" id="rlUnitPrice" value="18" min="0" step="0.5" oninput="renderRealLife()" />
+          </div>
+
+          <div class="form-group">
+            <label>貨幣符號</label>
+            <input type="text" id="rlCurrency" value="HK$" maxlength="5" oninput="renderRealLife()" />
+          </div>
+
+          <table class="summary-table">
+            <tr>
+              <td>目前已開啟孔數</td>
+              <td id="rlOpenedCount">1 / 5 孔</td>
+            </tr>
+            <tr>
+              <td>已記錄重鑄總次數</td>
+              <td id="rlTotalRolls">0 次</td>
+            </tr>
+            <tr>
+              <td>已消耗太一玄石總數</td>
+              <td id="rlTotalStones">0 石</td>
+            </tr>
+            <tr>
+              <td>已花費真實金額</td>
+              <td id="rlTotalMoney">HK$0</td>
+            </tr>
+            <tr>
+              <td>當前單次重鑄成本</td>
+              <td id="rlCurrentStepCost">1 石 (HK$18)</td>
+            </tr>
+            <tr>
+              <td>已開孔最高水位距離 90 硬保底</td>
+              <td id="rlClosestPity">90 次</td>
+            </tr>
+            <tr>
+              <td>按當前鎖孔追到下一次硬保底預估</td>
+              <td id="rlWorstCaseCost">90 石 (HK$1,620)</td>
+            </tr>
+            <tr>
+              <td>按期望均值 (~33抽) 預估剩餘</td>
+              <td id="rlAvgCaseCost">33 石 (HK$594)</td>
+            </tr>
+          </table>
+
+          <div class="panel-title" style="margin-top: 16px;">
+            <span>實況出金紀錄 GOLD RECORDS</span>
+            <span style="font-size:11px; color:var(--gold);" id="rlGoldRecordCount">0 次</span>
+          </div>
+          <div class="gold-records-list" id="rlGoldRecordsList">
+            <div style="font-size:12px; color:var(--text-muted);">尚無出金紀錄（點擊孔位「出金歸零」時自動記錄）</div>
+          </div>
+
+          <div class="prob-note">
+            <strong>使用說明：</strong><br />
+            1. 預設從 <strong>第 1 孔</strong> 起步，未開啟的孔位<strong>不會</strong>累計水位。<br />
+            2. 每累計 <strong>30 次重鑄</strong> 若尚未手動開孔，系統會<strong>自動開啟下一孔</strong>並歸零 30 次計數；若在遊戲中提前暴擊開孔，按一下 <strong>「✨ 提前開啟第 X 孔」</strong> 即可同步開啟並重算下孔 30 次保底。<br />
+            3. 某孔出金時點 <strong>「出金歸零」</strong>（會自動記錄抽數與其他孔位水位），鎖孔時點 <strong>「鎖定」</strong>，點錯隨時可按 <strong>「撤銷上次」</strong>。
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ==================== TAB SWITCHING ====================
+    function switchTab(tab, btn) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById('tab-' + tab).classList.add('active');
+      btn.classList.add('active');
+    }
+
+    // ==================== OFFICIAL WEAPON SET DATABASE (HK/TW + CN) ====================
+    const WEAPON_DB = {
+      sword_2: {
+        name: '二代｜劍｜藏音‧龍躍霄漢',
+        goldMode: 2,
+        cyan: [{ name: '套裝‧負岳', rate: '82%' }],
+        purple: [{ name: '套裝‧蟠枝', rate: '7.5%' }, { name: '套裝‧銜鋒', rate: '7.5%' }],
+        gold: [{ name: '套裝‧馭日', weight: 0.5, rate: '1.5%' }, { name: '套裝‧擎浪', weight: 0.5, rate: '1.5%' }]
+      },
+      sword_1: {
+        name: '一代｜劍｜藏音‧千古斷雲',
+        goldMode: 3,
+        cyan: [{ name: '霽青‧套裝一', rate: '82%' }],
+        purple: [{ name: '紫綬‧套裝一', rate: '7.5%' }, { name: '紫綬‧套裝二', rate: '7.5%' }],
+        gold: [
+          { name: '套裝‧驚霆', weight: 0.4, rate: '1.2%' },
+          { name: '套裝‧流火', weight: 0.4, rate: '1.2%' },
+          { name: '套裝‧熒惑', weight: 0.2, rate: '0.6%', rare: true }
+        ]
+      },
+      spear_2: {
+        name: '二代｜槍｜藏音‧潛龍在淵',
+        goldMode: 2,
+        cyan: [{ name: '套裝‧潛蛟', rate: '82%' }],
+        purple: [{ name: '套裝‧素冰', rate: '7.5%' }, { name: '套裝‧清光', rate: '7.5%' }],
+        gold: [{ name: '套裝‧九霄', weight: 0.5, rate: '1.5%' }, { name: '套裝‧亢龍', weight: 0.5, rate: '1.5%' }]
+      },
+      tangdao_1: {
+        name: '一代｜橫刀｜藏音‧羲和敲日',
+        goldMode: 2,
+        cyan: [{ name: '套裝‧燭煙', rate: '82%' }],
+        purple: [{ name: '套裝‧海清', rate: '7.5%' }, { name: '套裝‧劫燼', rate: '7.5%' }],
+        gold: [{ name: '套裝‧霜月', weight: 0.5, rate: '1.5%' }, { name: '套裝‧焚羲', weight: 0.5, rate: '1.5%' }]
+      },
+      tangdao_2: {
+        name: '二代｜橫刀｜藏音‧天地一嘯 [陸服名]',
+        goldMode: 2,
+        cyan: [{ name: '套裝‧白牙', rate: '82%' }],
+        purple: [{ name: '套裝‧聽冰', rate: '7.5%' }, { name: '套裝‧銜鉤', rate: '7.5%' }],
+        gold: [{ name: '套裝‧焰尾', weight: 0.5, rate: '1.5%' }, { name: '套裝‧嘯宇', weight: 0.5, rate: '1.5%' }]
+      },
+      modao_2: {
+        name: '二代｜陌刀｜藏音‧雙靈鎮闕',
+        goldMode: 2,
+        cyan: [{ name: '霽青‧套裝一', rate: '82%' }],
+        purple: [{ name: '紫綬‧套裝一', rate: '7.5%' }, { name: '紫綬‧套裝二', rate: '7.5%' }],
+        gold: [{ name: '套裝‧裂霄', weight: 0.5, rate: '1.5%' }, { name: '套裝‧惑月', weight: 0.5, rate: '1.5%' }]
+      },
+      modao_1: {
+        name: '一代｜陌刀｜藏音‧萬古悲塵',
+        goldMode: 2,
+        cyan: [{ name: '套裝‧石火', rate: '82%' }],
+        purple: [{ name: '套裝‧閬風', rate: '7.5%' }, { name: '套裝‧酌酒', rate: '7.5%' }],
+        gold: [{ name: '套裝‧宵夢', weight: 0.5, rate: '1.5%' }, { name: '套裝‧西荒', weight: 0.5, rate: '1.5%' }]
+      },
+      dual_2: {
+        name: '二代｜雙刀｜藏音‧鸞倚九霄',
+        goldMode: 2,
+        cyan: [{ name: '套裝‧苧蘿', rate: '82%' }],
+        purple: [{ name: '套裝‧虹裳', rate: '7.5%' }, { name: '套裝‧冰坼', rate: '7.5%' }],
+        gold: [{ name: '礪金‧套裝一', weight: 0.5, rate: '1.5%' }, { name: '礪金‧套裝二', weight: 0.5, rate: '1.5%' }]
+      },
+      fan_2: {
+        name: '二代｜扇｜藏音‧霓裳天風',
+        goldMode: 2,
+        cyan: [{ name: '套裝‧清泉', rate: '82%' }],
+        purple: [{ name: '套裝‧幽篁', rate: '7.5%' }, { name: '套裝‧煙嵐', rate: '7.5%' }],
+        gold: [{ name: '套裝‧瀚海', weight: 0.5, rate: '1.5%' }, { name: '套裝‧蓬瀛', weight: 0.5, rate: '1.5%' }]
+      },
+      fan_1: {
+        name: '一代｜扇｜藏音‧昆山玉碎',
+        goldMode: 3,
+        cyan: [{ name: '霽青‧套裝一', rate: '82%' }],
+        purple: [{ name: '紫綬‧套裝一', rate: '7.5%' }, { name: '紫綬‧套裝二', rate: '7.5%' }],
+        gold: [
+          { name: '套裝‧九域', weight: 0.4, rate: '1.2%' },
+          { name: '套裝‧銀漢', weight: 0.4, rate: '1.2%' },
+          { name: '套裝‧稀有款', weight: 0.2, rate: '0.6%', rare: true }
+        ]
+      },
+      umbrella_2: {
+        name: '二代｜傘｜藏音‧星河欲曙',
+        goldMode: 2,
+        cyan: [{ name: '霽青‧套裝一', rate: '82%' }],
+        purple: [{ name: '紫綬‧套裝一', rate: '7.5%' }, { name: '紫綬‧套裝二', rate: '7.5%' }],
+        gold: [{ name: '礪金‧套裝一', weight: 0.5, rate: '1.5%' }, { name: '礪金‧套裝二', weight: 0.5, rate: '1.5%' }]
+      },
+      rope_2: {
+        name: '二代｜繩鏢｜藏音‧龍游五色 [陸服名]',
+        goldMode: 2,
+        cyan: [{ name: '霽青‧套裝一', rate: '82%' }],
+        purple: [{ name: '紫綬‧套裝一', rate: '7.5%' }, { name: '紫綬‧套裝二', rate: '7.5%' }],
+        gold: [{ name: '礪金‧套裝一', weight: 0.5, rate: '1.5%' }, { name: '礪金‧套裝二', weight: 0.5, rate: '1.5%' }]
+      }
+    };
+
+    const COLOR_TRAITS = {
+      cyan: ['基礎色‧素青', '基礎色‧淺藍', '基礎色‧微瀾', '基礎色‧霜白'],
+      purple: ['定制色‧流霞紫', '定制色‧幽蘭紫', '定制色‧星垂紫', '定制色‧暮煙紫'],
+      gold: ['稀有色‧珍珠白', '稀有色‧冰泉藍', '稀有色‧赤金紅', '套裝專屬色‧點藍']
+    };
+
+    const SLOT_DEFS = [
+      { id: 0, title: '顏色一律', unlockAt: 0, fixedGold: false, isColorSlot: true },
+      { id: 1, title: '結構一律', unlockAt: 30, fixedGold: false, isColorSlot: false },
+      { id: 2, title: '結構二律', unlockAt: 60, fixedGold: false, isColorSlot: false },
+      { id: 3, title: '結構三律', unlockAt: 90, fixedGold: false, isColorSlot: false },
+      { id: 4, title: '明光', unlockAt: 120, fixedGold: true, isColorSlot: false }
+    ];
+
+    const GRADE_LABELS = { cyan: '霽青', purple: '紫綬', gold: '礪金' };
+    const LOCK_COSTS = { 0: 1, 1: 2, 2: 5, 3: 10 };
+
+    let simState = {
+      weaponKey: 'sword_2',
+      budget: 300,
+      remaining: 300,
+      rolls: 0,
+      unlockProgress: 0,
+      spent: 0,
+      slots: [],
+      history: [],
+      redoHistory: [],
+      presets: [],
+      goldRecords: [],
+      autoPausedOnGold: false,
+      bannerMsg: '',
+      lastCritText: ''
+    };
+
+    function getCurrentWeapon() {
+      return WEAPON_DB[simState.weaponKey] || WEAPON_DB.sword_2;
+    }
+
+    function renderWeaponSetInfo() {
+      const w = getCurrentWeapon();
+      const goldList = w.gold.map(g => `${g.name}(${g.rate})`).join(' / ');
+      const purpleList = w.purple.map(p => `${p.name}(${p.rate})`).join(' / ');
+      const cyanList = w.cyan.map(c => `${c.name}(${c.rate})`).join(' / ');
+
+      document.getElementById('weaponTitle').textContent = w.name;
+      document.getElementById('weaponSetInfo').innerHTML = `
+        <strong>當前武器官方套裝構成：</strong><br />
+        • <span style="color:var(--gold);">礪金 (3%)</span>：${goldList}<br />
+        • <span style="color:var(--purple);">紫綬 (15%)</span>：${purpleList}<br />
+        • <span style="color:var(--cyan);">霽青 (82%)</span>：${cyanList}<br />
+        • 顏色律格（第 1 孔）：3% / 15% / 82% · 保底 90 次
+      `;
+    }
+
+    function onWeaponChange() {
+      simState.weaponKey = document.getElementById('weaponSelect').value;
+      renderWeaponSetInfo();
+      resetSimulator();
+    }
+
+    function createSnapshot() {
+      return JSON.parse(JSON.stringify({
+        remaining: simState.remaining,
+        rolls: simState.rolls,
+        unlockProgress: simState.unlockProgress,
+        spent: simState.spent,
+        slots: simState.slots,
+        goldRecords: simState.goldRecords,
+        lastCritText: simState.lastCritText,
+        bannerMsg: simState.bannerMsg
+      }));
+    }
+
+    function applySnapshot(snap) {
+      simState.remaining = snap.remaining;
+      simState.rolls = snap.rolls;
+      simState.unlockProgress = snap.unlockProgress;
+      simState.spent = snap.spent;
+      simState.slots = snap.slots;
+      simState.goldRecords = snap.goldRecords || [];
+      simState.lastCritText = snap.lastCritText || '';
+      simState.autoPausedOnGold = false;
+
+      const unlockedGolds = getUnlockedNonLockedGoldSlots();
+      if (unlockedGolds.length > 0) {
+        const names = unlockedGolds.map(s => `第 ${s.id + 1} 孔(${s.trait})`).join('、');
+        simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}！下次重鑄前系統會先請你確認，建議先鎖定。`;
+      } else {
+        simState.bannerMsg = snap.bannerMsg || '';
+      }
+    }
+
+    function updatePityModeUI() {
+      const enabled = document.getElementById('softPityEnabled').checked;
+      const start = parseInt(document.getElementById('softPityStart').value, 10) || 35;
+      const ramp = parseFloat(document.getElementById('softPityRamp').value) || 1.6;
+      const box = document.getElementById('softPityInputs');
+      const hint = document.getElementById('pityModeHint');
+      const headerDesc = document.getElementById('headerModeDesc');
+
+      if (enabled) {
+        box.classList.remove('disabled');
+        hint.textContent = `目前：第 ${start} 抽後每抽 +${ramp}% 軟保底遞增，第 90 抽必出`;
+        headerDesc.textContent = `港台服繁中官方譯名＋陸服新武器 · ${start} 抽軟保底遞增 · 90 抽硬保底`;
+      } else {
+        box.classList.add('disabled');
+        hint.textContent = '目前：純官方 3% 機率，第 90 抽硬保底必出礪金';
+        headerDesc.textContent = '港台服繁中官方譯名＋陸服新武器 · 律格變幻完整細分機率 · 90 抽保底';
+      }
+    }
+
+    function pickTraitForSlot(slot, grade) {
+      if (slot.fixedGold) {
+        return { trait: '明光‧曜日', rateTag: '固定礪金', rare: false };
+      }
+      if (slot.isColorSlot) {
+        const list = COLOR_TRAITS[grade];
+        const trait = list[Math.floor(Math.random() * list.length)];
+        const rateTag = grade === 'gold' ? '顏色律格 3%' : grade === 'purple' ? '顏色律格 15%' : '顏色律格 82%';
+        return { trait, rateTag, rare: false };
+      }
+
+      const w = getCurrentWeapon();
+      if (grade === 'cyan') {
+        const c = w.cyan[0];
+        return { trait: c.name, rateTag: `結構 ${c.rate}`, rare: false };
+      }
+      if (grade === 'purple') {
+        const p = w.purple[Math.random() < 0.5 ? 0 : 1];
+        return { trait: p.name, rateTag: `結構 ${p.rate}`, rare: false };
+      }
+      const r = Math.random();
+      let acc = 0;
+      for (const g of w.gold) {
+        acc += g.weight;
+        if (r < acc) {
+          return {
+            trait: g.name,
+            rateTag: g.rare ? `🔥 稀有款 ${g.rate}` : `結構 ${g.rate}`,
+            rare: !!g.rare
+          };
+        }
+      }
+      const last = w.gold[w.gold.length - 1];
+      return { trait: last.name, rateTag: `結構 ${last.rate}`, rare: !!last.rare };
+    }
+
+    function rollSingleSlot(slot) {
+      if (slot.fixedGold) {
+        return { grade: 'gold', trait: '明光‧曜日', rateTag: '固定礪金', rare: false, pity: 0 };
+      }
+
+      const nextPity = slot.pity + 1;
+      let goldChance = 0.03;
+
+      const softEnabled = document.getElementById('softPityEnabled').checked;
+      const softStart = parseInt(document.getElementById('softPityStart').value, 10) || 35;
+      const softRamp = (parseFloat(document.getElementById('softPityRamp').value) || 1.6) / 100;
+
+      if (nextPity >= 90) {
+        goldChance = 1.0;
+      } else if (softEnabled && nextPity > softStart) {
+        goldChance = Math.min(0.95, 0.03 + (nextPity - softStart) * softRamp);
+      }
+
+      const r = Math.random();
+      let grade = 'cyan';
+      let pityOut = nextPity;
+
+      if (r < goldChance) {
+        grade = 'gold';
+        pityOut = 0;
+      } else if (r < goldChance + 0.15) {
+        grade = 'purple';
+      } else {
+        grade = 'cyan';
+      }
+
+      const picked = pickTraitForSlot(slot, grade);
+      return { grade, trait: picked.trait, rateTag: picked.rateTag, rare: picked.rare, pity: pityOut };
+    }
+
+    function createInitialSlots() {
+      const firstRoll = rollSingleSlot({ pity: 0, fixedGold: false, isColorSlot: true });
+      return SLOT_DEFS.map((def, idx) => ({
+        id: idx,
+        title: def.title,
+        unlocked: idx === 0,
+        locked: false,
+        grade: idx === 0 ? firstRoll.grade : null,
+        trait: idx === 0 ? firstRoll.trait : '隨進度開啟',
+        rateTag: idx === 0 ? firstRoll.rateTag : '',
+        rare: idx === 0 ? firstRoll.rare : false,
+        pity: 0,
+        goldCount: idx === 0 && firstRoll.grade === 'gold' ? 1 : 0,
+        fixedGold: def.fixedGold,
+        isColorSlot: def.isColorSlot
+      }));
+    }
+
+    function getUnlockedNonLockedGoldSlots() {
+      return simState.slots.filter(s => s.unlocked && !s.locked && !s.fixedGold && s.grade === 'gold');
+    }
+
+    function getLockCount() {
+      return simState.slots.filter(s => s.locked).length;
+    }
+
+    function getCurrentCost() {
+      return LOCK_COSTS[getLockCount()] || 10;
+    }
+
+    function addLog(msg, cls = '') {
+      const box = document.getElementById('simLog');
+      const time = new Date().toLocaleTimeString('zh-Hant-HK', { hour12: false });
+      const div = document.createElement('div');
+      div.className = 'log-entry ' + cls;
+      div.textContent = `[${time}] ${msg}`;
+      box.prepend(div);
+    }
+
+    function syncBudget() {
+      const val = parseInt(document.getElementById('stoneBudget').value, 10) || 300;
+      simState.budget = val;
+      simState.remaining = Math.max(0, val - simState.spent);
+      renderSim();
+    }
+
+    function advanceUnlockProgress() {
+      if (simState.unlockProgress >= 120) {
+        simState.lastCritText = '';
+        return;
+      }
+
+      const unlockedCount = simState.slots.filter(s => s.unlocked).length;
+      const nextTarget = unlockedCount < 5 ? SLOT_DEFS[unlockedCount].unlockAt : 120;
+      const critEnabled = document.getElementById('critEnabled').checked;
+      const smallRate = (parseFloat(document.getElementById('smallCritRate').value) || 0) / 100;
+      const bigRate = (parseFloat(document.getElementById('bigCritRate').value) || 0) / 100;
+
+      let gain = 1;
+      let critType = 'normal';
+
+      if (critEnabled) {
+        const r = Math.random();
+        if (r < bigRate) {
+          gain = Math.max(1, nextTarget - simState.unlockProgress);
+          critType = 'big';
+        } else if (r < bigRate + smallRate) {
+          const rawJump = Math.floor(Math.random() * 4) + 2;
+          gain = Math.min(rawJump, nextTarget - simState.unlockProgress);
+          critType = gain > 1 ? 'small' : 'normal';
+        }
+      }
+
+      simState.unlockProgress = Math.min(120, simState.unlockProgress + gain);
+
+      if (critType === 'big') {
+        simState.lastCritText = `🔥 大暴擊！直接跳 +${gain} 開啟下一孔`;
+        addLog(`第 ${simState.rolls} 次重鑄觸發【開孔大暴擊】！進度直接 +${gain} 提前開孔！`, 'cyan');
+      } else if (critType === 'small') {
+        simState.lastCritText = `⚡ 進度暴擊 +${gain}`;
+        addLog(`第 ${simState.rolls} 次重鑄觸發【進度暴擊】！開孔進度 +${gain}`, 'cyan');
+      } else {
+        simState.lastCritText = '';
+      }
+    }
+
+    function executeReforgeStep(silent = false) {
+      const cost = getCurrentCost();
+      if (simState.remaining < cost) {
+        if (!silent) alert('太一玄石不足！請在左側增加玄石數量或重開一把。');
+        return { ok: false, goldHits: [] };
+      }
+
+      simState.history.push(createSnapshot());
+      if (simState.history.length > 50) simState.history.shift();
+      simState.redoHistory = [];
+
+      simState.remaining -= cost;
+      simState.spent += cost;
+      simState.rolls += 1;
+
+      advanceUnlockProgress();
+
+      SLOT_DEFS.forEach((def, idx) => {
+        if (!simState.slots[idx].unlocked && simState.unlockProgress >= def.unlockAt) {
+          simState.slots[idx].unlocked = true;
+          if (def.fixedGold) {
+            simState.slots[idx].grade = 'gold';
+            simState.slots[idx].trait = '明光‧曜日';
+            simState.slots[idx].rateTag = '固定礪金';
+            simState.slots[idx].pity = 0;
+            addLog(`第 5 孔【明光】開啟！固定礪金！（實際僅用 ${simState.rolls} 次重鑄）`, 'gold');
+          } else {
+            addLog(`第 ${idx + 1} 孔【${def.title}】已開啟！（累計 ${simState.rolls} 次）`, 'purple');
+          }
+        }
+      });
+
+      let goldHits = [];
+      let goldHitIds = new Set();
+      simState.slots.forEach(slot => {
+        if (slot.unlocked && !slot.locked && !slot.fixedGold) {
+          const hitPity = slot.pity + 1;
+          const res = rollSingleSlot(slot);
+          slot.grade = res.grade;
+          slot.trait = res.trait;
+          slot.rateTag = res.rateTag;
+          slot.rare = res.rare;
+          slot.pity = res.pity;
+          if (res.grade === 'gold') {
+            goldHitIds.add(slot.id);
+            slot.goldCount = (slot.goldCount || 0) + 1;
+            const rareSuffix = res.rare ? '·0.6%稀有' : '';
+            if (slot.goldCount === 1) {
+              goldHits.push(`第 ${slot.id + 1} 孔(${res.trait}${rareSuffix}｜第 ${hitPity} 抽出金)`);
+            } else {
+              goldHits.push(`第 ${slot.id + 1} 孔(${res.trait}${rareSuffix}｜🔁 第 ${slot.goldCount} 次出金 · 距上次 ${hitPity} 抽)`);
+            }
+          }
+        }
+      });
+
+      if (goldHits.length > 0) {
+        const otherHoles = simState.slots
+          .filter(s => !goldHitIds.has(s.id) && !s.fixedGold)
+          .map(s => {
+            if (!s.unlocked) return `第${s.id + 1}孔:未開`;
+            const gLabel = GRADE_LABELS[s.grade] || '';
+            const lockTag = s.locked ? '🔒' : '';
+            return `第${s.id + 1}孔:${lockTag}${gLabel}(${s.pity}/90)`;
+          });
+        const othersText = otherHoles.join('｜');
+
+        simState.goldRecords.unshift({
+          roll: simState.rolls,
+          spent: simState.spent,
+          hits: goldHits.join('、'),
+          others: othersText
+        });
+
+        const prefix = goldHits.length >= 2 ? '✨ 多爆出金！' : '★ 出金！';
+        addLog(`第 ${simState.rolls} 次重鑄 (-${cost}石)：${prefix} ${goldHits.join('、')}｜其他孔：${othersText}`, 'gold');
+      } else if (!silent && !simState.lastCritText) {
+        addLog(`第 ${simState.rolls} 次重鑄 (-${cost}石) 完成`);
+      }
+
+      return { ok: true, goldHits };
+    }
+
+    function doReforge() {
+      // If user previously pressed "找回上一步", pressing main button restores the next step directly
+      if (simState.redoHistory.length > 0) {
+        redoReforge();
+        return;
+      }
+
+      const unlockedGolds = getUnlockedNonLockedGoldSlots();
+      if (unlockedGolds.length > 0) {
+        const names = unlockedGolds.map(s => `第 ${s.id + 1} 孔【${s.trait}】`).join('、');
+        const ok = confirm(`⚠️ 偵測到未鎖定的【礪金】孔位：${names}\n\n確定要直接重鑄並覆蓋嗎？（按「取消」可先鎖定該孔位）`);
+        if (!ok) return;
+      }
+
+      simState.autoPausedOnGold = false;
+      simState.bannerMsg = '';
+      const result = executeReforgeStep(false);
+      if (result.ok && result.goldHits.length > 0) {
+        simState.bannerMsg = `★ 出現【礪金】：${result.goldHits.join('、')}！下次重鑄前系統會先請你確認，建議先鎖定。`;
+      }
+      renderSim();
+    }
+
+    function autoUnlockAll() {
+      if (simState.unlockProgress >= 120) {
+        alert('五孔已經全部開啟！若要從頭模擬，請先點擊「重開一把」。');
+        return;
+      }
+
+      if (!simState.autoPausedOnGold && simState.rolls > 0) {
+        const restart = confirm(`目前已重鑄 ${simState.rolls} 次。\n\n按「確定」：從頭（第 0 次）開始自動開滿五孔\n按「取消」：從目前進度繼續自動開滿五孔`);
+        if (restart) {
+          resetSimulator();
+        }
+      }
+
+      const existingGolds = getUnlockedNonLockedGoldSlots();
+      if (existingGolds.length > 0) {
+        const names = existingGolds.map(s => `第 ${s.id + 1} 孔`).join('、');
+        const proceed = confirm(`⚠️ 目前有未鎖定的【礪金】孔位（${names}）！\n\n確定要不鎖定並繼續「自動開滿五孔」嗎？（按「取消」可先鎖定再按繼續）`);
+        if (!proceed) return;
+      }
+
+      simState.autoPausedOnGold = false;
+      simState.bannerMsg = '';
+
+      while (simState.unlockProgress < 120) {
+        const res = executeReforgeStep(true);
+        if (!res.ok) {
+          alert('太一玄石不足，自動開滿五孔已中止！請在左側增加玄石數量後再繼續。');
+          break;
+        }
+
+        if (res.goldHits.length > 0) {
+          simState.autoPausedOnGold = true;
+          simState.bannerMsg = `✨ 第 ${simState.rolls} 次重鑄出現【礪金】（${res.goldHits.join('、')}）！自動開孔已暫停，可先鎖定該孔位，再按「繼續自動開滿五孔」。`;
+          renderSim();
+          setTimeout(() => {
+            alert(`✨ 第 ${simState.rolls} 次重鑄出現【礪金】：${res.goldHits.join('、')}！\n\n自動開滿五孔已暫停，請確認是否要先「鎖定」該孔位，之後再點擊「繼續自動開滿五孔」即可繼續。`);
+          }, 50);
+          return;
+        }
+      }
+
+      if (simState.unlockProgress >= 120) {
+        simState.autoPausedOnGold = false;
+        simState.bannerMsg = `🎉 五孔已全部開啟！（實際重鑄 ${simState.rolls} 次，累計消耗 ${simState.spent} 石）`;
+        addLog(`已完成自動開滿五孔（實際 ${simState.rolls} 次，消耗 ${simState.spent} 石）`, 'purple');
+      }
+      renderSim();
+    }
+
+    function undoReforge() {
+      if (simState.history.length === 0) {
+        alert('沒有可找回的上一步記錄。');
+        return;
+      }
+      simState.redoHistory.push(createSnapshot());
+      const prev = simState.history.pop();
+      applySnapshot(prev);
+      addLog(`已找回上一步（回到第 ${simState.rolls} 次重鑄狀態）。`);
+      renderSim();
+    }
+
+    function redoReforge() {
+      if (simState.redoHistory.length === 0) {
+        alert('沒有可恢復的下一步記錄。');
+        return;
+      }
+      simState.history.push(createSnapshot());
+      const next = simState.redoHistory.pop();
+      applySnapshot(next);
+      addLog(`已恢復下一步（前進至第 ${simState.rolls} 次重鑄狀態）。`, 'cyan');
+      renderSim();
+    }
+
+    function toggleLock(idx) {
+      const slot = simState.slots[idx];
+      if (!slot.unlocked || slot.fixedGold) return;
+      if (!slot.locked && getLockCount() >= 3) {
+        alert('最多只能同時鎖定 3 個孔位！');
+        return;
+      }
+      slot.locked = !slot.locked;
+      renderSim();
+    }
+
+    function cycleSquareColor(idx) {
+      const slot = simState.slots[idx];
+      const nextGrade = !slot.unlocked ? 'cyan' : slot.grade === 'cyan' ? 'purple' : slot.grade === 'purple' ? 'gold' : 'cyan';
+      slot.unlocked = true;
+      slot.grade = nextGrade;
+      const picked = pickTraitForSlot(slot, nextGrade);
+      slot.trait = picked.trait;
+      slot.rateTag = picked.rateTag;
+      slot.rare = picked.rare;
+      renderSim();
+    }
+
+    function savePreset() {
+      if (simState.presets.length >= 10) {
+        alert('最多保留 10 條方案。');
+        return;
+      }
+      const golds = simState.slots.filter(s => s.grade === 'gold').length;
+      simState.presets.unshift({
+        time: new Date().toLocaleTimeString('zh-Hant-HK', { hour12: false }),
+        golds,
+        spent: simState.spent,
+        slots: JSON.parse(JSON.stringify(simState.slots))
+      });
+      addLog(`已保存當前方案（${golds} 金 / 消耗 ${simState.spent} 石）`);
+      renderSim();
+    }
+
+    function loadPreset(index) {
+      const p = simState.presets[index];
+      simState.slots.forEach((curSlot, idx) => {
+        const savedSlot = p.slots[idx];
+        if (savedSlot.unlocked) {
+          curSlot.unlocked = true;
+          curSlot.grade = savedSlot.grade;
+          curSlot.trait = savedSlot.trait;
+          curSlot.rateTag = savedSlot.rateTag || '';
+          curSlot.rare = !!savedSlot.rare;
+          curSlot.locked = savedSlot.locked;
+        }
+      });
+      addLog(`已載入方案（${p.golds} 金，保留目前已開啟孔位進度）`);
+      renderSim();
+    }
+
+    function resetSimulator() {
+      simState.rolls = 0;
+      simState.unlockProgress = 0;
+      simState.spent = 0;
+      simState.remaining = simState.budget;
+      simState.slots = createInitialSlots();
+      simState.history = [];
+      simState.redoHistory = [];
+      simState.presets = [];
+      simState.goldRecords = [];
+      simState.autoPausedOnGold = false;
+      simState.bannerMsg = '';
+      simState.lastCritText = '';
+      document.getElementById('simLog').innerHTML = '';
+
+      const s0 = simState.slots[0];
+      const gLabel = GRADE_LABELS[s0.grade];
+      if (s0.grade === 'gold') {
+        simState.goldRecords.unshift({
+          roll: 0,
+          spent: 0,
+          hits: `第 1 孔(${s0.trait}｜開局直接出金)`,
+          others: '第2孔:未開｜第3孔:未開｜第4孔:未開'
+        });
+        simState.bannerMsg = `★ 歐皇開局！第 1 孔直接出現【礪金】（${s0.trait}），下次重鑄前會先請你確認！`;
+        addLog(`★ 歐皇開局！第 1 孔隨機出金：${gLabel}（${s0.trait}）｜其他孔：未開`, 'gold');
+      } else if (s0.grade === 'purple') {
+        addLog(`已重開（已清空保存方案）：第 1 孔隨機開啟 → ${gLabel}（${s0.trait}）`, 'purple');
+      } else {
+        addLog(`已重開（已清空保存方案）：第 1 孔隨機開啟 → ${gLabel}（${s0.trait}）`);
+      }
+
+      renderSim();
+    }
+
+    function getProgressStageClass(pct) {
+      if (pct >= 80) return 'stage-gold';
+      if (pct >= 45) return 'stage-purple';
+      return 'stage-cyan';
+    }
+
+    function getHoleGradeStageClass() {
+      const unlocked = simState.slots.filter(s => s.unlocked);
+      if (unlocked.some(s => s.grade === 'gold')) return 'stage-gold';
+      if (unlocked.some(s => s.grade === 'purple')) return 'stage-purple';
+      return 'stage-cyan';
+    }
+
+    function getSlotGradeColor(grade) {
+      if (grade === 'gold') return 'var(--gold)';
+      if (grade === 'purple') return 'var(--purple)';
+      return 'var(--cyan)';
+    }
+
+    function renderSim() {
+      const unlockedCount = simState.slots.filter(s => s.unlocked).length;
+      const goldCount = simState.slots.filter(s => s.grade === 'gold').length;
+      const lockCount = getLockCount();
+      const cost = getCurrentCost();
+
+      document.getElementById('remainingStones').textContent = simState.remaining;
+      document.getElementById('statRolls').textContent = simState.rolls;
+      document.getElementById('statSpent').textContent = simState.spent;
+      document.getElementById('statUnlocked').textContent = `${unlockedCount}/5`;
+      document.getElementById('statGolds').textContent = goldCount;
+      document.getElementById('statusSummary').textContent = `${unlockedCount}/5 孔 · ${goldCount} 金 · ${lockCount} 鎖`;
+      document.getElementById('nextCostLabel').textContent = `本次消耗：${cost} 石`;
+      const reforgeBtn = document.getElementById('reforgeBtn');
+      if (simState.redoHistory.length > 0) {
+        reforgeBtn.textContent = `恢復下一步 (還原紀錄)`;
+      } else {
+        reforgeBtn.textContent = `重鑄一次 (${cost} 石)`;
+      }
+
+      document.getElementById('undoBtn').disabled = simState.history.length === 0;
+
+      const bannerEl = document.getElementById('goldBanner');
+      if (simState.bannerMsg) {
+        bannerEl.textContent = simState.bannerMsg;
+        bannerEl.classList.add('show');
+      } else {
+        bannerEl.classList.remove('show');
+      }
+
+      const autoBtn = document.getElementById('autoUnlockBtn');
+      if (simState.autoPausedOnGold && simState.unlockProgress < 120) {
+        autoBtn.textContent = '繼續自動開滿五孔';
+        autoBtn.classList.add('btn-resume');
+      } else {
+        autoBtn.textContent = '自動開滿五孔';
+        autoBtn.classList.remove('btn-resume');
+      }
+
+      const nextUnlockTarget = unlockedCount < 5 ? SLOT_DEFS[unlockedCount].unlockAt : 120;
+      const prevUnlockTarget = unlockedCount < 5 ? (unlockedCount === 1 ? 0 : SLOT_DEFS[unlockedCount - 1].unlockAt) : 0;
+      let pct = 100;
+      if (unlockedCount < 5) {
+        const curStep = Math.max(0, Math.min(nextUnlockTarget - prevUnlockTarget, simState.unlockProgress - prevUnlockTarget));
+        const stepTotal = nextUnlockTarget - prevUnlockTarget;
+        pct = Math.min(100, Math.round((curStep / stepTotal) * 100));
+        document.getElementById('unlockProgressLabel').textContent = `第 ${unlockedCount + 1} 孔開啟進度：${curStep} / ${stepTotal}（總進度 ${simState.unlockProgress}/120）`;
+      } else {
+        document.getElementById('unlockProgressLabel').textContent = `五孔已全部開啟！（實際重鑄 ${simState.rolls} 次）`;
+      }
+
+      const critBadge = document.getElementById('critBadge');
+      if (simState.lastCritText) {
+        critBadge.textContent = simState.lastCritText;
+        critBadge.style.display = 'inline-block';
+      } else {
+        critBadge.style.display = 'none';
+      }
+
+      const bar = document.getElementById('unlockProgressBar');
+      bar.style.width = pct + '%';
+      bar.className = 'progress-fill ' + getHoleGradeStageClass();
+
+      const container = document.getElementById('slotsContainer');
+      container.innerHTML = '';
+      simState.slots.forEach((slot, idx) => {
+        const card = document.createElement('div');
+        const gradeClass = !slot.unlocked ? 'unopened' : `grade-${slot.grade}`;
+        card.className = `slot-square ${gradeClass}`;
+
+        const gradeLabel = !slot.unlocked ? '未開啟' : GRADE_LABELS[slot.grade];
+        const pityPct = Math.min(100, Math.round((slot.pity / 90) * 100));
+        const pityColor = slot.unlocked ? getSlotGradeColor(slot.grade) : 'var(--border-default)';
+
+        card.innerHTML = `
+          <div>
+            <div class="slot-top">
+              <span>第 ${idx + 1} 孔</span>
+              <span class="slot-grade-badge">${gradeLabel}</span>
+            </div>
+            <div class="slot-name">${slot.title}</div>
+            <div class="slot-sub">${slot.trait}</div>
+            ${slot.rateTag ? `<div class="slot-rate-tag ${slot.rare ? 'rare' : ''}">${slot.rateTag}</div>` : ''}
+          </div>
+          <div>
+            ${
+              slot.fixedGold
+                ? `<div class="pity-text" style="color:var(--gold);">明光固定礪金</div>`
+                : `
+                  <div class="pity-bar-mini">
+                    <div class="pity-bar-mini-fill" style="width:${pityPct}%; background:${pityColor};"></div>
+                  </div>
+                  <div class="pity-text">礪金水位 ${slot.pity}/90</div>
+                `
+            }
+            <div class="slot-actions">
+              <button class="slot-btn ${slot.locked ? 'locked' : ''}"
+                onclick="toggleLock(${idx})"
+                ${!slot.unlocked || slot.fixedGold ? 'disabled' : ''}>
+                ${slot.locked ? '已鎖' : '鎖定'}
+              </button>
+              <button class="slot-btn" onclick="cycleSquareColor(${idx})" title="手動切換方塊顏色">換色</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      document.getElementById('goldRecordCount').textContent = `${simState.goldRecords.length} 次`;
+      const goldRecEl = document.getElementById('goldRecordsList');
+      if (simState.goldRecords.length === 0) {
+        goldRecEl.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">尚無出金紀錄</div>';
+      } else {
+        goldRecEl.innerHTML = simState.goldRecords.map(rec => `
+          <div class="gold-record-item">
+            <div class="gold-record-head">
+              <span>第 ${rec.roll} 抽 (累計 ${rec.spent} 石)</span>
+            </div>
+            <div style="color:var(--text-main); margin-bottom:3px;">★ ${rec.hits}</div>
+            <div class="gold-record-others">其他孔：${rec.others}</div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('presetCount').textContent = `${simState.presets.length} / 10`;
+      const savedEl = document.getElementById('savedList');
+      if (simState.presets.length === 0) {
+        savedEl.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">暫無保存方案</div>';
+      } else {
+        savedEl.innerHTML = simState.presets.map((p, i) => `
+          <div class="saved-item">
+            <span>[${p.time}] ${p.golds} 金 · ${p.spent} 石</span>
+            <button class="pill-btn" onclick="loadPreset(${i})">載入</button>
+          </div>
+        `).join('');
+      }
+    }
+
+    // ==================== REAL-LIFE COUNTER & CALCULATOR ====================
+    function createInitialRlSlots() {
+      return [
+        { name: '第 1 孔 · 顏色一律', opened: true,  pity: 0, goldCount: 0, locked: false, fixedGold: false },
+        { name: '第 2 孔 · 結構一律', opened: false, pity: 0, goldCount: 0, locked: false, fixedGold: false },
+        { name: '第 3 孔 · 結構二律', opened: false, pity: 0, goldCount: 0, locked: false, fixedGold: false },
+        { name: '第 4 孔 · 結構三律', opened: false, pity: 0, goldCount: 0, locked: false, fixedGold: false },
+        { name: '第 5 孔 · 明光',     opened: false, pity: 0, goldCount: 0, locked: false, fixedGold: true  }
+      ];
+    }
+
+    let rlState = {
+      locks: 0,
+      totalRolls: 0,
+      totalStones: 0,
+      rollsSinceLastHole: 0,
+      slots: createInitialRlSlots(),
+      goldRecords: [],
+      history: []
+    };
+
+    function saveRlHistory() {
+      rlState.history.push(JSON.parse(JSON.stringify({
+        locks: rlState.locks,
+        totalRolls: rlState.totalRolls,
+        totalStones: rlState.totalStones,
+        rollsSinceLastHole: rlState.rollsSinceLastHole,
+        slots: rlState.slots,
+        goldRecords: rlState.goldRecords
+      })));
+      if (rlState.history.length > 50) rlState.history.shift();
+    }
+
+    function setRlLocks(n) {
+      rlState.locks = n;
+      renderRealLife();
+    }
+
+    function rlOpenNextHole() {
+      const nextIdx = rlState.slots.findIndex(s => !s.opened);
+      if (nextIdx === -1) return;
+      saveRlHistory();
+      rlState.slots[nextIdx].opened = true;
+      rlState.rollsSinceLastHole = 0;
+      renderRealLife();
+    }
+
+    function rlAddRoll(times) {
+      saveRlHistory();
+      const costPerRoll = LOCK_COSTS[rlState.locks] || 1;
+
+      // Process step-by-step so +10連點 accurately triggers 30-roll auto-open mid-batch
+      for (let i = 0; i < times; i++) {
+        rlState.totalRolls += 1;
+        rlState.totalStones += costPerRoll;
+
+        // Check 30-roll hard pity for opening next hole
+        const nextUnopenedIdx = rlState.slots.findIndex(s => !s.opened);
+        if (nextUnopenedIdx !== -1) {
+          rlState.rollsSinceLastHole += 1;
+          if (rlState.rollsSinceLastHole >= 30) {
+            rlState.slots[nextUnopenedIdx].opened = true;
+            rlState.rollsSinceLastHole = 0;
+          }
+        }
+
+        // Increment pity for all currently opened, unlocked, non-fixedGold slots
+        rlState.slots.forEach(s => {
+          if (s.opened && !s.locked && !s.fixedGold) {
+            s.pity = Math.min(90, s.pity + 1);
+          }
+        });
+      }
+      renderRealLife();
+    }
+
+    function rlToggleSlotLock(idx) {
+      const s = rlState.slots[idx];
+      if (!s.opened || s.fixedGold) return;
+      if (!s.locked && rlState.slots.filter(x => x.locked).length >= 3) {
+        alert('最多只能同時鎖定 3 個孔位！');
+        return;
+      }
+      saveRlHistory();
+      s.locked = !s.locked;
+      const lockedCount = rlState.slots.filter(x => x.locked).length;
+      rlState.locks = Math.min(3, lockedCount);
+      renderRealLife();
+    }
+
+    function rlResetSlotPity(idx) {
+      const s = rlState.slots[idx];
+      if (!s.opened || s.fixedGold) return;
+      saveRlHistory();
+
+      const hitPity = s.pity;
+      s.goldCount = (s.goldCount || 0) + 1;
+
+      const hitText = s.goldCount === 1
+        ? `第 ${idx + 1} 孔（水位第 ${hitPity} 抽出金）`
+        : `第 ${idx + 1} 孔（🔁 第 ${s.goldCount} 次出金 · 距上次 ${hitPity} 抽）`;
+
+      const otherHoles = rlState.slots
+        .map((slot, i) => ({ slot, i }))
+        .filter(item => item.i !== idx && !item.slot.fixedGold)
+        .map(item => {
+          if (!item.slot.opened) return `第${item.i + 1}孔:未開`;
+          const lockTag = item.slot.locked ? '🔒' : '';
+          return `第${item.i + 1}孔:${lockTag}(${item.slot.pity}/90)`;
+        });
+
+      rlState.goldRecords.unshift({
+        roll: rlState.totalRolls,
+        spent: rlState.totalStones,
+        hits: hitText,
+        others: otherHoles.join('｜')
+      });
+
+      s.pity = 0;
+      renderRealLife();
+    }
+
+    function rlAdjustPity(idx, delta) {
+      if (!rlState.slots[idx].opened || rlState.slots[idx].fixedGold) return;
+      saveRlHistory();
+      rlState.slots[idx].pity = Math.max(0, Math.min(90, rlState.slots[idx].pity + delta));
+      renderRealLife();
+    }
+
+    function rlUndo() {
+      if (rlState.history.length === 0) return;
+      const prev = rlState.history.pop();
+      rlState.locks = prev.locks;
+      rlState.totalRolls = prev.totalRolls;
+      rlState.totalStones = prev.totalStones;
+      rlState.rollsSinceLastHole = prev.rollsSinceLastHole || 0;
+      rlState.slots = prev.slots;
+      rlState.goldRecords = prev.goldRecords || [];
+      renderRealLife();
+    }
+
+    function resetRealLife() {
+      rlState.locks = 0;
+      rlState.totalRolls = 0;
+      rlState.totalStones = 0;
+      rlState.rollsSinceLastHole = 0;
+      rlState.goldRecords = [];
+      rlState.history = [];
+      rlState.slots = createInitialRlSlots();
+      renderRealLife();
+    }
+
+    function renderRealLife() {
+      const openedCount = rlState.slots.filter(s => s.opened).length;
+      const openBtn = document.getElementById('rlOpenNextBtn');
+      if (openedCount >= 5) {
+        openBtn.textContent = '✅ 五孔已全開 (5/5)';
+        openBtn.disabled = true;
+        document.getElementById('rlOpenedBadge').textContent = `已開 5/5 孔`;
+      } else {
+        openBtn.textContent = `✨ 提前開啟第 ${openedCount + 1} 孔 (保底 ${rlState.rollsSinceLastHole}/30)`;
+        openBtn.disabled = false;
+        document.getElementById('rlOpenedBadge').textContent = `已開 ${openedCount}/5 孔 · 距下孔保底 ${rlState.rollsSinceLastHole}/30`;
+      }
+      document.getElementById('rlOpenedCount').textContent = `${openedCount} / 5 孔`;
+
+      document.querySelectorAll('.rl-lock-btn').forEach(btn => {
+        const isCurrent = parseInt(btn.dataset.locks, 10) === rlState.locks;
+        btn.style.background = isCurrent ? 'var(--gold)' : 'rgba(255,255,255,0.06)';
+        btn.style.color = isCurrent ? '#111' : 'var(--text-main)';
+        btn.style.fontWeight = isCurrent ? '700' : '400';
+      });
+
+      const container = document.getElementById('rlSlotsContainer');
+      container.innerHTML = '';
+      rlState.slots.forEach((s, idx) => {
+        const row = document.createElement('div');
+        row.className = 'rl-slot-row' + (!s.opened ? ' unopened' : '');
+
+        if (!s.opened) {
+          row.style.borderColor = 'var(--border-default)';
+          row.innerHTML = `
+            <div class="rl-slot-top" style="margin-bottom:0;">
+              <div>
+                <strong>${s.name}</strong>
+                <span style="font-size:12px; color:var(--text-muted); margin-left:8px;">尚未開啟（不累計水位）</span>
+              </div>
+              <span style="font-size:11px; color:var(--text-muted);">未開啟</span>
+            </div>
+          `;
+        } else if (s.fixedGold) {
+          row.style.borderColor = 'var(--gold)';
+          row.style.background = 'linear-gradient(90deg, var(--gold-bg), var(--bg-card))';
+          row.innerHTML = `
+            <div class="rl-slot-top" style="margin-bottom:0;">
+              <div>
+                <strong style="color:var(--gold);">${s.name}</strong>
+                <span style="font-size:12px; color:var(--gold); margin-left:8px;">已開啟 · 明光固定礪金</span>
+              </div>
+              <span style="font-size:11px; font-weight:700; color:var(--gold);">固定礪金</span>
+            </div>
+          `;
+        } else {
+          const pct = Math.min(100, Math.round((s.pity / 90) * 100));
+          const stageCls = getProgressStageClass(pct);
+          const borderColor = s.locked ? 'var(--gold)' : pct >= 75 ? 'var(--gold)' : pct >= 40 ? 'var(--purple)' : 'var(--border-default)';
+          row.style.borderColor = borderColor;
+          row.innerHTML = `
+            <div class="rl-slot-top">
+              <div>
+                <strong>${s.name}</strong>
+                <span style="font-size:12px; color:var(--text-muted); margin-left:6px;">水位 ${s.pity} / 90</span>
+              </div>
+              <div class="rl-controls">
+                <button class="pill-btn" onclick="rlAdjustPity(${idx}, -1)">-1</button>
+                <button class="pill-btn" onclick="rlAdjustPity(${idx}, 1)">+1</button>
+                <button class="pill-btn" style="${s.locked ? 'background:var(--gold);color:#111;font-weight:700;' : ''}" onclick="rlToggleSlotLock(${idx})">
+                  ${s.locked ? '已鎖定' : '鎖定'}
+                </button>
+                <button class="pill-btn gold-hit" onclick="rlResetSlotPity(${idx})">出金歸零</button>
+              </div>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill ${stageCls}" style="width:${pct}%;"></div>
+            </div>
+          `;
+        }
+        container.appendChild(row);
+      });
+
+      const unitPrice = parseFloat(document.getElementById('rlUnitPrice').value) || 0;
+      const cur = document.getElementById('rlCurrency').value || 'HK$';
+      const stepCost = LOCK_COSTS[rlState.locks] || 1;
+
+      const activeSlots = rlState.slots.filter(s => s.opened && !s.locked && !s.fixedGold);
+      const maxPity = activeSlots.length > 0 ? Math.max(...activeSlots.map(s => s.pity)) : 0;
+      const rollsToHardPity = activeSlots.length > 0 ? Math.max(0, 90 - maxPity) : 0;
+      const rollsToAvgPity = activeSlots.length > 0 ? Math.max(0, 33 - maxPity) : 0;
+
+      document.getElementById('rlTotalRolls').textContent = `${rlState.totalRolls} 次`;
+      document.getElementById('rlTotalStones').textContent = `${rlState.totalStones} 石`;
+      document.getElementById('rlTotalMoney').textContent = `${cur}${(rlState.totalStones * unitPrice).toLocaleString()}`;
+      document.getElementById('rlCurrentStepCost').textContent = `${stepCost} 石 (${cur}${(stepCost * unitPrice).toLocaleString()})`;
+      document.getElementById('rlClosestPity').textContent = `${rollsToHardPity} 次`;
+      document.getElementById('rlWorstCaseCost').textContent = `${rollsToHardPity * stepCost} 石 (${cur}${(rollsToHardPity * stepCost * unitPrice).toLocaleString()})`;
+      document.getElementById('rlAvgCaseCost').textContent = `${rollsToAvgPity * stepCost} 石 (${cur}${(rollsToAvgPity * stepCost * unitPrice).toLocaleString()})`;
+
+      document.getElementById('rlGoldRecordCount').textContent = `${rlState.goldRecords.length} 次`;
+      const rlGoldEl = document.getElementById('rlGoldRecordsList');
+      if (rlState.goldRecords.length === 0) {
+        rlGoldEl.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">尚無出金紀錄（點擊孔位「出金歸零」時自動記錄）</div>';
+      } else {
+        rlGoldEl.innerHTML = rlState.goldRecords.map(rec => `
+          <div class="gold-record-item">
+            <div class="gold-record-head">
+              <span>第 ${rec.roll} 抽 (累計 ${rec.spent} 石)</span>
+            </div>
+            <div style="color:var(--text-main); margin-bottom:3px;">★ ${rec.hits}</div>
+            <div class="gold-record-others">其他孔：${rec.others}</div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function updateCritModeUI() {
+      const enabled = document.getElementById('critEnabled').checked;
+      const box = document.getElementById('critInputs');
+      const hint = document.getElementById('critModeHint');
+      if (enabled) {
+        box.classList.remove('disabled');
+        hint.textContent = '目前：已開啟（僅影響開孔進度跳格／提前開孔，絕不影響出金機率與 90 抽保底）';
+      } else {
+        box.classList.add('disabled');
+        hint.textContent = '目前：關閉（每次固定 +1 進度，每 30 抽開一孔；暴擊僅影響開孔，不影響出金機率與 90 抽保底）';
+      }
+    }
+
+    // Init
+    renderWeaponSetInfo();
+    updatePityModeUI();
+    updateCritModeUI();
+    resetSimulator();
+    renderRealLife();
+  </script>
+</body>
+</html>
