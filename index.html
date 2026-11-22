@@ -2,10 +2,14 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>燕雲武器重鑄模擬器 v19 & 實況計數器 by 娜拉比</title>
-  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=LJ-hlC7fjwsPs5QQRW-OBY7zUEiXZZSQumqaGDi0JnHUc735R_beGoQb463zNH7TxgcI1zZ-kOPVvBFL4HYH_lSruLWNT_H8_H1oGqy0zwxTktjeWxb6242BaBn7ND-FaCKjPq2HJ37aVKU7vpyXv9i7m1-q3qMj-seyQPDgbFZtkacOt_DJl5kqPexnmakDqmAZZ6JdSeZZPQaTd3U8OkrdXCC9ERiRDCxBB5I5SkIpLqPAhCn9k8K2kkMakN6sw2lBQBALKARx-hea_-stsiflIBY7eIFxys1KRoSbxks3ujxeJAfDslIA2261P5i0GShA5JwwwuJ6bJYM8_O2ObrMzqDptjjSyCuWgi3jd50" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pCbE1URTJOREZsWWpnNVpHSXlNV0UzTURBd05qWXdZMkZpTWpnNVpqRmtaakEzWmpVMlpUWTBZekl5TUdRME16SVNDeElIRUtqU3M2VFJDUmdCJmZpbGVuYW1lPXlhbnl1bl9yZWZvcmdlX3NpbXVsYXRvci12MTkuaHRtbCZvcGk9MTAzMTM1MDUw"/><style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="format-detection" content="telephone=no" />
+  <title>燕雲武器重鑄模擬器 v37 (iOS / PDFgear 通用版) by 娜拉比</title>
+  <style>
     :root {
+      color-scheme: dark;
       --bg-main: #0e1014;
       --bg-panel: #161920;
       --bg-card: #1d212b;
@@ -252,6 +256,70 @@
 
     .gold-banner.show {
       display: block;
+    }
+
+    /* Real-Time 5-Gold Strategy Advisor */
+    .strategy-box {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(56, 189, 248, 0.08));
+      border: 1px solid rgba(34, 197, 94, 0.45);
+      border-radius: 10px;
+      padding: 11px 14px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+
+    .strategy-box.warn {
+      background: linear-gradient(135deg, rgba(245, 185, 66, 0.14), rgba(239, 68, 68, 0.08));
+      border-color: rgba(245, 185, 66, 0.65);
+    }
+
+    .strategy-box.done {
+      background: linear-gradient(135deg, rgba(245, 185, 66, 0.22), rgba(34, 197, 94, 0.14));
+      border-color: var(--gold);
+    }
+
+    .strategy-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      font-weight: 700;
+      font-size: 13px;
+      color: #4ade80;
+    }
+
+    .strategy-box.warn .strategy-head {
+      color: var(--gold);
+    }
+
+    .strategy-box.done .strategy-head {
+      color: var(--gold);
+    }
+
+    .strategy-tag {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .strategy-prob-strip {
+      margin-top: 7px;
+      padding-top: 7px;
+      border-top: 1px dashed rgba(255,255,255,0.14);
+      font-size: 11.5px;
+      color: #cbd5e1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      align-items: center;
+    }
+
+    .strategy-prob-strip strong {
+      color: var(--gold);
     }
 
     /* Progress Bar with Dynamic Color */
@@ -526,6 +594,77 @@
       box-shadow: 0 0 12px rgba(245, 185, 66, 0.25);
     }
 
+    .btn-redo-active {
+      border-color: #fde68a !important;
+      color: #111 !important;
+      background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+      font-weight: 800;
+      box-shadow: 0 0 16px rgba(245, 185, 66, 0.55);
+      animation: redoPulse 1.6s infinite;
+    }
+
+    @keyframes redoPulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(245, 185, 66, 0.45); }
+      50% { box-shadow: 0 0 20px rgba(251, 191, 36, 0.85); }
+    }
+
+    .penalty-banner {
+      display: none;
+      background: rgba(239, 68, 68, 0.16);
+      border: 1px solid var(--danger);
+      color: #fca5a5;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      font-size: 12.5px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .penalty-banner.show {
+      display: block;
+    }
+
+    .strategy-box.danger {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.16), rgba(245, 185, 66, 0.08));
+      border-color: rgba(239, 68, 68, 0.7);
+    }
+
+    .strategy-box.danger .strategy-head {
+      color: #fca5a5;
+    }
+
+    .dp-compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 7px;
+      margin-top: 8px;
+    }
+
+    .dp-opt-card {
+      background: rgba(13, 15, 20, 0.65);
+      border: 1px solid var(--border-default);
+      border-radius: 7px;
+      padding: 7px 9px;
+      font-size: 11.5px;
+      line-height: 1.45;
+    }
+
+    .dp-opt-card.best {
+      border-color: rgba(34, 197, 94, 0.7);
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .dp-opt-title {
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .dp-opt-card.best .dp-opt-title {
+      color: #4ade80;
+    }
+
     .btn-danger {
       border-color: rgba(239, 68, 68, 0.4);
       color: #fca5a5;
@@ -616,11 +755,12 @@
     .log-entry.cyan { color: var(--cyan); }
 
     .saved-list {
-      max-height: 150px;
+      max-height: 240px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
     .saved-item {
@@ -630,8 +770,65 @@
       padding: 8px 10px;
       font-size: 12px;
       display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .saved-item.manual-plan {
+      border-color: rgba(56, 189, 248, 0.55);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08), var(--bg-card));
+    }
+
+    .saved-item-top {
+      display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 6px;
+    }
+
+    .plan-squares {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .plan-sq {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 800;
+      border: 2px solid var(--border-default);
+    }
+
+    .plan-sq.sq-gold {
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      border-color: #fde68a;
+      color: #111;
+      box-shadow: 0 0 8px rgba(245, 185, 66, 0.55);
+    }
+
+    .plan-sq.sq-purple {
+      background: linear-gradient(135deg, #a855f7, #7e22ce);
+      border-color: #d8b4fe;
+      color: #fff;
+      box-shadow: 0 0 6px rgba(168, 85, 247, 0.45);
+    }
+
+    .plan-sq.sq-cyan {
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      border-color: #bae6fd;
+      color: #082f49;
+    }
+
+    .plan-sq.sq-unopened {
+      background: #0d0f14;
+      border-style: dashed;
+      border-color: #3a4254;
+      color: #525d73;
     }
 
     /* Real-Life Counter Layout */
@@ -729,6 +926,233 @@
       border-radius: 6px;
       margin-top: 10px;
     }
+
+    /* ==================== iOS / TOUCH & MOBILE POLISH ==================== */
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      padding-top: max(16px, env(safe-area-inset-top));
+      padding-right: max(16px, env(safe-area-inset-right));
+      padding-bottom: max(24px, env(safe-area-inset-bottom));
+      padding-left: max(16px, env(safe-area-inset-left));
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button, .btn, .slot-btn, .pill-btn, .tab-btn, select, input {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .log-box, .gold-records-list, .saved-list {
+      -webkit-overflow-scrolling: touch;
+    }
+
+    @media (max-width: 768px) {
+      input[type="number"],
+      input[type="text"],
+      select {
+        font-size: 16px !important; /* Prevents iOS Safari/WKWebView auto-zoom on focus */
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding-top: max(12px, env(safe-area-inset-top));
+        padding-right: max(10px, env(safe-area-inset-right));
+        padding-bottom: max(24px, env(safe-area-inset-bottom));
+        padding-left: max(10px, env(safe-area-inset-left));
+      }
+
+      header {
+        gap: 12px;
+        margin-bottom: 14px;
+        padding-bottom: 14px;
+      }
+
+      .brand h1 {
+        font-size: 17px;
+      }
+
+      .mode-tabs {
+        width: 100%;
+      }
+
+      .tab-btn {
+        flex: 1;
+        padding: 10px 8px;
+        font-size: 13px;
+        text-align: center;
+      }
+
+      .panel {
+        padding: 14px 12px;
+      }
+
+      .slots-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .slots-grid .slot-square:last-child {
+        grid-column: 1 / -1;
+        min-height: 110px;
+      }
+
+      .slot-square {
+        min-height: 165px;
+        padding: 10px 9px;
+      }
+
+      .slot-btn {
+        min-height: 34px;
+        font-size: 12px;
+      }
+
+      .action-row {
+        gap: 8px;
+      }
+
+      .action-row .btn {
+        min-height: 44px;
+        padding: 10px 12px;
+        font-size: 14px;
+        flex: 1 1 calc(50% - 8px);
+      }
+
+      .action-row .btn-primary {
+        flex: 1 1 100%;
+        min-height: 50px;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .stat-val {
+        font-size: 19px;
+      }
+
+      .pill-btn {
+        min-height: 36px;
+        padding: 6px 10px;
+      }
+    }
+
+    /* ==================== CUSTOM IN-PAGE MODAL (Works on iOS & PDFgear) ==================== */
+    .ui-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6, 8, 12, 0.78);
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      padding-top: max(18px, env(safe-area-inset-top));
+      padding-bottom: max(18px, env(safe-area-inset-bottom));
+      z-index: 9999;
+    }
+
+    .ui-modal-overlay.open {
+      display: flex;
+    }
+
+    .ui-modal-card {
+      width: 100%;
+      max-width: 440px;
+      max-height: 82vh;
+      background: var(--bg-panel);
+      border: 1.5px solid var(--gold);
+      border-radius: 14px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 24px rgba(245, 185, 66, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      animation: modalPop 0.16s ease-out;
+    }
+
+    .ui-modal-card.danger {
+      border-color: var(--danger);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 24px rgba(239, 68, 68, 0.28);
+    }
+
+    @keyframes modalPop {
+      from { opacity: 0; transform: scale(0.95) translateY(6px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .ui-modal-header {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-default);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245, 185, 66, 0.08);
+    }
+
+    .ui-modal-card.danger .ui-modal-header {
+      color: #fca5a5;
+      background: rgba(239, 68, 68, 0.14);
+    }
+
+    .ui-modal-body {
+      padding: 16px;
+      font-size: 14px;
+      color: var(--text-main);
+      line-height: 1.65;
+      white-space: pre-line;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .ui-modal-footer {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border-default);
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      background: rgba(13, 15, 20, 0.5);
+    }
+
+    .ui-modal-btn {
+      min-height: 44px;
+      min-width: 96px;
+      padding: 10px 16px;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      border: 1px solid var(--border-default);
+      background: var(--bg-card);
+      color: var(--text-main);
+      flex: 1;
+      transition: filter 0.15s ease;
+    }
+
+    .ui-modal-btn.confirm {
+      background: linear-gradient(135deg, #f5b942, #d97706);
+      color: #111;
+      border: none;
+    }
+
+    .ui-modal-card.danger .ui-modal-btn.confirm {
+      background: linear-gradient(135deg, #ef4444, #b91c1c);
+      color: #fff;
+    }
+
+    .ui-modal-btn:active {
+      filter: brightness(0.92);
+    }
+
   </style>
 </head>
 <body>
@@ -737,7 +1161,7 @@
       <div class="brand">
         <div class="brand-icon">落櫻樓</div>
         <div>
-          <h1>燕雲武器重鑄模擬器 v19 & 實況計數器 by 娜拉比</h1>
+          <h1>燕雲武器重鑄模擬器 v37 & 實況計數器 by 娜拉比</h1>
           <p id="headerModeDesc">港台服繁中官方譯名＋陸服新武器 · 律格變幻完整細分機率 · 90 抽保底 · 逐孔實況計算</p>
         </div>
       </div>
@@ -775,56 +1199,29 @@
 
           <div id="weaponSetInfo" class="set-info-box"></div>
 
-          <div class="form-group">
-            <label>太一玄石初始數量</label>
-            <input type="number" id="stoneBudget" value="300" min="1" max="99999" onchange="syncBudget()" />
-          </div>
-
-          <div class="stat-box" style="margin-bottom: 12px;">
-            <div class="stat-val" id="remainingStones">300</div>
-            <div class="stat-label">剩餘太一玄石</div>
-          </div>
-
-          <!-- Soft Pity Toggle -->
+          <!-- Stone Unit Price in Simulator (default 18.76 HKD) -->
           <div class="setting-box">
-            <div class="toggle-row">
-              <span>🛡️ 啟用軟保底遞增</span>
-              <input type="checkbox" id="softPityEnabled" onchange="updatePityModeUI()" style="width:16px; height:16px; accent-color:var(--gold);" />
+            <div class="toggle-row" style="margin-bottom:6px;">
+              <span>💰 單顆玄石折合 (HKD)</span>
+              <input type="number" id="simUnitPrice" value="18.76" min="0" step="0.01" oninput="syncUnitPriceFromSim()" style="width:84px; padding:4px 8px; text-align:right;" />
             </div>
-            <div id="softPityInputs" class="two-col-inputs disabled">
-              <div>
-                <label style="font-size:11px; color:var(--text-muted);">起跳抽數</label>
-                <input type="number" id="softPityStart" value="35" min="1" max="89" step="1" onchange="updatePityModeUI()" />
-              </div>
-              <div>
-                <label style="font-size:11px; color:var(--text-muted);">每抽遞增 (%)</label>
-                <input type="number" id="softPityRamp" value="1.6" min="0.1" max="20" step="0.1" onchange="updatePityModeUI()" />
-              </div>
-            </div>
-            <div id="pityModeHint" style="font-size:11px; color:var(--text-muted); margin-top:6px;">
-              目前：純官方 3% 機率，第 90 抽硬保底必出礪金
+            <div style="font-size:11px; color:var(--text-muted);">
+              已內置最佳化機率參數，直接點擊右側開始模擬重鑄
             </div>
           </div>
 
-          <!-- Progress Crit Settings -->
-          <div class="setting-box">
-            <div class="toggle-row">
-              <span>⚡ 啟用開孔進度暴擊</span>
-              <input type="checkbox" id="critEnabled" onchange="updateCritModeUI()" style="width:16px; height:16px; accent-color:var(--gold);" />
-            </div>
-            <div id="critInputs" class="two-col-inputs disabled">
-              <div>
-                <label style="font-size:11px; color:var(--text-muted);">跳格暴擊率 (%)</label>
-                <input type="number" id="smallCritRate" value="15" min="0" max="100" step="1" title="觸發時進度一次跳 +2 至 +5 格" />
-              </div>
-              <div>
-                <label style="font-size:11px; color:var(--text-muted);">直接開孔率 (%)</label>
-                <input type="number" id="bigCritRate" value="2" min="0" max="100" step="0.5" title="觸發時直接跳滿並開啟下一個孔" />
-              </div>
-            </div>
-            <div id="critModeHint" style="font-size:11px; color:var(--text-muted); margin-top:6px;">
-              目前：關閉（每次固定 +1 進度，每 30 抽開一孔；暴擊僅影響開孔，不影響出金機率與 90 抽保底）
-            </div>
+          <!-- Hidden Probability & Crit Parameters (User's exact calibrated defaults) -->
+          <div style="display:none;" aria-hidden="true">
+            <input type="number" id="baseGoldRate" value="3.0" />
+            <input type="checkbox" id="earlyProtectEnabled" checked />
+            <input type="number" id="earlyProtectRolls" value="15" />
+            <input type="number" id="earlyProtectRate" value="0.0" />
+            <input type="checkbox" id="softPityEnabled" checked />
+            <input type="number" id="softPityStart" value="35" />
+            <input type="number" id="softPityRamp" value="1.6" />
+            <input type="checkbox" id="critEnabled" checked />
+            <input type="number" id="smallCritRate" value="6" />
+            <input type="number" id="bigCritRate" value="0.5" />
           </div>
         </div>
 
@@ -832,11 +1229,8 @@
         <div class="panel">
           <div class="panel-title">
             <span id="weaponTitle">藏音‧龍躍霄漢 (劍)</span>
-            <span id="statusSummary" style="font-size:12px; color:var(--text-muted);">1/5 孔 · 0 金 · 0 鎖</span>
+            <span id="statusSummary" style="font-size:12px; color:var(--text-muted);">0/5 孔 · 0 金 · 0 鎖</span>
           </div>
-
-          <!-- Gold Pause / Alert Banner -->
-          <div id="goldBanner" class="gold-banner"></div>
 
           <!-- Unlock Progress Bar -->
           <div class="progress-wrapper">
@@ -859,9 +1253,25 @@
           <div class="action-row">
             <button class="btn btn-primary" id="reforgeBtn" onclick="doReforge()">重鑄一次 (1 石)</button>
             <button class="btn" id="undoBtn" onclick="undoReforge()" disabled>找回上一步</button>
+            <button class="btn" id="redoBtn" onclick="redoReforge()" disabled>恢復下一步</button>
             <button class="btn" id="autoUnlockBtn" onclick="autoUnlockAll()">自動開滿五孔</button>
             <button class="btn" onclick="savePreset()">保存方案</button>
             <button class="btn btn-danger" onclick="resetSimulator()">重開一把</button>
+          </div>
+
+          <!-- Anti-Padding Confiscation Penalty Banner -->
+          <div id="penaltyBanner" class="penalty-banner"></div>
+
+          <!-- Gold Pause / Alert Banner (placed below buttons so slots & lock buttons never shift) -->
+          <div id="goldBanner" class="gold-banner"></div>
+
+          <!-- Real-Time 5-Gold Lowest-Budget Strategy Advisor -->
+          <div id="simStrategyBox" class="strategy-box">
+            <div class="strategy-head">
+              <span id="simStrategyTitle">🧭 實時省錢追五金建議</span>
+              <span id="simStrategyTag" class="strategy-tag">階段 1：零鎖開孔</span>
+            </div>
+            <div id="simStrategyBody">點擊「重鑄一次」開始。前期保持 0 鎖 (1 石/抽) 開滿五孔，並貫徹「找孔找平」原則，避免高鎖費階段出現單孔低水位陷阱。</div>
           </div>
 
           <!-- Bottom Stats -->
@@ -872,10 +1282,10 @@
             </div>
             <div class="stat-box">
               <div class="stat-val" id="statSpent">0</div>
-              <div class="stat-label">累計消耗</div>
+              <div class="stat-label" id="statSpentMoney">累計消耗 (HK$0.00)</div>
             </div>
             <div class="stat-box">
-              <div class="stat-val" id="statUnlocked">1/5</div>
+              <div class="stat-val" id="statUnlocked">0/5</div>
               <div class="stat-label">已開孔數</div>
             </div>
             <div class="stat-box">
@@ -899,11 +1309,19 @@
           <div class="log-box" id="simLog"></div>
 
           <div class="panel-title" style="margin-top: 6px;">
-            <span>已保存方案</span>
-            <span style="font-size:11px; color:var(--text-muted);" id="presetCount">0 / 10</span>
+            <span>手動保存方案 (覆蓋制)</span>
+            <span style="font-size:11px; color:var(--cyan);" id="manualPresetStatus">0 / 1</span>
           </div>
-          <div class="saved-list" id="savedList">
-            <div style="font-size:12px; color:var(--text-muted);">暫無保存方案</div>
+          <div id="manualSavedBox" style="margin-bottom: 12px;">
+            <div style="font-size:12px; color:var(--text-muted);">尚無手動方案（點擊「保存方案」存入，再按將覆蓋）</div>
+          </div>
+
+          <div class="panel-title" style="margin-top: 4px;">
+            <span>出金自動暫存方案</span>
+            <span style="font-size:11px; color:var(--gold);" id="autoPresetCount">0 / 5</span>
+          </div>
+          <div class="saved-list" id="autoSavedList">
+            <div style="font-size:12px; color:var(--text-muted);">尚無出金自動暫存方案</div>
           </div>
         </div>
       </div>
@@ -937,6 +1355,15 @@
             <button class="btn btn-danger" onclick="rlUndo()">撤銷上次</button>
           </div>
 
+          <!-- Real-Time 5-Gold Strategy Advisor for Real-Life Counter -->
+          <div id="rlStrategyBox" class="strategy-box" style="margin-top: 10px;">
+            <div class="strategy-head">
+              <span id="rlStrategyTitle">🧭 實況省錢追五金建議</span>
+              <span id="rlStrategyTag" class="strategy-tag">階段 1：零鎖開孔</span>
+            </div>
+            <div id="rlStrategyBody">目前尚未開滿五孔，建議保持 0 鎖 (1 石/抽) 開孔；開滿五孔後嚴禁解鎖墊孔還原（會沒收軟保底額外出金率），請依實時「找孔找平」期望成本決策。</div>
+          </div>
+
           <!-- Real-life 5 slots sequential pity trackers -->
           <div style="margin-top: 14px;">
             <div class="panel-title" style="margin-bottom: 10px;">
@@ -953,7 +1380,7 @@
 
           <div class="form-group">
             <label>單顆太一玄石折合價格 (例如 HKD / RMB / TWD)</label>
-            <input type="number" id="rlUnitPrice" value="18" min="0" step="0.5" oninput="renderRealLife()" />
+            <input type="number" id="rlUnitPrice" value="18.76" min="0" step="0.01" oninput="syncUnitPriceFromRl()" />
           </div>
 
           <div class="form-group">
@@ -980,7 +1407,7 @@
             </tr>
             <tr>
               <td>當前單次重鑄成本</td>
-              <td id="rlCurrentStepCost">1 石 (HK$18)</td>
+              <td id="rlCurrentStepCost">1 石 (HK$18.76)</td>
             </tr>
             <tr>
               <td>已開孔最高水位距離 90 硬保底</td>
@@ -988,11 +1415,11 @@
             </tr>
             <tr>
               <td>按當前鎖孔追到下一次硬保底預估</td>
-              <td id="rlWorstCaseCost">90 石 (HK$1,620)</td>
+              <td id="rlWorstCaseCost">90 石 (HK$1,688.40)</td>
             </tr>
             <tr>
               <td>按期望均值 (~33抽) 預估剩餘</td>
-              <td id="rlAvgCaseCost">33 石 (HK$594)</td>
+              <td id="rlAvgCaseCost">33 石 (HK$619.08)</td>
             </tr>
           </table>
 
@@ -1015,7 +1442,89 @@
     </section>
   </div>
 
+
+  <!-- ==================== CUSTOM IN-PAGE DIALOG MODAL (iOS / PDFgear Compatible) ==================== -->
+  <div id="uiModalOverlay" class="ui-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="uiModalTitle">
+    <div id="uiModalCard" class="ui-modal-card">
+      <div id="uiModalTitle" class="ui-modal-header">提示</div>
+      <div id="uiModalBody" class="ui-modal-body"></div>
+      <div class="ui-modal-footer">
+        <button type="button" id="uiModalCancelBtn" class="ui-modal-btn cancel">取消</button>
+        <button type="button" id="uiModalOkBtn" class="ui-modal-btn confirm">確定</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+
+    // ==================== CUSTOM IN-PAGE DIALOG ENGINE (iOS / PDFgear Safe) ====================
+    let uiModalActive = false;
+    let uiModalResolver = null;
+
+    function openUiModal({ title = '系統提示', message = '', showCancel = false, okText = '確定', cancelText = '取消', variant = 'default' }) {
+      return new Promise((resolve) => {
+        const overlay = document.getElementById('uiModalOverlay');
+        const card = document.getElementById('uiModalCard');
+        const titleEl = document.getElementById('uiModalTitle');
+        const bodyEl = document.getElementById('uiModalBody');
+        const okBtn = document.getElementById('uiModalOkBtn');
+        const cancelBtn = document.getElementById('uiModalCancelBtn');
+
+        // If another modal somehow existed, resolve it cleanly as false first
+        if (uiModalResolver) {
+          const prev = uiModalResolver;
+          uiModalResolver = null;
+          prev(false);
+        }
+
+        uiModalActive = true;
+        uiModalResolver = resolve;
+
+        card.className = 'ui-modal-card' + (variant === 'danger' ? ' danger' : '');
+        titleEl.textContent = title;
+        bodyEl.textContent = message;
+        okBtn.textContent = okText;
+        cancelBtn.textContent = cancelText;
+        cancelBtn.style.display = showCancel ? '' : 'none';
+
+        overlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+
+        const cleanup = (result) => {
+          overlay.classList.remove('open');
+          document.body.style.overflow = '';
+          okBtn.onclick = null;
+          cancelBtn.onclick = null;
+          overlay.onclick = null;
+          document.removeEventListener('keydown', onKey);
+          uiModalActive = false;
+          const res = uiModalResolver;
+          uiModalResolver = null;
+          if (res) res(result);
+        };
+
+        const onKey = (e) => {
+          if (e.key === 'Escape') cleanup(false);
+          if (e.key === 'Enter') cleanup(true);
+        };
+
+        okBtn.onclick = () => cleanup(true);
+        cancelBtn.onclick = () => cleanup(false);
+        overlay.onclick = (e) => {
+          if (e.target === overlay && !showCancel) cleanup(true);
+        };
+        document.addEventListener('keydown', onKey);
+      });
+    }
+
+    function uiAlert(message, title = '提示', variant = 'default') {
+      return openUiModal({ title, message, showCancel: false, okText: '知道了', variant });
+    }
+
+    function uiConfirm(message, title = '請確認', okText = '確定', cancelText = '取消', variant = 'default') {
+      return openUiModal({ title, message, showCancel: true, okText, cancelText, variant });
+    }
+
     // ==================== TAB SWITCHING ====================
     function switchTab(tab, btn) {
       document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -1147,9 +1656,12 @@
       slots: [],
       history: [],
       redoHistory: [],
-      presets: [],
+      autoPresets: [],
+      manualPreset: null,
       goldRecords: [],
       autoPausedOnGold: false,
+      softPityConfiscated: false,
+      fiveHoleOpenedAtRoll: null,
       bannerMsg: '',
       lastCritText: ''
     };
@@ -1189,7 +1701,9 @@
         slots: simState.slots,
         goldRecords: simState.goldRecords,
         lastCritText: simState.lastCritText,
-        bannerMsg: simState.bannerMsg
+        bannerMsg: simState.bannerMsg,
+        softPityConfiscated: simState.softPityConfiscated,
+        fiveHoleOpenedAtRoll: simState.fiveHoleOpenedAtRoll
       }));
     }
 
@@ -1201,33 +1715,99 @@
       simState.slots = snap.slots;
       simState.goldRecords = snap.goldRecords || [];
       simState.lastCritText = snap.lastCritText || '';
+      simState.softPityConfiscated = !!snap.softPityConfiscated;
+      simState.fiveHoleOpenedAtRoll = snap.fiveHoleOpenedAtRoll !== undefined ? snap.fiveHoleOpenedAtRoll : null;
       simState.autoPausedOnGold = false;
 
       const unlockedGolds = getUnlockedNonLockedGoldSlots();
+      const unlockedNow = simState.slots.filter(s => s.unlocked).length;
       if (unlockedGolds.length > 0) {
         const names = unlockedGolds.map(s => `第 ${s.id + 1} 孔(${s.trait})`).join('、');
-        simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}！下次重鑄前系統會先請你確認，建議先鎖定。`;
+        if (unlockedNow < 5) {
+          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}（已自動暫存）。尚未開滿五孔，建議保持 0 鎖用 1 石開完五孔後再還原。`;
+        } else {
+          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}！請依下方「找孔找平」建議決定鎖定或放孔重平。`;
+        }
       } else {
         simState.bannerMsg = snap.bannerMsg || '';
       }
     }
 
-    function updatePityModeUI() {
-      const enabled = document.getElementById('softPityEnabled').checked;
-      const start = parseInt(document.getElementById('softPityStart').value, 10) || 35;
-      const ramp = parseFloat(document.getElementById('softPityRamp').value) || 1.6;
-      const box = document.getElementById('softPityInputs');
-      const hint = document.getElementById('pityModeHint');
-      const headerDesc = document.getElementById('headerModeDesc');
+    function getBaseGoldRate() {
+      const el = document.getElementById('baseGoldRate');
+      const val = el ? parseFloat(el.value) : 2.2;
+      return isNaN(val) ? 0.022 : Math.max(0.001, Math.min(1.0, val / 100));
+    }
 
-      if (enabled) {
-        box.classList.remove('disabled');
-        hint.textContent = `目前：第 ${start} 抽後每抽 +${ramp}% 軟保底遞增，第 90 抽必出`;
-        headerDesc.textContent = `港台服繁中官方譯名＋陸服新武器 · ${start} 抽軟保底遞增 · 90 抽硬保底`;
-      } else {
-        box.classList.add('disabled');
-        hint.textContent = '目前：純官方 3% 機率，第 90 抽硬保底必出礪金';
-        headerDesc.textContent = '港台服繁中官方譯名＋陸服新武器 · 律格變幻完整細分機率 · 90 抽保底';
+    function getGoldChanceByRoll(nextPity, confiscated = false) {
+      const baseRate = getBaseGoldRate();
+      const earlyEnabled = document.getElementById('earlyProtectEnabled') && document.getElementById('earlyProtectEnabled').checked;
+      const earlyRolls = parseInt(document.getElementById('earlyProtectRolls')?.value, 10) || 15;
+      const earlyRateVal = parseFloat(document.getElementById('earlyProtectRate')?.value);
+      const earlyRate = isNaN(earlyRateVal) ? 0.0 : Math.max(0, Math.min(1.0, earlyRateVal / 100));
+
+      const softEnabled = document.getElementById('softPityEnabled').checked;
+      const softStart = parseInt(document.getElementById('softPityStart').value, 10) || 35;
+      const softRamp = (parseFloat(document.getElementById('softPityRamp').value) || 1.6) / 100;
+
+      if (nextPity >= 90) return 1.0;
+      if (earlyEnabled && nextPity <= earlyRolls) {
+        return earlyRate;
+      }
+      if (!confiscated && softEnabled && nextPity > softStart) {
+        return Math.min(0.95, baseRate + (nextPity - softStart) * softRamp);
+      }
+      return baseRate;
+    }
+
+    function getNextGoldChanceForSlot(slot) {
+      if (slot.fixedGold) return 1.0;
+      return getGoldChanceByRoll(slot.pity + 1, simState.softPityConfiscated);
+    }
+
+    function updateEarlyProtectUI() {
+      if (simState.slots && simState.slots.length > 0) {
+        renderSim();
+      }
+    }
+
+    function getSimUnitPrice() {
+      const el = document.getElementById('simUnitPrice');
+      const v = el ? parseFloat(el.value) : 18.76;
+      return isNaN(v) ? 18.76 : Math.max(0, v);
+    }
+
+    function formatHKD(amount) {
+      return 'HK$' + amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function syncUnitPriceFromSim() {
+      const p = getSimUnitPrice();
+      const rlEl = document.getElementById('rlUnitPrice');
+      if (rlEl) rlEl.value = p;
+      renderSim();
+      renderRealLife();
+    }
+
+    function syncUnitPriceFromRl() {
+      const rlEl = document.getElementById('rlUnitPrice');
+      const v = rlEl ? parseFloat(rlEl.value) : 18.76;
+      const p = isNaN(v) ? 0 : Math.max(0, v);
+      const simEl = document.getElementById('simUnitPrice');
+      if (simEl) simEl.value = p;
+      renderSim();
+      renderRealLife();
+    }
+
+    function updatePityModeUI() {
+      const basePct = (getBaseGoldRate() * 100).toFixed(1);
+      const start = parseInt(document.getElementById('softPityStart').value, 10) || 35;
+      const headerDesc = document.getElementById('headerModeDesc');
+      if (headerDesc) {
+        headerDesc.textContent = `港台服繁中官方譯名＋陸服新武器 · 基礎 ${basePct}% · ${start} 抽軟保底遞增 · 90 抽硬保底`;
+      }
+      if (simState.slots && simState.slots.length > 0) {
+        renderSim();
       }
     }
 
@@ -1273,17 +1853,7 @@
       }
 
       const nextPity = slot.pity + 1;
-      let goldChance = 0.03;
-
-      const softEnabled = document.getElementById('softPityEnabled').checked;
-      const softStart = parseInt(document.getElementById('softPityStart').value, 10) || 35;
-      const softRamp = (parseFloat(document.getElementById('softPityRamp').value) || 1.6) / 100;
-
-      if (nextPity >= 90) {
-        goldChance = 1.0;
-      } else if (softEnabled && nextPity > softStart) {
-        goldChance = Math.min(0.95, 0.03 + (nextPity - softStart) * softRamp);
-      }
+      const goldChance = getNextGoldChanceForSlot(slot);
 
       const r = Math.random();
       let grade = 'cyan';
@@ -1303,18 +1873,17 @@
     }
 
     function createInitialSlots() {
-      const firstRoll = rollSingleSlot({ pity: 0, fixedGold: false, isColorSlot: true });
       return SLOT_DEFS.map((def, idx) => ({
         id: idx,
         title: def.title,
-        unlocked: idx === 0,
+        unlocked: false,
         locked: false,
-        grade: idx === 0 ? firstRoll.grade : null,
-        trait: idx === 0 ? firstRoll.trait : '隨進度開啟',
-        rateTag: idx === 0 ? firstRoll.rateTag : '',
-        rare: idx === 0 ? firstRoll.rare : false,
+        grade: null,
+        trait: idx === 0 ? '首次重鑄開啟' : '隨進度開啟',
+        rateTag: '',
+        rare: false,
         pity: 0,
-        goldCount: idx === 0 && firstRoll.grade === 'gold' ? 1 : 0,
+        goldCount: 0,
         fixedGold: def.fixedGold,
         isColorSlot: def.isColorSlot
       }));
@@ -1342,9 +1911,6 @@
     }
 
     function syncBudget() {
-      const val = parseInt(document.getElementById('stoneBudget').value, 10) || 300;
-      simState.budget = val;
-      simState.remaining = Math.max(0, val - simState.spent);
       renderSim();
     }
 
@@ -1355,7 +1921,7 @@
       }
 
       const unlockedCount = simState.slots.filter(s => s.unlocked).length;
-      const nextTarget = unlockedCount < 5 ? SLOT_DEFS[unlockedCount].unlockAt : 120;
+      const nextTarget = unlockedCount === 0 ? SLOT_DEFS[1].unlockAt : (unlockedCount < 5 ? SLOT_DEFS[unlockedCount].unlockAt : 120);
       const critEnabled = document.getElementById('critEnabled').checked;
       const smallRate = (parseFloat(document.getElementById('smallCritRate').value) || 0) / 100;
       const bigRate = (parseFloat(document.getElementById('bigCritRate').value) || 0) / 100;
@@ -1369,7 +1935,7 @@
           gain = Math.max(1, nextTarget - simState.unlockProgress);
           critType = 'big';
         } else if (r < bigRate + smallRate) {
-          const rawJump = Math.floor(Math.random() * 4) + 2;
+          const rawJump = Math.floor(Math.random() * 3) + 2;
           gain = Math.min(rawJump, nextTarget - simState.unlockProgress);
           critType = gain > 1 ? 'small' : 'normal';
         }
@@ -1378,11 +1944,11 @@
       simState.unlockProgress = Math.min(120, simState.unlockProgress + gain);
 
       if (critType === 'big') {
-        simState.lastCritText = `🔥 大暴擊！直接跳 +${gain} 開啟下一孔`;
-        addLog(`第 ${simState.rolls} 次重鑄觸發【開孔大暴擊】！進度直接 +${gain} 提前開孔！`, 'cyan');
+        simState.lastCritText = `🔥 開孔大暴擊 +${gain}（各孔仍只計 +1 抽）`;
+        addLog(`第 ${simState.rolls} 次重鑄觸發【開孔大暴擊】！開孔進度 +${gain}（各孔水位僅 +1 抽）`, 'cyan');
       } else if (critType === 'small') {
-        simState.lastCritText = `⚡ 進度暴擊 +${gain}`;
-        addLog(`第 ${simState.rolls} 次重鑄觸發【進度暴擊】！開孔進度 +${gain}`, 'cyan');
+        simState.lastCritText = `⚡ 開孔暴擊 +${gain}（各孔 +1 抽）`;
+        addLog(`第 ${simState.rolls} 次重鑄觸發【進度暴擊】！開孔進度 +${gain}（各孔水位僅 +1 抽）`, 'cyan');
       } else {
         simState.lastCritText = '';
       }
@@ -1390,10 +1956,6 @@
 
     function executeReforgeStep(silent = false) {
       const cost = getCurrentCost();
-      if (simState.remaining < cost) {
-        if (!silent) alert('太一玄石不足！請在左側增加玄石數量或重開一把。');
-        return { ok: false, goldHits: [] };
-      }
 
       simState.history.push(createSnapshot());
       if (simState.history.length > 50) simState.history.shift();
@@ -1413,6 +1975,9 @@
             simState.slots[idx].trait = '明光‧曜日';
             simState.slots[idx].rateTag = '固定礪金';
             simState.slots[idx].pity = 0;
+            if (simState.fiveHoleOpenedAtRoll === null) {
+              simState.fiveHoleOpenedAtRoll = simState.rolls;
+            }
             addLog(`第 5 孔【明光】開啟！固定礪金！（實際僅用 ${simState.rolls} 次重鑄）`, 'gold');
           } else {
             addLog(`第 ${idx + 1} 孔【${def.title}】已開啟！（累計 ${simState.rolls} 次）`, 'purple');
@@ -1462,6 +2027,21 @@
           others: othersText
         });
 
+        // Auto-save plan on Gold hit (keep latest 5)
+        const goldCountNow = simState.slots.filter(s => s.unlocked && s.grade === 'gold').length;
+        const unlockedNowCount = simState.slots.filter(s => s.unlocked).length;
+        simState.autoPresets.unshift({
+          time: new Date().toLocaleTimeString('zh-Hant-HK', { hour12: false }),
+          roll: simState.rolls,
+          golds: goldCountNow,
+          spent: simState.spent,
+          savedAfterFiveHoles: unlockedNowCount >= 5,
+          slots: JSON.parse(JSON.stringify(simState.slots))
+        });
+        if (simState.autoPresets.length > 5) {
+          simState.autoPresets.pop();
+        }
+
         const prefix = goldHits.length >= 2 ? '✨ 多爆出金！' : '★ 出金！';
         addLog(`第 ${simState.rolls} 次重鑄 (-${cost}石)：${prefix} ${goldHits.join('、')}｜其他孔：${othersText}`, 'gold');
       } else if (!silent && !simState.lastCritText) {
@@ -1471,17 +2051,27 @@
       return { ok: true, goldHits };
     }
 
-    function doReforge() {
-      // If user previously pressed "找回上一步", pressing main button restores the next step directly
+    async function doReforge() {
+      if (uiModalActive) return;
       if (simState.redoHistory.length > 0) {
-        redoReforge();
-        return;
+        const proceedNew = await uiConfirm(
+          `你目前有尚未恢復的「下一步」紀錄（剛才按過找回上一步）。\n\n• 按「保留舊紀錄」：改點亮金色的【恢復下一步】即可找回剛才的結果。\n• 按「重新重鑄」：放棄舊紀錄並重新隨機重鑄一次。`,
+          '⚠️ 尚有未恢復的下一步紀錄',
+          '重新重鑄',
+          '保留舊紀錄'
+        );
+        if (!proceedNew) return;
       }
 
       const unlockedGolds = getUnlockedNonLockedGoldSlots();
       if (unlockedGolds.length > 0) {
         const names = unlockedGolds.map(s => `第 ${s.id + 1} 孔【${s.trait}】`).join('、');
-        const ok = confirm(`⚠️ 偵測到未鎖定的【礪金】孔位：${names}\n\n確定要直接重鑄並覆蓋嗎？（按「取消」可先鎖定該孔位）`);
+        const ok = await uiConfirm(
+          `偵測到未鎖定的【礪金】孔位：${names}\n\n確定要直接重鑄並覆蓋嗎？（按「先去鎖定」可返回鎖定該孔位）`,
+          '⚠️ 未鎖定礪金確認',
+          '直接重鑄',
+          '先去鎖定'
+        );
         if (!ok) return;
       }
 
@@ -1489,19 +2079,30 @@
       simState.bannerMsg = '';
       const result = executeReforgeStep(false);
       if (result.ok && result.goldHits.length > 0) {
-        simState.bannerMsg = `★ 出現【礪金】：${result.goldHits.join('、')}！下次重鑄前系統會先請你確認，建議先鎖定。`;
+        const unlockedNow = simState.slots.filter(s => s.unlocked).length;
+        if (unlockedNow < 5) {
+          simState.bannerMsg = `★ 出現【礪金】：${result.goldHits.join('、')}！已自動暫存方案。尚未開滿五孔前，請依下方「實時找孔找平建議」決定 0 鎖衝五孔或臨門鎖孔。`;
+        } else {
+          simState.bannerMsg = `★ 出現【礪金】：${result.goldHits.join('、')}！已自動暫存方案。請依下方「找孔找平」期望成本決定鎖孔或放孔重平（切勿解鎖墊孔後再還原）。`;
+        }
       }
       renderSim();
     }
 
-    function autoUnlockAll() {
+    async function autoUnlockAll() {
+      if (uiModalActive) return;
       if (simState.unlockProgress >= 120) {
-        alert('五孔已經全部開啟！若要從頭模擬，請先點擊「重開一把」。');
+        await uiAlert('五孔已經全部開啟！若要從頭模擬，請先點擊「重開一把」。', '✅ 五孔已全開');
         return;
       }
 
       if (!simState.autoPausedOnGold && simState.rolls > 0) {
-        const restart = confirm(`目前已重鑄 ${simState.rolls} 次。\n\n按「確定」：從頭（第 0 次）開始自動開滿五孔\n按「取消」：從目前進度繼續自動開滿五孔`);
+        const restart = await uiConfirm(
+          `目前已重鑄 ${simState.rolls} 次。\n\n• 按「從頭開五孔」：歸零從第 0 次重新開始\n• 按「繼續開滿」：保留目前進度繼續自動開滿五孔`,
+          '自動開滿五孔',
+          '從頭開五孔',
+          '繼續開滿'
+        );
         if (restart) {
           resetSimulator();
         }
@@ -1510,7 +2111,12 @@
       const existingGolds = getUnlockedNonLockedGoldSlots();
       if (existingGolds.length > 0) {
         const names = existingGolds.map(s => `第 ${s.id + 1} 孔`).join('、');
-        const proceed = confirm(`⚠️ 目前有未鎖定的【礪金】孔位（${names}）！\n\n確定要不鎖定並繼續「自動開滿五孔」嗎？（按「取消」可先鎖定再按繼續）`);
+        const proceed = await uiConfirm(
+          `目前有未鎖定的【礪金】孔位（${names}）！\n\n確定要保持不鎖定並繼續「自動開滿五孔」嗎？（按「先返回」可自行鎖定後再按繼續）`,
+          '⚠️ 未鎖定礪金確認',
+          '繼續開滿',
+          '先返回'
+        );
         if (!proceed) return;
       }
 
@@ -1520,17 +2126,18 @@
       while (simState.unlockProgress < 120) {
         const res = executeReforgeStep(true);
         if (!res.ok) {
-          alert('太一玄石不足，自動開滿五孔已中止！請在左側增加玄石數量後再繼續。');
+          await uiAlert('太一玄石不足，自動開滿五孔已中止！', '⚠️ 玄石不足');
           break;
         }
 
         if (res.goldHits.length > 0) {
           simState.autoPausedOnGold = true;
-          simState.bannerMsg = `✨ 第 ${simState.rolls} 次重鑄出現【礪金】（${res.goldHits.join('、')}）！自動開孔已暫停，可先鎖定該孔位，再按「繼續自動開滿五孔」。`;
+          simState.bannerMsg = `✨ 第 ${simState.rolls} 次重鑄出現【礪金】（${res.goldHits.join('、')}）！已自動暫存方案。為省玄石建議【不要鎖定】，直接按「繼續自動開滿五孔」用 1 石開完五孔後再還原！`;
           renderSim();
-          setTimeout(() => {
-            alert(`✨ 第 ${simState.rolls} 次重鑄出現【礪金】：${res.goldHits.join('、')}！\n\n自動開滿五孔已暫停，請確認是否要先「鎖定」該孔位，之後再點擊「繼續自動開滿五孔」即可繼續。`);
-          }, 50);
+          await uiAlert(
+            `第 ${simState.rolls} 次重鑄出現【礪金】：${res.goldHits.join('、')}！\n\n系統已自動暫存此方案。尚未開滿五孔前，為最低預算建議【保持 0 鎖】，直接按「繼續自動開滿五孔」用 1 石衝開第 5 孔後再還原方案即可！`,
+            '✨ 開孔中途出金（已暫停）'
+          );
           return;
         }
       }
@@ -1543,9 +2150,10 @@
       renderSim();
     }
 
-    function undoReforge() {
+    async function undoReforge() {
+      if (uiModalActive) return;
       if (simState.history.length === 0) {
-        alert('沒有可找回的上一步記錄。');
+        await uiAlert('沒有可找回的上一步記錄。', '提示');
         return;
       }
       simState.redoHistory.push(createSnapshot());
@@ -1555,9 +2163,10 @@
       renderSim();
     }
 
-    function redoReforge() {
+    async function redoReforge() {
+      if (uiModalActive) return;
       if (simState.redoHistory.length === 0) {
-        alert('沒有可恢復的下一步記錄。');
+        await uiAlert('沒有可恢復的下一步記錄。', '提示');
         return;
       }
       simState.history.push(createSnapshot());
@@ -1567,19 +2176,34 @@
       renderSim();
     }
 
-    function toggleLock(idx) {
+    async function toggleLock(idx) {
+      if (uiModalActive) return;
       const slot = simState.slots[idx];
       if (!slot.unlocked || slot.fixedGold) return;
       if (!slot.locked && getLockCount() >= 3) {
-        alert('最多只能同時鎖定 3 個孔位！');
+        await uiAlert('最多只能同時鎖定 3 個孔位！', '⚠️ 鎖定上限');
         return;
       }
       slot.locked = !slot.locked;
+
+      const unlockedGolds = getUnlockedNonLockedGoldSlots();
+      const unlockedNow = simState.slots.filter(s => s.unlocked).length;
+      if (unlockedGolds.length > 0) {
+        const names = unlockedGolds.map(s => `第 ${s.id + 1} 孔(${s.trait})`).join('、');
+        if (unlockedNow < 5) {
+          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}（已自動暫存）。尚未開滿五孔，建議保持 0 鎖用 1 石開完五孔後再還原。`;
+        } else {
+          simState.bannerMsg = `★ 當前仍有未鎖定的【礪金】：${names}！請依下方「找孔找平」建議決定鎖定或放孔重平。`;
+        }
+      } else {
+        simState.bannerMsg = '';
+      }
       renderSim();
     }
 
     function cycleSquareColor(idx) {
       const slot = simState.slots[idx];
+      if (slot.fixedGold) return;
       const nextGrade = !slot.unlocked ? 'cyan' : slot.grade === 'cyan' ? 'purple' : slot.grade === 'purple' ? 'gold' : 'cyan';
       slot.unlocked = true;
       slot.grade = nextGrade;
@@ -1591,36 +2215,119 @@
     }
 
     function savePreset() {
-      if (simState.presets.length >= 10) {
-        alert('最多保留 10 條方案。');
-        return;
-      }
-      const golds = simState.slots.filter(s => s.grade === 'gold').length;
-      simState.presets.unshift({
+      const golds = simState.slots.filter(s => s.unlocked && s.grade === 'gold').length;
+      const unlockedNowCount = simState.slots.filter(s => s.unlocked).length;
+      const isReplace = !!simState.manualPreset;
+      simState.manualPreset = {
         time: new Date().toLocaleTimeString('zh-Hant-HK', { hour12: false }),
+        roll: simState.rolls,
         golds,
         spent: simState.spent,
+        savedAfterFiveHoles: unlockedNowCount >= 5,
         slots: JSON.parse(JSON.stringify(simState.slots))
-      });
-      addLog(`已保存當前方案（${golds} 金 / 消耗 ${simState.spent} 石）`);
+      };
+      addLog(`${isReplace ? '已覆蓋手動保存方案' : '已手動保存方案'}（第 ${simState.rolls} 抽 · ${golds} 金 / 消耗 ${simState.spent} 石）`, 'cyan');
       renderSim();
     }
 
-    function loadPreset(index) {
-      const p = simState.presets[index];
+    async function applyPresetSlots(p, sourceLabel) {
+      if (uiModalActive) return;
+      const unlockedNow = simState.slots.filter(s => s.unlocked).length;
+      const curNonFixedGolds = simState.slots.filter(s => s.unlocked && !s.fixedGold && s.grade === 'gold').length;
+      const savedNonFixedGolds = p.slots.filter(s => s.unlocked && !s.fixedGold && s.grade === 'gold').length;
+
+      // Check real-game Bahamut rule: 開完 5 孔後不可以墊孔 (post-5-hole padding -> soft pity confiscated!)
+      // Restoring a pre-5-hole saved plan right after Slot 5 opens (< 3 rolls after Slot 5 opened) is SAFE.
+      let willConfiscate = false;
+      if (unlockedNow >= 5 && savedNonFixedGolds > curNonFixedGolds) {
+        if (p.savedAfterFiveHoles && simState.rolls > p.roll) {
+          willConfiscate = true;
+        } else if (!p.savedAfterFiveHoles && simState.fiveHoleOpenedAtRoll !== null && (simState.rolls - simState.fiveHoleOpenedAtRoll) >= 3) {
+          willConfiscate = true;
+        }
+      }
+
+      if (willConfiscate && !simState.softPityConfiscated) {
+        const proceed = await uiConfirm(
+          `依據官方規則，五孔開啟後若先解鎖低成本墊水位、再還原高金數方案，系統將【沒收額外出金率（軟保底）】，各孔後續只剩基礎 3.0% 直到第 90 抽硬保底（成本暴增 3～4 倍）！\n\n確定仍要強制還原並觸發沒收懲罰嗎？`,
+          '🚫 警告：禁止五孔後墊孔還原',
+          '強制還原（觸發沒收）',
+          '放棄還原',
+          'danger'
+        );
+        if (!proceed) return;
+      }
+
+      // Record snapshot for undo and clear stale redoHistory so pressing Reforge rolls forward cleanly
+      simState.history.push(createSnapshot());
+      if (simState.history.length > 50) simState.history.shift();
+      simState.redoHistory = [];
+      simState.autoPausedOnGold = false;
+
+      if (willConfiscate) {
+        simState.softPityConfiscated = true;
+      }
+
+      // Strictly preserves all holes' current pity counters, lock states, goldCount, total rolls, spent stones, and unlockProgress
       simState.slots.forEach((curSlot, idx) => {
         const savedSlot = p.slots[idx];
+        if (curSlot.fixedGold) {
+          if (curSlot.unlocked || savedSlot.unlocked) {
+            curSlot.unlocked = true;
+            curSlot.grade = 'gold';
+            curSlot.trait = '明光‧曜日';
+            curSlot.rateTag = '固定礪金';
+            curSlot.rare = false;
+            curSlot.locked = false;
+          }
+          return;
+        }
         if (savedSlot.unlocked) {
           curSlot.unlocked = true;
           curSlot.grade = savedSlot.grade;
           curSlot.trait = savedSlot.trait;
           curSlot.rateTag = savedSlot.rateTag || '';
           curSlot.rare = !!savedSlot.rare;
-          curSlot.locked = savedSlot.locked;
         }
       });
-      addLog(`已載入方案（${p.golds} 金，保留目前已開啟孔位進度）`);
+
+      const unlockedGolds = getUnlockedNonLockedGoldSlots();
+      if (unlockedGolds.length > 0) {
+        const names = unlockedGolds.map(s => `第 ${s.id + 1} 孔(${s.trait})`).join('、');
+        simState.bannerMsg = `★ 已還原方案，目前有未鎖定的【礪金】：${names}！請依下方「找孔找平」建議決定要鎖定哪些孔位。`;
+      } else {
+        simState.bannerMsg = '';
+      }
+
+      if (willConfiscate) {
+        addLog(`🚫 偵測到五孔後墊孔還原${sourceLabel}！系統已沒收【額外出金率（軟保底）】，後續僅維持 3.0% 至第 90 抽硬保底！`, 'gold');
+      } else {
+        addLog(`已還原${sourceLabel}（第 ${p.roll} 抽 · ${p.golds} 金｜各孔位 0/90 水位與軟保底安全保留）`, 'cyan');
+      }
       renderSim();
+    }
+
+    function loadManualPreset() {
+      if (!simState.manualPreset) return;
+      applyPresetSlots(simState.manualPreset, '手動方案');
+    }
+
+    function loadAutoPreset(index) {
+      const p = simState.autoPresets[index];
+      if (!p) return;
+      applyPresetSlots(p, `自動暫存方案 #${index + 1}`);
+    }
+
+    function renderPlanSquaresHtml(slots) {
+      return '<div class="plan-squares">' + slots.map((s, idx) => {
+        if (!s.unlocked) {
+          return `<div class="plan-sq sq-unopened" title="第 ${idx + 1} 孔：未開啟">-</div>`;
+        }
+        const cls = s.grade === 'gold' ? 'sq-gold' : s.grade === 'purple' ? 'sq-purple' : 'sq-cyan';
+        const txt = s.grade === 'gold' ? '金' : s.grade === 'purple' ? '紫' : '青';
+        const lockIcon = s.locked ? '🔒' : '';
+        return `<div class="plan-sq ${cls}" title="第 ${idx + 1} 孔：${GRADE_LABELS[s.grade]} (${s.trait})${lockIcon}">${txt}</div>`;
+      }).join('') + '</div>';
     }
 
     function resetSimulator() {
@@ -1631,30 +2338,17 @@
       simState.slots = createInitialSlots();
       simState.history = [];
       simState.redoHistory = [];
-      simState.presets = [];
+      simState.autoPresets = [];
+      simState.manualPreset = null;
       simState.goldRecords = [];
       simState.autoPausedOnGold = false;
+      simState.softPityConfiscated = false;
+      simState.fiveHoleOpenedAtRoll = null;
       simState.bannerMsg = '';
       simState.lastCritText = '';
       document.getElementById('simLog').innerHTML = '';
 
-      const s0 = simState.slots[0];
-      const gLabel = GRADE_LABELS[s0.grade];
-      if (s0.grade === 'gold') {
-        simState.goldRecords.unshift({
-          roll: 0,
-          spent: 0,
-          hits: `第 1 孔(${s0.trait}｜開局直接出金)`,
-          others: '第2孔:未開｜第3孔:未開｜第4孔:未開'
-        });
-        simState.bannerMsg = `★ 歐皇開局！第 1 孔直接出現【礪金】（${s0.trait}），下次重鑄前會先請你確認！`;
-        addLog(`★ 歐皇開局！第 1 孔隨機出金：${gLabel}（${s0.trait}）｜其他孔：未開`, 'gold');
-      } else if (s0.grade === 'purple') {
-        addLog(`已重開（已清空保存方案）：第 1 孔隨機開啟 → ${gLabel}（${s0.trait}）`, 'purple');
-      } else {
-        addLog(`已重開（已清空保存方案）：第 1 孔隨機開啟 → ${gLabel}（${s0.trait}）`);
-      }
-
+      addLog(`已重開一把（已清空保存方案與紀錄），點擊「重鑄一次」將開啟第 1 孔。`);
       renderSim();
     }
 
@@ -1683,21 +2377,37 @@
       const lockCount = getLockCount();
       const cost = getCurrentCost();
 
-      document.getElementById('remainingStones').textContent = simState.remaining;
+      const unitPrice = getSimUnitPrice();
+      const spentMoney = simState.spent * unitPrice;
+
       document.getElementById('statRolls').textContent = simState.rolls;
       document.getElementById('statSpent').textContent = simState.spent;
+      document.getElementById('statSpentMoney').textContent = `累計消耗 (${formatHKD(spentMoney)})`;
       document.getElementById('statUnlocked').textContent = `${unlockedCount}/5`;
       document.getElementById('statGolds').textContent = goldCount;
       document.getElementById('statusSummary').textContent = `${unlockedCount}/5 孔 · ${goldCount} 金 · ${lockCount} 鎖`;
-      document.getElementById('nextCostLabel').textContent = `本次消耗：${cost} 石`;
+      document.getElementById('nextCostLabel').textContent = `本次消耗：${cost} 石 (${formatHKD(cost * unitPrice)})`;
       const reforgeBtn = document.getElementById('reforgeBtn');
-      if (simState.redoHistory.length > 0) {
-        reforgeBtn.textContent = `恢復下一步 (還原紀錄)`;
-      } else {
-        reforgeBtn.textContent = `重鑄一次 (${cost} 石)`;
-      }
+      reforgeBtn.textContent = `重鑄一次 (${cost} 石)`;
 
       document.getElementById('undoBtn').disabled = simState.history.length === 0;
+      const redoBtn = document.getElementById('redoBtn');
+      if (redoBtn) {
+        const hasRedo = simState.redoHistory.length > 0;
+        redoBtn.disabled = !hasRedo;
+        redoBtn.classList.toggle('btn-redo-active', hasRedo);
+        redoBtn.textContent = hasRedo ? `恢復下一步 (${simState.redoHistory.length})` : '恢復下一步';
+      }
+
+      const penaltyEl = document.getElementById('penaltyBanner');
+      if (penaltyEl) {
+        if (simState.softPityConfiscated) {
+          penaltyEl.innerHTML = '🚫 <strong>已觸發系統懲罰（沒收額外出金率）：</strong>因五孔開啟後墊孔並還原高金方案，軟保底遞增已被沒收！目前各孔 16～89 抽僅維持基礎 3.0%（90 抽硬保底），除非「重開一把」否則無法恢復。';
+          penaltyEl.classList.add('show');
+        } else {
+          penaltyEl.classList.remove('show');
+        }
+      }
 
       const bannerEl = document.getElementById('goldBanner');
       if (simState.bannerMsg) {
@@ -1716,10 +2426,13 @@
         autoBtn.classList.remove('btn-resume');
       }
 
-      const nextUnlockTarget = unlockedCount < 5 ? SLOT_DEFS[unlockedCount].unlockAt : 120;
-      const prevUnlockTarget = unlockedCount < 5 ? (unlockedCount === 1 ? 0 : SLOT_DEFS[unlockedCount - 1].unlockAt) : 0;
       let pct = 100;
-      if (unlockedCount < 5) {
+      if (unlockedCount === 0) {
+        pct = 0;
+        document.getElementById('unlockProgressLabel').textContent = `第 1 孔尚未開啟：點擊「重鑄一次」開啟第 1 孔（總進度 0/120）`;
+      } else if (unlockedCount < 5) {
+        const nextUnlockTarget = SLOT_DEFS[unlockedCount].unlockAt;
+        const prevUnlockTarget = unlockedCount === 1 ? 0 : SLOT_DEFS[unlockedCount - 1].unlockAt;
         const curStep = Math.max(0, Math.min(nextUnlockTarget - prevUnlockTarget, simState.unlockProgress - prevUnlockTarget));
         const stepTotal = nextUnlockTarget - prevUnlockTarget;
         pct = Math.min(100, Math.round((curStep / stepTotal) * 100));
@@ -1769,7 +2482,7 @@
                   <div class="pity-bar-mini">
                     <div class="pity-bar-mini-fill" style="width:${pityPct}%; background:${pityColor};"></div>
                   </div>
-                  <div class="pity-text">礪金水位 ${slot.pity}/90</div>
+                  <div class="pity-text">水位 ${slot.pity}/90${slot.unlocked && !slot.locked ? ` · 下抽 ${(getNextGoldChanceForSlot(slot) * 100).toFixed(1)}%` : ''}</div>
                 `
             }
             <div class="slot-actions">
@@ -1778,7 +2491,7 @@
                 ${!slot.unlocked || slot.fixedGold ? 'disabled' : ''}>
                 ${slot.locked ? '已鎖' : '鎖定'}
               </button>
-              <button class="slot-btn" onclick="cycleSquareColor(${idx})" title="手動切換方塊顏色">換色</button>
+              <button class="slot-btn" onclick="cycleSquareColor(${idx})" title="${slot.fixedGold ? '第 5 孔明光固定礪金，無法換色' : '手動切換方塊顏色'}" ${slot.fixedGold ? 'disabled' : ''}>換色</button>
             </div>
           </div>
         `;
@@ -1801,18 +2514,40 @@
         `).join('');
       }
 
-      document.getElementById('presetCount').textContent = `${simState.presets.length} / 10`;
-      const savedEl = document.getElementById('savedList');
-      if (simState.presets.length === 0) {
-        savedEl.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">暫無保存方案</div>';
+      document.getElementById('manualPresetStatus').textContent = simState.manualPreset ? '1 / 1' : '0 / 1';
+      const manualEl = document.getElementById('manualSavedBox');
+      if (!simState.manualPreset) {
+        manualEl.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">尚無手動方案（點擊「保存方案」存入，再按將覆蓋）</div>';
       } else {
-        savedEl.innerHTML = simState.presets.map((p, i) => `
+        const mp = simState.manualPreset;
+        manualEl.innerHTML = `
+          <div class="saved-item manual-plan">
+            <div class="saved-item-top">
+              <span><strong>手動</strong> · 第 ${mp.roll} 抽 · ${mp.golds} 金</span>
+              <button class="pill-btn" onclick="loadManualPreset()">還原</button>
+            </div>
+            ${renderPlanSquaresHtml(mp.slots)}
+          </div>
+        `;
+      }
+
+      document.getElementById('autoPresetCount').textContent = `${simState.autoPresets.length} / 5`;
+      const autoEl = document.getElementById('autoSavedList');
+      if (simState.autoPresets.length === 0) {
+        autoEl.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">尚無出金自動暫存方案</div>';
+      } else {
+        autoEl.innerHTML = simState.autoPresets.map((p, i) => `
           <div class="saved-item">
-            <span>[${p.time}] ${p.golds} 金 · ${p.spent} 石</span>
-            <button class="pill-btn" onclick="loadPreset(${i})">載入</button>
+            <div class="saved-item-top">
+              <span>#${i + 1} · 第 ${p.roll} 抽 · ${p.golds} 金</span>
+              <button class="pill-btn" onclick="loadAutoPreset(${i})">還原</button>
+            </div>
+            ${renderPlanSquaresHtml(p.slots)}
           </div>
         `).join('');
       }
+
+      renderSimStrategy();
     }
 
     // ==================== REAL-LIFE COUNTER & CALCULATOR ====================
@@ -1891,11 +2626,12 @@
       renderRealLife();
     }
 
-    function rlToggleSlotLock(idx) {
+    async function rlToggleSlotLock(idx) {
+      if (uiModalActive) return;
       const s = rlState.slots[idx];
       if (!s.opened || s.fixedGold) return;
       if (!s.locked && rlState.slots.filter(x => x.locked).length >= 3) {
-        alert('最多只能同時鎖定 3 個孔位！');
+        await uiAlert('最多只能同時鎖定 3 個孔位！', '⚠️ 鎖定上限');
         return;
       }
       saveRlHistory();
@@ -2056,11 +2792,12 @@
 
       document.getElementById('rlTotalRolls').textContent = `${rlState.totalRolls} 次`;
       document.getElementById('rlTotalStones').textContent = `${rlState.totalStones} 石`;
-      document.getElementById('rlTotalMoney').textContent = `${cur}${(rlState.totalStones * unitPrice).toLocaleString()}`;
-      document.getElementById('rlCurrentStepCost').textContent = `${stepCost} 石 (${cur}${(stepCost * unitPrice).toLocaleString()})`;
+      const fmtMoney = (amt) => `${cur}${amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+      document.getElementById('rlTotalMoney').textContent = fmtMoney(rlState.totalStones * unitPrice);
+      document.getElementById('rlCurrentStepCost').textContent = `${stepCost} 石 (${fmtMoney(stepCost * unitPrice)})`;
       document.getElementById('rlClosestPity').textContent = `${rollsToHardPity} 次`;
-      document.getElementById('rlWorstCaseCost').textContent = `${rollsToHardPity * stepCost} 石 (${cur}${(rollsToHardPity * stepCost * unitPrice).toLocaleString()})`;
-      document.getElementById('rlAvgCaseCost').textContent = `${rollsToAvgPity * stepCost} 石 (${cur}${(rollsToAvgPity * stepCost * unitPrice).toLocaleString()})`;
+      document.getElementById('rlWorstCaseCost').textContent = `${rollsToHardPity * stepCost} 石 (${fmtMoney(rollsToHardPity * stepCost * unitPrice)})`;
+      document.getElementById('rlAvgCaseCost').textContent = `${rollsToAvgPity * stepCost} 石 (${fmtMoney(rollsToAvgPity * stepCost * unitPrice)})`;
 
       document.getElementById('rlGoldRecordCount').textContent = `${rlState.goldRecords.length} 次`;
       const rlGoldEl = document.getElementById('rlGoldRecordsList');
@@ -2077,24 +2814,689 @@
           </div>
         `).join('');
       }
+
+      renderRlStrategy();
     }
 
-    function updateCritModeUI() {
-      const enabled = document.getElementById('critEnabled').checked;
-      const box = document.getElementById('critInputs');
-      const hint = document.getElementById('critModeHint');
-      if (enabled) {
-        box.classList.remove('disabled');
-        hint.textContent = '目前：已開啟（僅影響開孔進度跳格／提前開孔，絕不影響出金機率與 90 抽保底）';
+    function updateCritModeUI() {}
+
+
+    // ==================== EXACT LEGAL-MOVE DP ENGINE (找孔找平) ====================
+    const DP_CACHE = { normal: null, confiscated: null };
+
+    function buildDpTables(confiscated = false) {
+      const P = new Float64Array(90);
+      for (let k = 0; k < 90; k++) {
+        P[k] = getGoldChanceByRoll(k + 1, confiscated);
+      }
+      const E = new Float64Array(91);
+      E[90] = 0;
+      for (let k = 89; k >= 0; k--) {
+        E[k] = 1.0 + (1.0 - P[k]) * E[k + 1];
+      }
+      // C4[k]: 3-Lock (10 stones/click), 1 non-gold hole at pity k
+      const C4 = new Float64Array(91);
+      for (let k = 0; k <= 90; k++) C4[k] = 10.0 * E[k];
+
+      // C3[k1*91 + k2]: 2-Lock (5 stones/click), 2 non-gold holes at k1, k2 -> then C4
+      const C3 = new Float32Array(91 * 91);
+      for (let k1 = 89; k1 >= 0; k1--) {
+        const p1 = P[k1], m1 = 1.0 - p1;
+        for (let k2 = 89; k2 >= 0; k2--) {
+          const p2 = P[k2], m2 = 1.0 - p2;
+          C3[k1 * 91 + k2] =
+            5.0 +
+            m1 * m2 * C3[(k1 + 1) * 91 + (k2 + 1)] +
+            p1 * m2 * C4[k2 + 1] +
+            m1 * p2 * C4[k1 + 1];
+        }
+      }
+
+      // C2[k1*8281 + k2*91 + k3]: 1-Lock (2 stones/click), 3 non-gold holes -> then C3 / C4
+      const C2 = new Float32Array(91 * 91 * 91);
+      const stride1 = 91 * 91;
+      for (let k1 = 89; k1 >= 0; k1--) {
+        const p1 = P[k1], m1 = 1.0 - p1;
+        for (let k2 = 89; k2 >= 0; k2--) {
+          const p2 = P[k2], m2 = 1.0 - p2;
+          const baseIdx = k1 * stride1 + k2 * 91;
+          const nextBase = (k1 + 1) * stride1 + (k2 + 1) * 91;
+          for (let k3 = 89; k3 >= 0; k3--) {
+            const p3 = P[k3], m3 = 1.0 - p3;
+            C2[baseIdx + k3] =
+              2.0 +
+              (m1 * m2 * m3) * C2[nextBase + (k3 + 1)] +
+              (p1 * m2 * m3) * C3[(k2 + 1) * 91 + (k3 + 1)] +
+              (m1 * p2 * m3) * C3[(k1 + 1) * 91 + (k3 + 1)] +
+              (m1 * m2 * p3) * C3[(k1 + 1) * 91 + (k2 + 1)] +
+              (p1 * p2 * m3) * C4[k3 + 1] +
+              (p1 * m2 * p3) * C4[k2 + 1] +
+              (m1 * p2 * p3) * C4[k1 + 1];
+          }
+        }
+      }
+
+      return { P, E, C4, C3, C2 };
+    }
+
+    function getDpTables(confiscated = false) {
+      const key = confiscated ? 'confiscated' : 'normal';
+      if (!DP_CACHE[key]) {
+        DP_CACHE[key] = buildDpTables(confiscated);
+      }
+      return DP_CACHE[key];
+    }
+
+    function clampPity(k) {
+      return Math.max(0, Math.min(89, Math.floor(k || 0)));
+    }
+
+    function dpCost4(k, dp) {
+      return dp.C4[clampPity(k)];
+    }
+
+    function dpCost3(k1, k2, dp) {
+      return dp.C3[clampPity(k1) * 91 + clampPity(k2)];
+    }
+
+    function dpCost2(k1, k2, k3, dp) {
+      return dp.C2[clampPity(k1) * 8281 + clampPity(k2) * 91 + clampPity(k3)];
+    }
+
+    // Exact 0-Lock (1 stone/click) expected total stones to 5 Golds from any 4 hole pities [k0,k1,k2,k3]
+    function dpCost1(pities4, dp) {
+      const ks = pities4.map(clampPity);
+      const maxK = Math.max(...ks);
+      const maxSteps = 90 - maxK;
+      let total = 0.0;
+      let surv = 1.0;
+      for (let t = 0; t < maxSteps; t++) {
+        if (surv < 1e-11) break;
+        total += surv * 1.0;
+        const ps = [dp.P[ks[0] + t], dp.P[ks[1] + t], dp.P[ks[2] + t], dp.P[ks[3] + t]];
+        const ms = [1 - ps[0], 1 - ps[1], 1 - ps[2], 1 - ps[3]];
+        for (let mask = 1; mask < 16; mask++) {
+          let prob = 1.0;
+          const rem = [];
+          for (let i = 0; i < 4; i++) {
+            if ((mask >> i) & 1) {
+              prob *= ps[i];
+            } else {
+              prob *= ms[i];
+              rem.push(ks[i] + t + 1);
+            }
+          }
+          if (prob === 0) continue;
+          let remCost = 0;
+          if (rem.length === 3) remCost = dpCost2(rem[0], rem[1], rem[2], dp);
+          else if (rem.length === 2) remCost = dpCost3(rem[0], rem[1], dp);
+          else if (rem.length === 1) remCost = dpCost4(rem[0], dp);
+          total += surv * prob * remCost;
+        }
+        surv *= ms[0] * ms[1] * ms[2] * ms[3];
+      }
+      return total;
+    }
+
+    function calcCombinedGoldChance(slotsList, confiscated = false) {
+      let missAll = 1.0;
+      slotsList.forEach(s => {
+        const p = getGoldChanceByRoll((s.pity || 0) + 1, confiscated);
+        missAll *= (1 - p);
+      });
+      return 1 - missAll;
+    }
+
+    // Exact multi-click probability of >=1 Gold among slotsList over the next R clicks (accounting for pity rising each click!)
+    function calcMultiClickHitProb(slotsList, R, confiscated = false) {
+      if (R <= 0 || slotsList.length === 0) return 0;
+      let missAll = 1.0;
+      for (let t = 0; t < R; t++) {
+        for (const s of slotsList) {
+          const p = getGoldChanceByRoll((s.pity || 0) + 1 + t, confiscated);
+          missAll *= (1 - p);
+        }
+      }
+      return 1 - missAll;
+    }
+
+    // Priority order for dropping a Gold when rebalancing (Bahamut guide: keep Slot 2/3 core structure, drop Slot 1 color or Slot 4 first)
+    function pickLowestPriorityGoldSlot(goldSlots) {
+      const dropPriority = [0, 3, 2, 1]; // prefer dropping Slot 1 (id 0), then Slot 4 (id 3), then Slot 3 (id 2), last Slot 2 (id 1)
+      for (const id of dropPriority) {
+        const found = goldSlots.find(s => s.id === id);
+        if (found) return found;
+      }
+      return goldSlots[0];
+    }
+
+    function fmtStoneHKD(stones, unitPrice, cur = 'HK$') {
+      const money = stones * unitPrice;
+      return `<strong>${stones.toFixed(1)} 石</strong> (${cur}${money.toLocaleString('en-US', { maximumFractionDigits: 0 })})`;
+    }
+
+    function renderSimStrategy() {
+      const box = document.getElementById('simStrategyBox');
+      const titleEl = document.getElementById('simStrategyTitle');
+      const tagEl = document.getElementById('simStrategyTag');
+      const bodyEl = document.getElementById('simStrategyBody');
+      if (!box) return;
+
+      const confiscated = simState.softPityConfiscated;
+      const dp = getDpTables(confiscated);
+      const unlockedCount = simState.slots.filter(s => s.unlocked).length;
+      const goldSlots = simState.slots.filter(s => s.unlocked && s.grade === 'gold');
+      const goldCount = goldSlots.length;
+      const nonFixedGoldSlots = simState.slots.filter(s => s.unlocked && !s.fixedGold && s.grade === 'gold');
+      const nonGoldUnlocked = simState.slots.filter(s => s.unlocked && !s.fixedGold && s.grade !== 'gold');
+      const rollingSlots = simState.slots.filter(s => s.unlocked && !s.locked && !s.fixedGold);
+      const lockedCount = getLockCount();
+      const unitPrice = getSimUnitPrice();
+      const stepCost = getCurrentCost();
+
+      // Combined next-click Gold probability across all active rolling slots
+      const combinedNextProb = calcCombinedGoldChance(rollingSlots, confiscated);
+      const combinedNextPct = (combinedNextProb * 100).toFixed(1);
+      const perHoleProbHtml = rollingSlots.length > 0
+        ? rollingSlots.map(s => `第${s.id + 1}孔 <strong>${(getNextGoldChanceForSlot(s) * 100).toFixed(1)}%</strong> (${s.pity}/90)`).join(' · ')
+        : '所有已開孔位已鎖定';
+
+      const penaltyChip = confiscated ? '<span style="color:#fca5a5; font-weight:700;">⚠️ 軟保底已沒收</span>' : '';
+      const probStripHtml = `
+        <div class="strategy-prob-strip">
+          <span>📊 <strong>全孔下抽出金率：${combinedNextPct}%</strong></span>
+          <span>${perHoleProbHtml}</span>
+          ${penaltyChip}
+        </div>
+      `;
+
+      // Check best saved pre-5-hole plan (only safe to restore right when Slot 5 opens!)
+      const allPlans = [];
+      if (simState.manualPreset) allPlans.push({ ...simState.manualPreset, label: '手動方案' });
+      simState.autoPresets.forEach((p, idx) => allPlans.push({ ...p, label: `自動暫存 #${idx + 1}` }));
+      const bestPlan = allPlans.reduce((best, cur) => (!best || cur.golds > best.golds ? cur : best), null);
+      const bestPre5Plan = allPlans
+        .filter(p => !p.savedAfterFiveHoles)
+        .reduce((best, cur) => (!best || cur.golds > best.golds ? cur : best), null);
+
+      box.className = 'strategy-box';
+
+      // ===== STAGE 6: 5 Golds achieved! =====
+      if (goldCount >= 5) {
+        box.classList.add('done');
+        titleEl.textContent = '🎉 五金畢業！';
+        tagEl.textContent = `共消耗 ${simState.spent} 石 (${formatHKD(simState.spent * unitPrice)})`;
+        bodyEl.innerHTML = `<strong>恭喜達成五金！</strong> 已花費 <strong>${simState.spent} 顆玄石</strong>（約 ${formatHKD(simState.spent * unitPrice)}）。建議立刻「保存方案」鎖定畢業成品。`;
+        return;
+      }
+
+      // ===== STAGE 1: Not yet 5 holes opened (Before Slot 5 明光) =====
+      if (unlockedCount < 5) {
+        const remainProg = Math.max(0, 120 - simState.unlockProgress);
+        const otherHolesHitInR = calcMultiClickHitProb(nonGoldUnlocked, remainProg, confiscated);
+        const otherHolesHitPct = (otherHolesHitInR * 100).toFixed(1);
+        const otherSinglePct = (calcCombinedGoldChance(nonGoldUnlocked, confiscated) * 100).toFixed(1);
+
+        // Exact EV breakeven check near Slot 5 (<= 10 clicks left, holding 1 or 2 Golds, and no strictly better saved plan already waiting)
+        const lockTier = Math.min(2, nonFixedGoldSlots.length);
+        const extraLockStones = lockTier === 1 ? remainProg : 4 * remainProg;
+        const evBreakevenPct = lockTier === 1 ? (2.8 * remainProg) : (5.3 * remainProg);
+        const hasBetterSaved = bestPre5Plan && bestPre5Plan.golds > nonFixedGoldSlots.length;
+
+        if (remainProg <= 10 && nonFixedGoldSlots.length >= 1 && nonFixedGoldSlots.length <= 2 && !hasBetterSaved && (otherHolesHitInR * 100 >= evBreakevenPct)) {
+          const lockCostNow = LOCK_COSTS[lockTier];
+          const totalLockStones = lockCostNow * remainProg;
+          const goldNames = nonFixedGoldSlots.map(s => `第${s.id + 1}孔`).join('、');
+          box.classList.add('warn');
+          titleEl.textContent = `⚡ 臨門五孔決策（僅差 ${remainProg} 抽）：鎖 ${goldNames} 為正期望值 (+EV)！`;
+          tagEl.textContent = `${remainProg} 抽內其餘孔出金率 ${otherHolesHitPct}% > 門檻 ${evBreakevenPct.toFixed(1)}%`;
+          bodyEl.innerHTML = `
+            距第 5 孔只剩 <strong>${remainProg} 抽</strong>，其餘未出金孔單抽出金率 <strong>${otherSinglePct}%</strong>，在接下來 ${remainProg} 抽內爆金機率高達 <strong>${otherHolesHitPct}%</strong>（超過鎖孔損益門檻 ${evBreakevenPct.toFixed(1)}%）！
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 方案 A：現在鎖 ${goldNames} (${lockCostNow}石/抽)</div>
+                多花 <strong>+${extraLockStones} 石</strong>（共 ${totalLockStones} 石），${remainProg} 抽內有 <strong>${otherHolesHitPct}%</strong> 機率直接 ${nonFixedGoldSlots.length + 2} 金起跳！
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">方案 B：保持 0 鎖 (1石/抽)</div>
+                只花 <strong>${remainProg} 石</strong> 開滿五孔，開完立刻還原現有 ${nonFixedGoldSlots.length} 金方案變 ${nonFixedGoldSlots.length + 1} 金。
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+          return;
+        }
+
+        if (lockedCount > 0) {
+          box.classList.add('warn');
+          titleEl.textContent = '⚠️ 省錢警告：尚未開滿五孔，提早鎖孔不划算！';
+          tagEl.textContent = `目前 ${stepCost} 石/抽 · 距五孔還差 ${remainProg} 進度`;
+          bodyEl.innerHTML = `第 5 孔【明光】開孔即<strong>免費送 1 金</strong>。現在鎖 ${lockedCount} 孔每抽要花 <strong>${stepCost} 石</strong>（多花約 ${(stepCost - 1) * remainProg} 石）！<br>👉 <strong>最佳操作：</strong>先按「保存方案」存下目前金孔 → <strong>全部解鎖改用 1 石/抽</strong> 開完第 5 孔 → 開孔當下立刻還原方案（安全不沒收軟保底）！${probStripHtml}`;
+        } else if (nonFixedGoldSlots.length >= 2) {
+          box.classList.add('warn');
+          titleEl.textContent = '💎 開孔期提前出多金！先手動保存再 0 鎖衝五孔';
+          tagEl.textContent = `已有 ${nonFixedGoldSlots.length} 金 · 距五孔 ${remainProg} 進度`;
+          bodyEl.innerHTML = `開孔中途已經出了 <strong>${nonFixedGoldSlots.length} 個金孔</strong>！<br>👉 <strong>省錢做法：</strong>立刻點<strong>「保存方案」</strong>（避免被後續自動暫存覆蓋），接著<strong>保持 0 鎖 (1 石/抽)</strong> 開完第 5 孔，開孔當下立刻「還原」即可直接 ${nonFixedGoldSlots.length + 1} 金起跳！${probStripHtml}`;
+        } else {
+          titleEl.textContent = '🧭 階段 1：保持 0 鎖 (1 石/抽) 衝開五孔';
+          tagEl.textContent = `已開 ${unlockedCount}/5 孔 · 距五孔 ${remainProg} 進度`;
+          bodyEl.innerHTML = `保持 <strong>0 鎖（1 石 / ${formatHKD(unitPrice)}）</strong> 繼續開孔並讓各孔水位平行成長。若中途出雙金記得手動按「保存方案」，開滿五孔當下再還原。${probStripHtml}`;
+        }
+        return;
+      }
+
+      // ===== ALL 5 HOLES ARE OPEN (Slot 5 is fixed Gold) =====
+
+      // Safe immediate pre-5-hole restore window (within 0..2 clicks of Slot 5 opening)
+      const justOpenedSlot5 = simState.fiveHoleOpenedAtRoll !== null && (simState.rolls - simState.fiveHoleOpenedAtRoll) < 3;
+      const pre5RestoreHint = (justOpenedSlot5 && bestPre5Plan && bestPre5Plan.golds > nonFixedGoldSlots.length)
+        ? `<br>💡 <strong>剛開滿五孔提示：</strong>你之前存有 <strong>${bestPre5Plan.label}（${bestPre5Plan.golds} 金）</strong>，現在立刻點擊「還原」可安全變 <strong>${bestPre5Plan.golds + 1} 金</strong>（不會觸發五孔後墊孔懲罰；若繼續重鑄 3 次以上再還原就會被沒收軟保底）。`
+        : '';
+
+      // ===== STAGE 2: 1 Gold (Slot 5 明光 only) =====
+      if (goldCount === 1) {
+        const ks = simState.slots.slice(0, 4).map(s => s.pity);
+        const estCost = dpCost1(ks, dp);
+        titleEl.textContent = '🧭 階段 2（1 金）：保持 0 鎖 (1 石/抽) 讓四孔平行成長';
+        tagEl.textContent = `預計完五金需 ${estCost.toFixed(0)} 石 (${formatHKD(estCost * unitPrice)})`;
+        bodyEl.innerHTML = `目前僅有第 5 孔明光金。保持 <strong>0 鎖 (1 石/抽)</strong> 讓 1～4 孔同步累積水位，是最省錢的「找孔找平」起手式（4 孔全平從 0 起步平均僅需 141 石）。${pre5RestoreHint}${probStripHtml}`;
+        return;
+      }
+
+      // ===== STAGE 3: 2 Golds (1 non-fixed Gold + Slot 5) =====
+      if (goldCount === 2) {
+        const ks = nonGoldUnlocked.map(s => s.pity);
+        const costLock1 = dpCost2(ks[0], ks[1], ks[2], dp);
+        const costDrop0 = dpCost1([0, ks[0], ks[1], ks[2]], dp);
+        const goldSlot = nonFixedGoldSlots[0];
+        const minK = Math.min(...ks);
+        const maxK = Math.max(...ks);
+        const dropWins = costDrop0 < costLock1 - 5;
+
+        if (dropWins) {
+          box.classList.add('warn');
+          const saveStones = costLock1 - costDrop0;
+          const slotNote = goldSlot.id === 0 ? '（尤其目前是第 1 孔顏色，未鎖套裝結構前難以洗出套裝色，放掉最划算）' : '（若非極品畢業核心詞條，建議放掉）';
+          titleEl.textContent = `⚖️ 找孔找平建議：放掉第 ${goldSlot.id + 1} 孔金，改 0 鎖 (1 石) 較省！`;
+          tagEl.textContent = `放孔省 ${saveStones.toFixed(1)} 石 (${formatHKD(saveStones * unitPrice)})`;
+          bodyEl.innerHTML = `
+            目前其餘 3 孔水位為 <strong>(${ks.join(' / ')})</strong>，落差過大或水位過低（最低僅 ${minK}/90，最高 ${maxK}/90）${slotNote}。硬鎖會導致高水位孔先出金，把低水位孔拖進 10 石/抽地獄！
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 放掉第 ${goldSlot.id + 1} 孔 → 0 鎖 (1石/抽)</div>
+                至五金預計總花費：${fmtStoneHKD(costDrop0, unitPrice)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">鎖定第 ${goldSlot.id + 1} 孔 (2石/抽)</div>
+                至五金預計總花費：${fmtStoneHKD(costLock1, unitPrice)}
+              </div>
+            </div>
+            ${pre5RestoreHint}${probStripHtml}
+          `;
+        } else {
+          titleEl.textContent = `🎯 階段 3（2 金）：鎖定第 ${goldSlot.id + 1} 孔 (2 石/抽) 平行追第 3 金`;
+          tagEl.textContent = `預計至五金 ${costLock1.toFixed(0)} 石 · 2 石/抽`;
+          bodyEl.innerHTML = `
+            其餘 3 孔水位 <strong>(${ks.join(' / ')})</strong> 分布健康！鎖 1 孔 (2 石/抽) 同時推進 3 孔水位比放掉更省錢。${lockedCount === 0 ? '<br>👉 <strong>請先點擊第 ' + (goldSlot.id + 1) + ' 孔上的「鎖定」。</strong>' : ''}
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 鎖定第 ${goldSlot.id + 1} 孔 (2石/抽)</div>
+                至五金預計總花費：${fmtStoneHKD(costLock1, unitPrice)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">放掉改 0 鎖 (1石/抽)</div>
+                至五金預計總花費：${fmtStoneHKD(costDrop0, unitPrice)}
+              </div>
+            </div>
+            ${pre5RestoreHint}${probStripHtml}
+          `;
+        }
+        return;
+      }
+
+      // ===== STAGE 4: 3 Golds (2 non-fixed Golds + Slot 5) — CORE 找孔找平 STAGE =====
+      if (goldCount === 3) {
+        const ks = nonGoldUnlocked.map(s => s.pity);
+        const costLock2 = dpCost3(ks[0], ks[1], dp);
+        const costDrop1 = dpCost2(0, ks[0], ks[1], dp);
+        const costDropAll = dpCost1([0, 0, ks[0], ks[1]], dp);
+        const dropCandidate = pickLowestPriorityGoldSlot(nonFixedGoldSlots);
+        const keepCandidate = nonFixedGoldSlots.find(s => s.id !== dropCandidate.id) || nonFixedGoldSlots[0];
+        const twoHolePct = (calcCombinedGoldChance(nonGoldUnlocked, confiscated) * 100).toFixed(1);
+        const minK = Math.min(...ks);
+
+        const bestCost = Math.min(costLock2, costDrop1, costDropAll);
+        if (costDrop1 < costLock2 - 3) {
+          box.classList.add('warn');
+          const saveStones = costLock2 - costDrop1;
+          titleEl.textContent = `⚖️ 找孔找平關鍵決策：建議放掉第 ${dropCandidate.id + 1} 孔，只鎖第 ${keepCandidate.id + 1} 孔 (2 石)！`;
+          tagEl.textContent = `比鎖 2 孔省 ${saveStones.toFixed(1)} 石 (${formatHKD(saveStones * unitPrice)})`;
+          bodyEl.innerHTML = `
+            剩餘兩孔水位 <strong>(${ks[0]}/90、${ks[1]}/90)</strong> 偏低或嚴重不平（較低孔僅 ${minK}/90）。若硬用 5 石/抽追，高水位孔先出金後會把 ${minK}/90 那孔卡進 10 石/抽深坑！<br>
+            👉 <strong>巴哈找孔找平打法：</strong>優先保留核心結構 <strong>第 ${keepCandidate.id + 1} 孔</strong>，放掉 <strong>第 ${dropCandidate.id + 1} 孔 (${dropCandidate.title})</strong> 用 2 石/抽讓三孔平行墊平。
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card ${costDrop1 <= bestCost + 0.5 ? 'best' : ''}">
+                <div class="dp-opt-title">${costDrop1 <= bestCost + 0.5 ? '✅ ' : ''}放 1 孔 → 鎖 1 孔 (2石/抽)</div>
+                至五金預計：${fmtStoneHKD(costDrop1, unitPrice)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">硬鎖 2 孔 (5石/抽)</div>
+                至五金預計：${fmtStoneHKD(costLock2, unitPrice)}
+              </div>
+              ${costDropAll < costDrop1 - 15 ? `
+              <div class="dp-opt-card ${costDropAll <= bestCost + 0.5 ? 'best' : ''}">
+                <div class="dp-opt-title">✅ 全放 → 0 鎖 (1石/抽)</div>
+                至五金預計：${fmtStoneHKD(costDropAll, unitPrice)}
+              </div>` : ''}
+            </div>
+            ${probStripHtml}
+          `;
+        } else {
+          titleEl.textContent = '🎯 階段 4（3 金）：水位均衡，鎖定 2 金孔 (5 石/抽) 追第 4 金！';
+          tagEl.textContent = `雙未出金孔合率 ${twoHolePct}% · 預計至五金 ${costLock2.toFixed(0)} 石`;
+          bodyEl.innerHTML = `
+            剩餘兩孔水位 <strong>(${ks[0]}/90、${ks[1]}/90)</strong> 已達均衡門檻，直接鎖 2 孔 (5 石/抽) 比放孔重練更划算！${lockedCount < 2 ? '<br>⚠️ <strong>請先將 2 個金孔都點「鎖定」再按重鑄。</strong>' : ''}
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 鎖定 2 金孔 (5石/抽)</div>
+                至五金預計：${fmtStoneHKD(costLock2, unitPrice)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">放 1 孔 → 鎖 1 孔 (2石/抽)</div>
+                至五金預計：${fmtStoneHKD(costDrop1, unitPrice)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        }
+        return;
+      }
+
+      // ===== STAGE 5: 4 Golds (3 non-fixed Golds + Slot 5) =====
+      if (goldCount === 4) {
+        const lastHole = nonGoldUnlocked[0];
+        const k = lastHole ? lastHole.pity : 0;
+        const lastIdx = lastHole ? lastHole.id + 1 : '?';
+        const lastProbPct = lastHole ? (getNextGoldChanceForSlot(lastHole) * 100).toFixed(1) : '0.0';
+        const costLock3 = dpCost4(k, dp);
+        const costDrop1 = dpCost3(0, k, dp);
+        const costDrop2 = dpCost2(0, 0, k, dp);
+        const costReset0 = dpCost1([0, 0, 0, k], dp);
+        const bestKeepSlot = nonFixedGoldSlots.find(s => s.id === 1) || nonFixedGoldSlots.find(s => s.id === 2) || nonFixedGoldSlots[0];
+
+        if (k >= 26) {
+          titleEl.textContent = `🔥 階段 5（4 金收尾）：第 ${lastIdx} 孔水位 ${k}/90，直接鎖 3 孔 (10 石) 衝五金！`;
+          tagEl.textContent = `下抽 ${lastProbPct}% · 預計剩餘 ${costLock3.toFixed(0)} 石 (${formatHKD(costLock3 * unitPrice)})`;
+          bodyEl.innerHTML = `
+            第 ${lastIdx} 孔水位已達 <strong>${k}/90</strong>，直接鎖 3 孔收尾（預計 <strong>${(costLock3 / 10).toFixed(1)} 抽 / ${costLock3.toFixed(0)} 石</strong>）嚴格優於任何放孔或重洗方案！${lockedCount < 3 ? '<br>⚠️ <strong>請先把 3 個金孔都點「鎖定」再按重鑄！</strong>' : ''}
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 鎖 3 孔直衝 (10石/抽)</div>
+                預計花費：${fmtStoneHKD(costLock3, unitPrice)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">放 1 孔 → 鎖 2 孔 (5石/抽)</div>
+                預計花費：${fmtStoneHKD(costDrop1, unitPrice)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        } else if (k >= 15) {
+          box.classList.add('warn');
+          titleEl.textContent = `🎯 階段 5（4 金中水位）：若滿意現有 3 金詞條，鎖 3 孔 (10 石) 收尾`;
+          tagEl.textContent = `第 ${lastIdx} 孔 ${k}/90 · 預計剩餘 ${costLock3.toFixed(0)} 石`;
+          bodyEl.innerHTML = `
+            第 ${lastIdx} 孔水位 <strong>${k}/90</strong>。此區間「放 1 孔變鎖 2 孔」反而更貴，只有【鎖 3 孔保詞條】或【純省預算全解重來】兩個合理選項（⚠️ 嚴禁存檔解鎖墊孔還原，會沒收軟保底！）。${lockedCount < 3 ? '<br>👉 若決定鎖 3 孔，請先鎖滿 3 金孔。' : ''}
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 鎖 3 孔保詞條 (10石/抽)</div>
+                預計花費：${fmtStoneHKD(costLock3, unitPrice)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">純省錢全放 → 0 鎖 (1石/抽)</div>
+                放棄現有 3 金重平：${fmtStoneHKD(costReset0, unitPrice)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">❌ 放 1 孔鎖 2 (較虧)</div>
+                預計花費：${fmtStoneHKD(costDrop1, unitPrice)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        } else {
+          box.classList.add('danger');
+          titleEl.textContent = `🚨 4 金高風險低水位陷阱！第 ${lastIdx} 孔僅 ${k}/90，硬點 10 石極貴！`;
+          tagEl.textContent = `硬鎖預計 ${costLock3.toFixed(0)} 石 (${formatHKD(costLock3 * unitPrice)})`;
+          bodyEl.innerHTML = `
+            第 ${lastIdx} 孔水位才 <strong>${k}/90</strong>，硬鎖 3 孔 (10 石/抽) 單追這孔就要燒掉約 <strong>${costLock3.toFixed(0)} 石 (${formatHKD(costLock3 * unitPrice)})</strong>！<br>
+            🚫 <strong>絕對禁忌：</strong>切勿「保存方案 → 全解鎖 1 石墊水位 → 還原」，實戰會觸發<strong>沒收額外出金率</strong>懲罰！請從以下合法方案取捨：
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 純省預算：全放 0 鎖 (1石/抽)</div>
+                四孔重平最便宜：${fmtStoneHKD(costReset0, unitPrice)}
+              </div>
+              <div class="dp-opt-card ${costDrop2 < costLock3 ? 'best' : ''}">
+                <div class="dp-opt-title">⚖️ 保核心：只留第 ${bestKeepSlot.id + 1} 孔 (2石)</div>
+                放 2 孔找平：${fmtStoneHKD(costDrop2, unitPrice)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">💎 僅極品詞條：硬鎖 3 孔 (10石)</div>
+                預計花費：${fmtStoneHKD(costLock3, unitPrice)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        }
+        return;
+      }
+    }
+
+    function renderRlStrategy() {
+      const box = document.getElementById('rlStrategyBox');
+      const titleEl = document.getElementById('rlStrategyTitle');
+      const tagEl = document.getElementById('rlStrategyTag');
+      const bodyEl = document.getElementById('rlStrategyBody');
+      if (!box) return;
+
+      const dp = getDpTables(false);
+      const unitPrice = parseFloat(document.getElementById('rlUnitPrice').value) || 0;
+      const cur = document.getElementById('rlCurrency').value || 'HK$';
+      const openedCount = rlState.slots.filter(s => s.opened).length;
+      const lockedCount = rlState.locks;
+      const activeSlots = rlState.slots.filter(s => s.opened && !s.locked && !s.fixedGold);
+      const activeKs = activeSlots.map(s => s.pity);
+
+      const combinedNextProb = calcCombinedGoldChance(activeSlots, false);
+      const combinedNextPct = (combinedNextProb * 100).toFixed(1);
+      const perHoleProbHtml = activeSlots.length > 0
+        ? activeSlots.map(s => `第${rlState.slots.indexOf(s) + 1}孔 <strong>${(getGoldChanceByRoll(s.pity + 1, false) * 100).toFixed(1)}%</strong> (${s.pity}/90)`).join(' · ')
+        : '所有已開孔位已鎖定';
+
+      const probStripHtml = `
+        <div class="strategy-prob-strip">
+          <span>📊 <strong>全孔下抽出金率：${combinedNextPct}%</strong></span>
+          <span>${perHoleProbHtml}</span>
+        </div>
+      `;
+
+      box.className = 'strategy-box';
+
+      // Before 5 holes open in Real-Life Counter
+      if (openedCount < 5) {
+        const unopenedCount = 5 - openedCount;
+        const maxRemainTo5 = (unopenedCount - 1) * 30 + Math.max(0, 30 - rlState.rollsSinceLastHole);
+        const hitInRemainPct = (calcMultiClickHitProb(activeSlots, Math.min(maxRemainTo5, 10), false) * 100).toFixed(1);
+
+        if (maxRemainTo5 <= 10 && lockedCount >= 1 && lockedCount <= 2 && parseFloat(hitInRemainPct) >= (lockedCount === 1 ? 2.8 * maxRemainTo5 : 5.3 * maxRemainTo5)) {
+          box.classList.add('warn');
+          titleEl.textContent = `⚡ 實況臨門五孔（最多差 ${maxRemainTo5} 抽）：維持 ${lockedCount} 鎖為正期望值 (+EV)`;
+          tagEl.textContent = `${maxRemainTo5} 抽內出金率 ${hitInRemainPct}%`;
+          bodyEl.innerHTML = `距第 5 孔最多只剩 <strong>${maxRemainTo5} 抽</strong>，其餘未鎖孔出金率高達 <strong>${hitInRemainPct}%</strong>，此時維持 ${lockedCount} 鎖賭多金起跳划算！${probStripHtml}`;
+        } else if (lockedCount > 0) {
+          box.classList.add('warn');
+          titleEl.textContent = '⚠️ 實況警告：未開滿五孔建議不要鎖孔！';
+          tagEl.textContent = `目前 ${lockedCount} 鎖 (${LOCK_COSTS[lockedCount]} 石/抽) · 最多差 ${maxRemainTo5} 抽開五孔`;
+          bodyEl.innerHTML = `第 5 孔【明光】開孔必送 1 金。現在鎖孔開五孔成本翻倍，建議<strong>先在遊戲內保存方案 → 解鎖用 1 石/抽</strong> 開滿五孔當下再還原！${probStripHtml}`;
+        } else {
+          titleEl.textContent = '🧭 實況建議：0 鎖 (1 石/抽) 衝開五孔';
+          tagEl.textContent = `已開 ${openedCount}/5 孔 · 下孔保底 ${rlState.rollsSinceLastHole}/30`;
+          bodyEl.innerHTML = `繼續保持 <strong>0 鎖 (1 石/抽)</strong> 開孔並讓已開孔平行成長。若中途出多金，於遊戲內先保存方案並點擊對應孔位「出金歸零」。${probStripHtml}`;
+        }
+        return;
+      }
+
+      // ===== ALL 5 HOLES OPEN IN REAL-LIFE COUNTER: EXACT DP 找孔找平 =====
+      if (lockedCount === 3) {
+        const k = activeKs.length > 0 ? activeKs[0] : 0;
+        const costLock3 = dpCost4(k, dp);
+        const costDrop1 = dpCost3(0, k, dp);
+        const costDrop2 = dpCost2(0, 0, k, dp);
+        const costReset0 = dpCost1([0, 0, 0, k], dp);
+
+        if (k >= 26) {
+          titleEl.textContent = `🔥 衝五金收尾最佳區！維持鎖 3 孔 (10 石/抽)`;
+          tagEl.textContent = `未鎖孔 ${k}/90 · 預計剩餘 ${costLock3.toFixed(0)} 石`;
+          bodyEl.innerHTML = `
+            未鎖孔水位已達 <strong>${k}/90</strong>，直接鎖 3 孔衝五金（預計 ${fmtStoneHKD(costLock3, unitPrice, cur)}）嚴格優於放孔！
+            ${probStripHtml}
+          `;
+        } else if (k >= 15) {
+          box.classList.add('warn');
+          titleEl.textContent = `🎯 4 金中水位 (${k}/90)：滿意詞條就鎖 3 孔，勿解鎖墊孔！`;
+          tagEl.textContent = `鎖 3 孔預計 ${costLock3.toFixed(0)} 石`;
+          bodyEl.innerHTML = `
+            未鎖孔水位 <strong>${k}/90</strong>。放 1 孔變鎖 2 孔反而更貴（${costDrop1.toFixed(0)} 石），且<strong>嚴禁存檔解鎖墊孔還原（會沒收軟保底）</strong>。
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 鎖 3 孔保詞條 (10石/抽)</div>
+                預計：${fmtStoneHKD(costLock3, unitPrice, cur)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">純省錢全放 → 0 鎖 (1石)</div>
+                重平預計：${fmtStoneHKD(costReset0, unitPrice, cur)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        } else {
+          box.classList.add('danger');
+          titleEl.textContent = `🚨 4 金低水位陷阱！未鎖孔僅 ${k}/90，硬點 10 石極貴！`;
+          tagEl.textContent = `硬點預計 ${costLock3.toFixed(0)} 石`;
+          bodyEl.innerHTML = `
+            未鎖孔水位僅 <strong>${k}/90</strong>，硬鎖 3 孔預計燒掉 ${fmtStoneHKD(costLock3, unitPrice, cur)}！🚫 <strong>嚴禁解鎖墊孔再還原（會沒收軟保底）</strong>，請比較合法取捨：
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 全放重平 → 0 鎖 (1石)</div>
+                預計：${fmtStoneHKD(costReset0, unitPrice, cur)}
+              </div>
+              <div class="dp-opt-card ${costDrop2 < costLock3 ? 'best' : ''}">
+                <div class="dp-opt-title">⚖️ 只留 1 核心孔 (2石)</div>
+                放 2 孔找平：${fmtStoneHKD(costDrop2, unitPrice, cur)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">💎 極品詞條硬鎖 3 (10石)</div>
+                預計：${fmtStoneHKD(costLock3, unitPrice, cur)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        }
+      } else if (lockedCount === 2) {
+        const k1 = activeKs[0] ?? 0;
+        const k2 = activeKs[1] ?? 0;
+        const costLock2 = dpCost3(k1, k2, dp);
+        const costDrop1 = dpCost2(0, k1, k2, dp);
+        if (costDrop1 < costLock2 - 3) {
+          box.classList.add('warn');
+          titleEl.textContent = `⚖️ 實況找孔找平：建議放掉 1 孔改鎖 1 孔 (2 石/抽)！`;
+          tagEl.textContent = `放 1 孔可省 ${(costLock2 - costDrop1).toFixed(1)} 石`;
+          bodyEl.innerHTML = `
+            剩餘兩孔水位 <strong>(${k1}/90、${k2}/90)</strong> 偏低或不平，硬鎖 2 孔 (5 石/抽) 容易卡 10 石陷阱！建議保留較重要的核心結構金孔，放掉次要金孔（如顏色孔）改 2 石找平。
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 放 1 孔 → 鎖 1 孔 (2石)</div>
+                至五金預計：${fmtStoneHKD(costDrop1, unitPrice, cur)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">維持鎖 2 孔 (5石)</div>
+                至五金預計：${fmtStoneHKD(costLock2, unitPrice, cur)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        } else {
+          titleEl.textContent = '🎯 3 金進攻期：水位均衡，維持鎖 2 孔 (5 石/抽) 追第 4 金';
+          tagEl.textContent = `至五金預計 ${costLock2.toFixed(0)} 石`;
+          bodyEl.innerHTML = `
+            兩未鎖孔水位 <strong>(${k1}/90、${k2}/90)</strong> 均衡，鎖 2 孔直接追第 4 金比放孔更省！
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 維持鎖 2 孔 (5石)</div>
+                至五金預計：${fmtStoneHKD(costLock2, unitPrice, cur)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">放 1 孔 → 鎖 1 孔 (2石)</div>
+                至五金預計：${fmtStoneHKD(costDrop1, unitPrice, cur)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        }
+      } else if (lockedCount === 1) {
+        const k1 = activeKs[0] ?? 0;
+        const k2 = activeKs[1] ?? 0;
+        const k3 = activeKs[2] ?? 0;
+        const costLock1 = dpCost2(k1, k2, k3, dp);
+        const costDrop0 = dpCost1([0, k1, k2, k3], dp);
+        if (costDrop0 < costLock1 - 5) {
+          box.classList.add('warn');
+          titleEl.textContent = `⚖️ 實況找孔找平：水位落差過大，建議放掉改 0 鎖 (1 石)！`;
+          tagEl.textContent = `放孔省 ${(costLock1 - costDrop0).toFixed(1)} 石`;
+          bodyEl.innerHTML = `
+            未鎖 3 孔水位 <strong>(${k1}/${k2}/${k3})</strong> 落差過大或過低，若鎖的不是極品核心孔，放掉改 1 石/抽重平更省錢！
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 放掉改 0 鎖 (1石/抽)</div>
+                至五金預計：${fmtStoneHKD(costDrop0, unitPrice, cur)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">維持鎖 1 孔 (2石/抽)</div>
+                至五金預計：${fmtStoneHKD(costLock1, unitPrice, cur)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        } else {
+          titleEl.textContent = '🎯 2 金穩定推進：鎖 1 孔 (2 石/抽) 平行追第 3 金';
+          tagEl.textContent = `至五金預計 ${costLock1.toFixed(0)} 石`;
+          bodyEl.innerHTML = `
+            未鎖 3 孔水位 <strong>(${k1}/${k2}/${k3})</strong> 分布健康，維持鎖 1 孔 (2 石/抽) 同時滾動 3 孔性價比最高！
+            <div class="dp-compare-grid">
+              <div class="dp-opt-card best">
+                <div class="dp-opt-title">✅ 維持鎖 1 孔 (2石/抽)</div>
+                至五金預計：${fmtStoneHKD(costLock1, unitPrice, cur)}
+              </div>
+              <div class="dp-opt-card">
+                <div class="dp-opt-title">放掉改 0 鎖 (1石/抽)</div>
+                至五金預計：${fmtStoneHKD(costDrop0, unitPrice, cur)}
+              </div>
+            </div>
+            ${probStripHtml}
+          `;
+        }
       } else {
-        box.classList.add('disabled');
-        hint.textContent = '目前：關閉（每次固定 +1 進度，每 30 抽開一孔；暴擊僅影響開孔，不影響出金機率與 90 抽保底）';
+        const ks4 = [activeKs[0] ?? 0, activeKs[1] ?? 0, activeKs[2] ?? 0, activeKs[3] ?? 0];
+        const cost0 = dpCost1(ks4, dp);
+        titleEl.textContent = '🧭 0 鎖 (1 石/抽) 四孔平行找孔找平中';
+        tagEl.textContent = `至五金預計 ${cost0.toFixed(0)} 石 (${cur}${(cost0 * unitPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })})`;
+        bodyEl.innerHTML = `五孔已全開，保持 <strong>0 鎖 (1 石/抽)</strong> 讓 1～4 孔同步推高水位，直到出滿意核心金孔再決定鎖 1 孔。${probStripHtml}`;
       }
     }
 
     // Init
     renderWeaponSetInfo();
     updatePityModeUI();
+    updateEarlyProtectUI();
     updateCritModeUI();
     resetSimulator();
     renderRealLife();
