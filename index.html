@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="format-detection" content="telephone=no" />
-  <title>燕雲武器重鑄模擬器 v37 (iOS / PDFgear 通用版) by 娜拉比</title>
+  <title>燕雲武器重鑄模擬器 v38 (iOS / PDFgear 通用版) by 娜拉比</title>
   <style>
     :root {
       color-scheme: dark;
@@ -1161,7 +1161,7 @@
       <div class="brand">
         <div class="brand-icon">落櫻樓</div>
         <div>
-          <h1>燕雲武器重鑄模擬器 v37 & 實況計數器 by 娜拉比</h1>
+          <h1>燕雲武器重鑄模擬器 v38 & 實況計數器 by 娜拉比</h1>
           <p id="headerModeDesc">港台服繁中官方譯名＋陸服新武器 · 律格變幻完整細分機率 · 90 抽保底 · 逐孔實況計算</p>
         </div>
       </div>
@@ -1271,7 +1271,7 @@
               <span id="simStrategyTitle">🧭 實時省錢追五金建議</span>
               <span id="simStrategyTag" class="strategy-tag">階段 1：零鎖開孔</span>
             </div>
-            <div id="simStrategyBody">點擊「重鑄一次」開始。前期保持 0 鎖 (1 石/抽) 開滿五孔，並貫徹「找孔找平」原則，避免高鎖費階段出現單孔低水位陷阱。</div>
+            <div id="simStrategyBody">點擊「重鑄一次」開始。前期保持 0 鎖 (1 石/抽) 開滿前四孔，策略與預算僅以前四孔（1～4 孔）計算，第 5 孔【明光】固定必金不列入計金。</div>
           </div>
 
           <!-- Bottom Stats -->
@@ -1289,8 +1289,8 @@
               <div class="stat-label">已開孔數</div>
             </div>
             <div class="stat-box">
-              <div class="stat-val" id="statGolds">0</div>
-              <div class="stat-label">當前金孔</div>
+              <div class="stat-val" id="statGolds">0/4</div>
+              <div class="stat-label" id="statGoldsLabel">前四孔金孔</div>
             </div>
           </div>
         </div>
@@ -1361,7 +1361,7 @@
               <span id="rlStrategyTitle">🧭 實況省錢追五金建議</span>
               <span id="rlStrategyTag" class="strategy-tag">階段 1：零鎖開孔</span>
             </div>
-            <div id="rlStrategyBody">目前尚未開滿五孔，建議保持 0 鎖 (1 石/抽) 開孔；開滿五孔後嚴禁解鎖墊孔還原（會沒收軟保底額外出金率），請依實時「找孔找平」期望成本決策。</div>
+            <div id="rlStrategyBody">目前前四孔尚未開滿，建議保持 0 鎖 (1 石/抽) 開孔；策略與預算僅以前四孔（1～4 孔）計算（第 5 孔明光必金不列入計金）。</div>
           </div>
 
           <!-- Real-life 5 slots sequential pity trackers -->
@@ -1720,13 +1720,13 @@
       simState.autoPausedOnGold = false;
 
       const unlockedGolds = getUnlockedNonLockedGoldSlots();
-      const unlockedNow = simState.slots.filter(s => s.unlocked).length;
+      const unlocked4Now = simState.slots.slice(0, 4).filter(s => s.unlocked).length;
       if (unlockedGolds.length > 0) {
         const names = unlockedGolds.map(s => `第 ${s.id + 1} 孔(${s.trait})`).join('、');
-        if (unlockedNow < 5) {
-          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}（已自動暫存）。尚未開滿五孔，建議保持 0 鎖用 1 石開完五孔後再還原。`;
+        if (unlocked4Now < 4) {
+          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}（已自動暫存）。前四孔尚未開滿，請依下方建議決定 0 鎖開孔或臨門鎖孔。`;
         } else {
-          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}！請依下方「找孔找平」建議決定鎖定或放孔重平。`;
+          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}！前四孔已全開，請依下方「找孔找平」期望成本決定鎖定或放孔重平。`;
         }
       } else {
         simState.bannerMsg = snap.bannerMsg || '';
@@ -2027,13 +2027,14 @@
           others: othersText
         });
 
-        // Auto-save plan on Gold hit (keep latest 5)
-        const goldCountNow = simState.slots.filter(s => s.unlocked && s.grade === 'gold').length;
+        // Auto-save plan on Gold hit (keep latest 5; count ONLY Slots 1-4 for gold total)
+        const gold4Now = simState.slots.slice(0, 4).filter(s => s.unlocked && s.grade === 'gold').length;
         const unlockedNowCount = simState.slots.filter(s => s.unlocked).length;
         simState.autoPresets.unshift({
           time: new Date().toLocaleTimeString('zh-Hant-HK', { hour12: false }),
           roll: simState.rolls,
-          golds: goldCountNow,
+          golds: gold4Now,
+          golds4: gold4Now,
           spent: simState.spent,
           savedAfterFiveHoles: unlockedNowCount >= 5,
           slots: JSON.parse(JSON.stringify(simState.slots))
@@ -2079,11 +2080,11 @@
       simState.bannerMsg = '';
       const result = executeReforgeStep(false);
       if (result.ok && result.goldHits.length > 0) {
-        const unlockedNow = simState.slots.filter(s => s.unlocked).length;
-        if (unlockedNow < 5) {
-          simState.bannerMsg = `★ 出現【礪金】：${result.goldHits.join('、')}！已自動暫存方案。尚未開滿五孔前，請依下方「實時找孔找平建議」決定 0 鎖衝五孔或臨門鎖孔。`;
+        const unlocked4Now = simState.slots.slice(0, 4).filter(s => s.unlocked).length;
+        if (unlocked4Now < 4) {
+          simState.bannerMsg = `★ 出現【礪金】：${result.goldHits.join('、')}！已自動暫存方案。前四孔尚未開滿，請依下方建議決定 0 鎖開孔或臨門鎖孔。`;
         } else {
-          simState.bannerMsg = `★ 出現【礪金】：${result.goldHits.join('、')}！已自動暫存方案。請依下方「找孔找平」期望成本決定鎖孔或放孔重平（切勿解鎖墊孔後再還原）。`;
+          simState.bannerMsg = `★ 出現【礪金】：${result.goldHits.join('、')}！已自動暫存方案。前四孔已全開，請依下方「找孔找平」期望成本決定鎖孔或放孔重平。`;
         }
       }
       renderSim();
@@ -2131,13 +2132,23 @@
         }
 
         if (res.goldHits.length > 0) {
+          const unlocked4Now = simState.slots.slice(0, 4).filter(s => s.unlocked).length;
           simState.autoPausedOnGold = true;
-          simState.bannerMsg = `✨ 第 ${simState.rolls} 次重鑄出現【礪金】（${res.goldHits.join('、')}）！已自動暫存方案。為省玄石建議【不要鎖定】，直接按「繼續自動開滿五孔」用 1 石開完五孔後再還原！`;
-          renderSim();
-          await uiAlert(
-            `第 ${simState.rolls} 次重鑄出現【礪金】：${res.goldHits.join('、')}！\n\n系統已自動暫存此方案。尚未開滿五孔前，為最低預算建議【保持 0 鎖】，直接按「繼續自動開滿五孔」用 1 石衝開第 5 孔後再還原方案即可！`,
-            '✨ 開孔中途出金（已暫停）'
-          );
+          if (unlocked4Now < 4) {
+            simState.bannerMsg = `✨ 第 ${simState.rolls} 次重鑄出現【礪金】（${res.goldHits.join('、')}）！已自動暫存方案。前四孔尚未開滿，建議保持 0 鎖繼續開滿前四孔！`;
+            renderSim();
+            await uiAlert(
+              `第 ${simState.rolls} 次重鑄出現【礪金】：${res.goldHits.join('、')}！\n\n系統已自動暫存此方案。目前前四孔尚未開滿（${unlocked4Now}/4），建議先保持 0 鎖用 1 石開滿前四孔，再依下方「找孔找平」預算建議決定是否鎖孔。`,
+              '✨ 開孔中途出金（已暫停）'
+            );
+          } else {
+            simState.bannerMsg = `✨ 第 ${simState.rolls} 次重鑄出現【礪金】（${res.goldHits.join('、')}）！前四孔已全開，請依下方「找孔找平」期望成本決定鎖孔或放孔！`;
+            renderSim();
+            await uiAlert(
+              `第 ${simState.rolls} 次重鑄出現【礪金】：${res.goldHits.join('、')}！\n\n前四孔（1～4 孔）已全部開啟，第 5 孔【明光】固定必金會隨後續重鑄自動解鎖。請直接依下方「找孔找平」建議操作！`,
+              '✨ 前四孔已全開並出金（已暫停）'
+            );
+          }
           return;
         }
       }
@@ -2187,11 +2198,11 @@
       slot.locked = !slot.locked;
 
       const unlockedGolds = getUnlockedNonLockedGoldSlots();
-      const unlockedNow = simState.slots.filter(s => s.unlocked).length;
+      const unlocked4Now = simState.slots.slice(0, 4).filter(s => s.unlocked).length;
       if (unlockedGolds.length > 0) {
         const names = unlockedGolds.map(s => `第 ${s.id + 1} 孔(${s.trait})`).join('、');
-        if (unlockedNow < 5) {
-          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}（已自動暫存）。尚未開滿五孔，建議保持 0 鎖用 1 石開完五孔後再還原。`;
+        if (unlocked4Now < 4) {
+          simState.bannerMsg = `★ 當前有未鎖定的【礪金】：${names}（已自動暫存）。前四孔尚未開滿，請依下方建議決定 0 鎖開孔或臨門鎖孔。`;
         } else {
           simState.bannerMsg = `★ 當前仍有未鎖定的【礪金】：${names}！請依下方「找孔找平」建議決定鎖定或放孔重平。`;
         }
@@ -2215,18 +2226,19 @@
     }
 
     function savePreset() {
-      const golds = simState.slots.filter(s => s.unlocked && s.grade === 'gold').length;
+      const golds4 = simState.slots.slice(0, 4).filter(s => s.unlocked && s.grade === 'gold').length;
       const unlockedNowCount = simState.slots.filter(s => s.unlocked).length;
       const isReplace = !!simState.manualPreset;
       simState.manualPreset = {
         time: new Date().toLocaleTimeString('zh-Hant-HK', { hour12: false }),
         roll: simState.rolls,
-        golds,
+        golds: golds4,
+        golds4,
         spent: simState.spent,
         savedAfterFiveHoles: unlockedNowCount >= 5,
         slots: JSON.parse(JSON.stringify(simState.slots))
       };
-      addLog(`${isReplace ? '已覆蓋手動保存方案' : '已手動保存方案'}（第 ${simState.rolls} 抽 · ${golds} 金 / 消耗 ${simState.spent} 石）`, 'cyan');
+      addLog(`${isReplace ? '已覆蓋手動保存方案' : '已手動保存方案'}（第 ${simState.rolls} 抽 · 前四孔 ${golds4}/4 金 / 消耗 ${simState.spent} 石）`, 'cyan');
       renderSim();
     }
 
@@ -2302,7 +2314,7 @@
       if (willConfiscate) {
         addLog(`🚫 偵測到五孔後墊孔還原${sourceLabel}！系統已沒收【額外出金率（軟保底）】，後續僅維持 3.0% 至第 90 抽硬保底！`, 'gold');
       } else {
-        addLog(`已還原${sourceLabel}（第 ${p.roll} 抽 · ${p.golds} 金｜各孔位 0/90 水位與軟保底安全保留）`, 'cyan');
+        addLog(`已還原${sourceLabel}（第 ${p.roll} 抽 · 前四孔 ${p.golds4 ?? p.golds}/4 金｜各孔位 0/90 水位與軟保底安全保留）`, 'cyan');
       }
       renderSim();
     }
@@ -2373,7 +2385,8 @@
 
     function renderSim() {
       const unlockedCount = simState.slots.filter(s => s.unlocked).length;
-      const goldCount = simState.slots.filter(s => s.grade === 'gold').length;
+      const gold4Count = simState.slots.slice(0, 4).filter(s => s.unlocked && s.grade === 'gold').length;
+      const slot5Open = !!(simState.slots[4] && simState.slots[4].unlocked);
       const lockCount = getLockCount();
       const cost = getCurrentCost();
 
@@ -2384,8 +2397,12 @@
       document.getElementById('statSpent').textContent = simState.spent;
       document.getElementById('statSpentMoney').textContent = `累計消耗 (${formatHKD(spentMoney)})`;
       document.getElementById('statUnlocked').textContent = `${unlockedCount}/5`;
-      document.getElementById('statGolds').textContent = goldCount;
-      document.getElementById('statusSummary').textContent = `${unlockedCount}/5 孔 · ${goldCount} 金 · ${lockCount} 鎖`;
+      document.getElementById('statGolds').textContent = `${gold4Count}/4`;
+      const statGoldsLabelEl = document.getElementById('statGoldsLabel');
+      if (statGoldsLabelEl) {
+        statGoldsLabelEl.textContent = slot5Open ? '前四孔金孔 (+明光必金)' : '前四孔金孔';
+      }
+      document.getElementById('statusSummary').textContent = `${unlockedCount}/5 孔 · 前四孔 ${gold4Count}/4 金${slot5Open ? ' (+明光)' : ''} · ${lockCount} 鎖`;
       document.getElementById('nextCostLabel').textContent = `本次消耗：${cost} 石 (${formatHKD(cost * unitPrice)})`;
       const reforgeBtn = document.getElementById('reforgeBtn');
       reforgeBtn.textContent = `重鑄一次 (${cost} 石)`;
@@ -2523,7 +2540,7 @@
         manualEl.innerHTML = `
           <div class="saved-item manual-plan">
             <div class="saved-item-top">
-              <span><strong>手動</strong> · 第 ${mp.roll} 抽 · ${mp.golds} 金</span>
+              <span><strong>手動</strong> · 第 ${mp.roll} 抽 · 前四孔 ${mp.golds4 ?? mp.golds}/4 金</span>
               <button class="pill-btn" onclick="loadManualPreset()">還原</button>
             </div>
             ${renderPlanSquaresHtml(mp.slots)}
@@ -2539,7 +2556,7 @@
         autoEl.innerHTML = simState.autoPresets.map((p, i) => `
           <div class="saved-item">
             <div class="saved-item-top">
-              <span>#${i + 1} · 第 ${p.roll} 抽 · ${p.golds} 金</span>
+              <span>#${i + 1} · 第 ${p.roll} 抽 · 前四孔 ${p.golds4 ?? p.golds}/4 金</span>
               <button class="pill-btn" onclick="loadAutoPreset(${i})">還原</button>
             </div>
             ${renderPlanSquaresHtml(p.slots)}
@@ -2975,6 +2992,11 @@
       return `<strong>${stones.toFixed(1)} 石</strong> (${cur}${money.toLocaleString('en-US', { maximumFractionDigits: 0 })})`;
     }
 
+    function getPlan4Golds(p) {
+      if (!p || !p.slots) return 0;
+      return p.slots.slice(0, 4).filter(s => s.unlocked && s.grade === 'gold').length;
+    }
+
     function renderSimStrategy() {
       const box = document.getElementById('simStrategyBox');
       const titleEl = document.getElementById('simStrategyTitle');
@@ -2983,83 +3005,90 @@
       if (!box) return;
 
       const confiscated = simState.softPityConfiscated;
-      const dp = getDpTables(confiscated);
-      const unlockedCount = simState.slots.filter(s => s.unlocked).length;
-      const goldSlots = simState.slots.filter(s => s.unlocked && s.grade === 'gold');
-      const goldCount = goldSlots.length;
-      const nonFixedGoldSlots = simState.slots.filter(s => s.unlocked && !s.fixedGold && s.grade === 'gold');
-      const nonGoldUnlocked = simState.slots.filter(s => s.unlocked && !s.fixedGold && s.grade !== 'gold');
-      const rollingSlots = simState.slots.filter(s => s.unlocked && !s.locked && !s.fixedGold);
+      // STRICTLY use ONLY the first 4 rollable holes (Slots 1-4). Slot 5 (明光) is fixed Gold and excluded from Gold-count & budget math!
+      const rollableSlots = simState.slots.slice(0, 4);
+      const opened4Count = rollableSlots.filter(s => s.unlocked).length;
+      const gold4Slots = rollableSlots.filter(s => s.unlocked && s.grade === 'gold');
+      const gold4Count = gold4Slots.length;
+      const nonGold4Slots = rollableSlots.filter(s => s.unlocked && s.grade !== 'gold');
+      const rollingSlots = rollableSlots.filter(s => s.unlocked && !s.locked);
+      const slot5Open = !!(simState.slots[4] && simState.slots[4].unlocked);
+      const remainToSlot5 = Math.max(0, 120 - simState.unlockProgress);
       const lockedCount = getLockCount();
       const unitPrice = getSimUnitPrice();
       const stepCost = getCurrentCost();
 
-      // Combined next-click Gold probability across all active rolling slots
+      // Combined next-click Gold probability across active rollable slots (Slots 1-4 only)
       const combinedNextProb = calcCombinedGoldChance(rollingSlots, confiscated);
       const combinedNextPct = (combinedNextProb * 100).toFixed(1);
       const perHoleProbHtml = rollingSlots.length > 0
         ? rollingSlots.map(s => `第${s.id + 1}孔 <strong>${(getNextGoldChanceForSlot(s) * 100).toFixed(1)}%</strong> (${s.pity}/90)`).join(' · ')
-        : '所有已開孔位已鎖定';
+        : '前四孔已全鎖定';
 
       const penaltyChip = confiscated ? '<span style="color:#fca5a5; font-weight:700;">⚠️ 軟保底已沒收</span>' : '';
       const probStripHtml = `
         <div class="strategy-prob-strip">
-          <span>📊 <strong>全孔下抽出金率：${combinedNextPct}%</strong></span>
+          <span>📊 <strong>前四孔下抽出金率：${combinedNextPct}%</strong></span>
           <span>${perHoleProbHtml}</span>
           ${penaltyChip}
         </div>
       `;
 
-      // Check best saved pre-5-hole plan (only safe to restore right when Slot 5 opens!)
+      // Saved plans compared strictly by Slots 1-4 Gold count
       const allPlans = [];
-      if (simState.manualPreset) allPlans.push({ ...simState.manualPreset, label: '手動方案' });
-      simState.autoPresets.forEach((p, idx) => allPlans.push({ ...p, label: `自動暫存 #${idx + 1}` }));
-      const bestPlan = allPlans.reduce((best, cur) => (!best || cur.golds > best.golds ? cur : best), null);
+      if (simState.manualPreset) allPlans.push({ ...simState.manualPreset, golds4: getPlan4Golds(simState.manualPreset), label: '手動方案' });
+      simState.autoPresets.forEach((p, idx) => allPlans.push({ ...p, golds4: getPlan4Golds(p), label: `自動暫存 #${idx + 1}` }));
       const bestPre5Plan = allPlans
         .filter(p => !p.savedAfterFiveHoles)
-        .reduce((best, cur) => (!best || cur.golds > best.golds ? cur : best), null);
+        .reduce((best, cur) => (!best || cur.golds4 > best.golds4 ? cur : best), null);
 
       box.className = 'strategy-box';
 
-      // ===== STAGE 6: 5 Golds achieved! =====
-      if (goldCount >= 5) {
+      // ===== STAGE 6: All 4 rollable holes (Slots 1-4) are Gold! =====
+      if (gold4Count >= 4) {
         box.classList.add('done');
-        titleEl.textContent = '🎉 五金畢業！';
-        tagEl.textContent = `共消耗 ${simState.spent} 石 (${formatHKD(simState.spent * unitPrice)})`;
-        bodyEl.innerHTML = `<strong>恭喜達成五金！</strong> 已花費 <strong>${simState.spent} 顆玄石</strong>（約 ${formatHKD(simState.spent * unitPrice)}）。建議立刻「保存方案」鎖定畢業成品。`;
+        if (slot5Open) {
+          titleEl.textContent = '🎉 前四孔全金 (4/4) ＋ 明光五金畢業！';
+          tagEl.textContent = `共消耗 ${simState.spent} 石 (${formatHKD(simState.spent * unitPrice)})`;
+          bodyEl.innerHTML = `<strong>恭喜達成前四孔全金＋第 5 孔明光畢業！</strong> 累計花費 <strong>${simState.spent} 顆玄石</strong>（約 ${formatHKD(simState.spent * unitPrice)}）。建議立刻按「保存方案」鎖定成品。`;
+        } else {
+          titleEl.textContent = `🎉 前四孔已全金 (4/4)！尚差 ${remainToSlot5} 進度解鎖明光`;
+          tagEl.textContent = `再開明光僅需約 ${remainToSlot5} 石`;
+          bodyEl.innerHTML = `<strong>前四孔（1～4 孔）已全部出金！</strong> 第 5 孔【明光】為固定必金，只需完成剩餘 <strong>${remainToSlot5} 開孔進度</strong> 即可畢業。<br>👉 <strong>最省操作：</strong>① 立刻按「<strong>保存方案</strong>」存下這把 4/4 金 → ② 全部解鎖用 <strong>1 石/抽</strong> 補完剩餘 ${remainToSlot5} 進度開出明光 → ③ 開孔當下立刻按「還原」即可安全五金畢業！`;
+        }
         return;
       }
 
-      // ===== STAGE 1: Not yet 5 holes opened (Before Slot 5 明光) =====
-      if (unlockedCount < 5) {
-        const remainProg = Math.max(0, 120 - simState.unlockProgress);
-        const otherHolesHitInR = calcMultiClickHitProb(nonGoldUnlocked, remainProg, confiscated);
+      // ===== STAGE 1: Still opening first 4 rollable holes (opened4Count < 4, progress < 90) =====
+      if (opened4Count < 4) {
+        const remainTo4 = Math.max(0, 90 - simState.unlockProgress);
+        const otherHolesHitInR = calcMultiClickHitProb(nonGold4Slots, remainTo4, confiscated);
         const otherHolesHitPct = (otherHolesHitInR * 100).toFixed(1);
-        const otherSinglePct = (calcCombinedGoldChance(nonGoldUnlocked, confiscated) * 100).toFixed(1);
+        const otherSinglePct = (calcCombinedGoldChance(nonGold4Slots, confiscated) * 100).toFixed(1);
 
-        // Exact EV breakeven check near Slot 5 (<= 10 clicks left, holding 1 or 2 Golds, and no strictly better saved plan already waiting)
-        const lockTier = Math.min(2, nonFixedGoldSlots.length);
-        const extraLockStones = lockTier === 1 ? remainProg : 4 * remainProg;
-        const evBreakevenPct = lockTier === 1 ? (2.8 * remainProg) : (5.3 * remainProg);
-        const hasBetterSaved = bestPre5Plan && bestPre5Plan.golds > nonFixedGoldSlots.length;
+        // Exact EV breakeven check near Slot 4 (<= 10 clicks left to open Slot 4, holding 1 or 2 Golds on Slots 1-3)
+        const lockTier = Math.min(2, gold4Count);
+        const extraLockStones = lockTier === 1 ? remainTo4 : 4 * remainTo4;
+        const evBreakevenPct = lockTier === 1 ? (2.8 * remainTo4) : (5.3 * remainTo4);
+        const hasBetterSaved = bestPre5Plan && bestPre5Plan.golds4 > gold4Count;
 
-        if (remainProg <= 10 && nonFixedGoldSlots.length >= 1 && nonFixedGoldSlots.length <= 2 && !hasBetterSaved && (otherHolesHitInR * 100 >= evBreakevenPct)) {
+        if (remainTo4 <= 10 && gold4Count >= 1 && gold4Count <= 2 && !hasBetterSaved && (otherHolesHitInR * 100 >= evBreakevenPct)) {
           const lockCostNow = LOCK_COSTS[lockTier];
-          const totalLockStones = lockCostNow * remainProg;
-          const goldNames = nonFixedGoldSlots.map(s => `第${s.id + 1}孔`).join('、');
+          const totalLockStones = lockCostNow * remainTo4;
+          const goldNames = gold4Slots.map(s => `第${s.id + 1}孔`).join('、');
           box.classList.add('warn');
-          titleEl.textContent = `⚡ 臨門五孔決策（僅差 ${remainProg} 抽）：鎖 ${goldNames} 為正期望值 (+EV)！`;
-          tagEl.textContent = `${remainProg} 抽內其餘孔出金率 ${otherHolesHitPct}% > 門檻 ${evBreakevenPct.toFixed(1)}%`;
+          titleEl.textContent = `⚡ 臨門四孔決策（僅差 ${remainTo4} 抽開第 4 孔）：鎖 ${goldNames} 為正期望值 (+EV)！`;
+          tagEl.textContent = `${remainTo4} 抽內其餘孔出金率 ${otherHolesHitPct}% > 門檻 ${evBreakevenPct.toFixed(1)}%`;
           bodyEl.innerHTML = `
-            距第 5 孔只剩 <strong>${remainProg} 抽</strong>，其餘未出金孔單抽出金率 <strong>${otherSinglePct}%</strong>，在接下來 ${remainProg} 抽內爆金機率高達 <strong>${otherHolesHitPct}%</strong>（超過鎖孔損益門檻 ${evBreakevenPct.toFixed(1)}%）！
+            距開啟第 4 孔只剩 <strong>${remainTo4} 抽</strong>，其餘已開未金孔單抽出金率 <strong>${otherSinglePct}%</strong>，在接下來 ${remainTo4} 抽內爆金機率高達 <strong>${otherHolesHitPct}%</strong>（超過鎖孔損益門檻 ${evBreakevenPct.toFixed(1)}%）！
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 方案 A：現在鎖 ${goldNames} (${lockCostNow}石/抽)</div>
-                多花 <strong>+${extraLockStones} 石</strong>（共 ${totalLockStones} 石），${remainProg} 抽內有 <strong>${otherHolesHitPct}%</strong> 機率直接 ${nonFixedGoldSlots.length + 2} 金起跳！
+                多花 <strong>+${extraLockStones} 石</strong>（共 ${totalLockStones} 石），${remainTo4} 抽內有 <strong>${otherHolesHitPct}%</strong> 機率直接衝上 <strong>${gold4Count + 1}/4 金</strong>！
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">方案 B：保持 0 鎖 (1石/抽)</div>
-                只花 <strong>${remainProg} 石</strong> 開滿五孔，開完立刻還原現有 ${nonFixedGoldSlots.length} 金方案變 ${nonFixedGoldSlots.length + 1} 金。
+                只花 <strong>${remainTo4} 石</strong> 開滿前四孔，開完再依四孔實際水位決定是否還原 ${gold4Count}/4 金方案。
               </div>
             </div>
             ${probStripHtml}
@@ -3069,46 +3098,52 @@
 
         if (lockedCount > 0) {
           box.classList.add('warn');
-          titleEl.textContent = '⚠️ 省錢警告：尚未開滿五孔，提早鎖孔不划算！';
-          tagEl.textContent = `目前 ${stepCost} 石/抽 · 距五孔還差 ${remainProg} 進度`;
-          bodyEl.innerHTML = `第 5 孔【明光】開孔即<strong>免費送 1 金</strong>。現在鎖 ${lockedCount} 孔每抽要花 <strong>${stepCost} 石</strong>（多花約 ${(stepCost - 1) * remainProg} 石）！<br>👉 <strong>最佳操作：</strong>先按「保存方案」存下目前金孔 → <strong>全部解鎖改用 1 石/抽</strong> 開完第 5 孔 → 開孔當下立刻還原方案（安全不沒收軟保底）！${probStripHtml}`;
-        } else if (nonFixedGoldSlots.length >= 2) {
+          titleEl.textContent = `⚠️ 省錢警告：前四孔尚未開滿 (${opened4Count}/4)，提早鎖孔不划算！`;
+          tagEl.textContent = `目前 ${stepCost} 石/抽 · 距第 4 孔還差 ${remainTo4} 進度`;
+          bodyEl.innerHTML = `前四孔是唯一需要重鑄出金的孔位（第 5 孔明光必金不計）。現在鎖 ${lockedCount} 孔每抽要花 <strong>${stepCost} 石</strong>，只會拖慢開滿前四孔並造成水位嚴重落差！<br>👉 <strong>最佳操作：</strong>先按「保存方案」存下目前金孔 → <strong>全部解鎖改用 1 石/抽</strong> 開滿前四孔再進入找孔找平計算。${probStripHtml}`;
+        } else if (gold4Count >= 2) {
           box.classList.add('warn');
-          titleEl.textContent = '💎 開孔期提前出多金！先手動保存再 0 鎖衝五孔';
-          tagEl.textContent = `已有 ${nonFixedGoldSlots.length} 金 · 距五孔 ${remainProg} 進度`;
-          bodyEl.innerHTML = `開孔中途已經出了 <strong>${nonFixedGoldSlots.length} 個金孔</strong>！<br>👉 <strong>省錢做法：</strong>立刻點<strong>「保存方案」</strong>（避免被後續自動暫存覆蓋），接著<strong>保持 0 鎖 (1 石/抽)</strong> 開完第 5 孔，開孔當下立刻「還原」即可直接 ${nonFixedGoldSlots.length + 1} 金起跳！${probStripHtml}`;
+          titleEl.textContent = `💎 開孔期提前出 ${gold4Count}/4 金！先手動保存再 0 鎖開滿前四孔`;
+          tagEl.textContent = `前四孔已有 ${gold4Count}/4 金 · 距第 4 孔 ${remainTo4} 進度`;
+          bodyEl.innerHTML = `前四孔尚未全開就已經出了 <strong>${gold4Count} 個金孔</strong>！<br>👉 <strong>省錢做法：</strong>立刻點<strong>「保存方案」</strong>（避免被後續自動暫存覆蓋），接著<strong>保持 0 鎖 (1 石/抽)</strong> 開滿前四孔，再依四孔水位決定還原或找平！${probStripHtml}`;
         } else {
-          titleEl.textContent = '🧭 階段 1：保持 0 鎖 (1 石/抽) 衝開五孔';
-          tagEl.textContent = `已開 ${unlockedCount}/5 孔 · 距五孔 ${remainProg} 進度`;
-          bodyEl.innerHTML = `保持 <strong>0 鎖（1 石 / ${formatHKD(unitPrice)}）</strong> 繼續開孔並讓各孔水位平行成長。若中途出雙金記得手動按「保存方案」，開滿五孔當下再還原。${probStripHtml}`;
+          titleEl.textContent = `🧭 階段 1：保持 0 鎖 (1 石/抽) 衝開前四孔 (${opened4Count}/4)`;
+          tagEl.textContent = `已開 ${opened4Count}/4 滾動孔 · 距第 4 孔 ${remainTo4} 進度`;
+          bodyEl.innerHTML = `保持 <strong>0 鎖（1 石 / ${formatHKD(unitPrice)}）</strong> 繼續開滿前四孔並讓已開孔平行累積水位（第 5 孔明光固定必金，不列入前四孔預算計算）。${probStripHtml}`;
         }
         return;
       }
 
-      // ===== ALL 5 HOLES ARE OPEN (Slot 5 is fixed Gold) =====
+      // ===== ALL 4 ROLLABLE HOLES (SLOTS 1-4) ARE OPEN -> EXACT 4-HOLE DP 找孔找平 =====
+      // Lazily build DP tables only once all 4 rollable holes are open (instant initial page load!)
+      const dp = getDpTables(confiscated);
 
-      // Safe immediate pre-5-hole restore window (within 0..2 clicks of Slot 5 opening)
-      const justOpenedSlot5 = simState.fiveHoleOpenedAtRoll !== null && (simState.rolls - simState.fiveHoleOpenedAtRoll) < 3;
-      const pre5RestoreHint = (justOpenedSlot5 && bestPre5Plan && bestPre5Plan.golds > nonFixedGoldSlots.length)
-        ? `<br>💡 <strong>剛開滿五孔提示：</strong>你之前存有 <strong>${bestPre5Plan.label}（${bestPre5Plan.golds} 金）</strong>，現在立刻點擊「還原」可安全變 <strong>${bestPre5Plan.golds + 1} 金</strong>（不會觸發五孔後墊孔懲罰；若繼續重鑄 3 次以上再還原就會被沒收軟保底）。`
+      const slot5Note = !slot5Open
+        ? `<div style="font-size:11px; color:var(--text-muted); margin-top:6px;">ℹ️ 前四孔（1～4 孔）已全部開啟，以下預算完全以前四孔獨立計算；第 5 孔【明光】固定必金，正常重鑄尚餘 ${remainToSlot5} 進度即自動解鎖。</div>`
         : '';
 
-      // ===== STAGE 2: 1 Gold (Slot 5 明光 only) =====
-      if (goldCount === 1) {
-        const ks = simState.slots.slice(0, 4).map(s => s.pity);
+      // Safe restore hint if pre-5-hole saved plan has strictly more Golds on Slots 1-4 (and still in safe restore window)
+      const safeToRestorePre5 = !slot5Open || (simState.fiveHoleOpenedAtRoll !== null && (simState.rolls - simState.fiveHoleOpenedAtRoll) < 3);
+      const pre5RestoreHint = (safeToRestorePre5 && bestPre5Plan && bestPre5Plan.golds4 > gold4Count)
+        ? `<br>💡 <strong>可還原較佳存檔：</strong>你之前存有 <strong>${bestPre5Plan.label}（前四孔 ${bestPre5Plan.golds4}/4 金）</strong>，現在還原不會觸發五孔後墊孔懲罰。`
+        : '';
+
+      // ===== STAGE 2: 0/4 Golds on Slots 1-4 =====
+      if (gold4Count === 0) {
+        const ks = rollableSlots.map(s => s.pity);
         const estCost = dpCost1(ks, dp);
-        titleEl.textContent = '🧭 階段 2（1 金）：保持 0 鎖 (1 石/抽) 讓四孔平行成長';
-        tagEl.textContent = `預計完五金需 ${estCost.toFixed(0)} 石 (${formatHKD(estCost * unitPrice)})`;
-        bodyEl.innerHTML = `目前僅有第 5 孔明光金。保持 <strong>0 鎖 (1 石/抽)</strong> 讓 1～4 孔同步累積水位，是最省錢的「找孔找平」起手式（4 孔全平從 0 起步平均僅需 141 石）。${pre5RestoreHint}${probStripHtml}`;
+        titleEl.textContent = '🧭 階段 2（前四孔 0/4 金）：保持 0 鎖 (1 石/抽) 四孔平行成長';
+        tagEl.textContent = `前四孔全金預計 ${estCost.toFixed(0)} 石 (${formatHKD(estCost * unitPrice)})`;
+        bodyEl.innerHTML = `前四孔尚未出金。保持 <strong>0 鎖 (1 石/抽)</strong> 讓 1～4 孔同步推高水位，是最省錢的「找孔找平」起手式（四孔從 0 齊平打到 4/4 金平均約 141 石）。${pre5RestoreHint}${slot5Note}${probStripHtml}`;
         return;
       }
 
-      // ===== STAGE 3: 2 Golds (1 non-fixed Gold + Slot 5) =====
-      if (goldCount === 2) {
-        const ks = nonGoldUnlocked.map(s => s.pity);
+      // ===== STAGE 3: 1/4 Golds on Slots 1-4 =====
+      if (gold4Count === 1) {
+        const ks = nonGold4Slots.map(s => s.pity);
         const costLock1 = dpCost2(ks[0], ks[1], ks[2], dp);
         const costDrop0 = dpCost1([0, ks[0], ks[1], ks[2]], dp);
-        const goldSlot = nonFixedGoldSlots[0];
+        const goldSlot = gold4Slots[0];
         const minK = Math.min(...ks);
         const maxK = Math.max(...ks);
         const dropWins = costDrop0 < costLock1 - 5;
@@ -3117,59 +3152,59 @@
           box.classList.add('warn');
           const saveStones = costLock1 - costDrop0;
           const slotNote = goldSlot.id === 0 ? '（尤其目前是第 1 孔顏色，未鎖套裝結構前難以洗出套裝色，放掉最划算）' : '（若非極品畢業核心詞條，建議放掉）';
-          titleEl.textContent = `⚖️ 找孔找平建議：放掉第 ${goldSlot.id + 1} 孔金，改 0 鎖 (1 石) 較省！`;
+          titleEl.textContent = `⚖️ 找孔找平（前四孔 1/4 金）：放掉第 ${goldSlot.id + 1} 孔改 0 鎖 (1 石) 較省！`;
           tagEl.textContent = `放孔省 ${saveStones.toFixed(1)} 石 (${formatHKD(saveStones * unitPrice)})`;
           bodyEl.innerHTML = `
-            目前其餘 3 孔水位為 <strong>(${ks.join(' / ')})</strong>，落差過大或水位過低（最低僅 ${minK}/90，最高 ${maxK}/90）${slotNote}。硬鎖會導致高水位孔先出金，把低水位孔拖進 10 石/抽地獄！
+            其餘 3 個未金孔水位為 <strong>(${ks.join(' / ')})</strong>，落差過大或過低（最低僅 ${minK}/90，最高 ${maxK}/90）${slotNote}。硬鎖會把低水位孔拖進 10 石/抽深坑！
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 放掉第 ${goldSlot.id + 1} 孔 → 0 鎖 (1石/抽)</div>
-                至五金預計總花費：${fmtStoneHKD(costDrop0, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costDrop0, unitPrice)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">鎖定第 ${goldSlot.id + 1} 孔 (2石/抽)</div>
-                至五金預計總花費：${fmtStoneHKD(costLock1, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costLock1, unitPrice)}
               </div>
             </div>
-            ${pre5RestoreHint}${probStripHtml}
+            ${pre5RestoreHint}${slot5Note}${probStripHtml}
           `;
         } else {
-          titleEl.textContent = `🎯 階段 3（2 金）：鎖定第 ${goldSlot.id + 1} 孔 (2 石/抽) 平行追第 3 金`;
-          tagEl.textContent = `預計至五金 ${costLock1.toFixed(0)} 石 · 2 石/抽`;
+          titleEl.textContent = `🎯 階段 3（前四孔 1/4 金）：鎖定第 ${goldSlot.id + 1} 孔 (2 石/抽) 追第 2 金`;
+          tagEl.textContent = `前四孔全金預計 ${costLock1.toFixed(0)} 石 · 2 石/抽`;
           bodyEl.innerHTML = `
-            其餘 3 孔水位 <strong>(${ks.join(' / ')})</strong> 分布健康！鎖 1 孔 (2 石/抽) 同時推進 3 孔水位比放掉更省錢。${lockedCount === 0 ? '<br>👉 <strong>請先點擊第 ' + (goldSlot.id + 1) + ' 孔上的「鎖定」。</strong>' : ''}
+            其餘 3 個未金孔水位 <strong>(${ks.join(' / ')})</strong> 分布健康！鎖 1 孔 (2 石/抽) 同時推進 3 孔水位比放掉更省錢。${lockedCount === 0 ? '<br>👉 <strong>請先點擊第 ' + (goldSlot.id + 1) + ' 孔上的「鎖定」。</strong>' : ''}
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 鎖定第 ${goldSlot.id + 1} 孔 (2石/抽)</div>
-                至五金預計總花費：${fmtStoneHKD(costLock1, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costLock1, unitPrice)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">放掉改 0 鎖 (1石/抽)</div>
-                至五金預計總花費：${fmtStoneHKD(costDrop0, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costDrop0, unitPrice)}
               </div>
             </div>
-            ${pre5RestoreHint}${probStripHtml}
+            ${pre5RestoreHint}${slot5Note}${probStripHtml}
           `;
         }
         return;
       }
 
-      // ===== STAGE 4: 3 Golds (2 non-fixed Golds + Slot 5) — CORE 找孔找平 STAGE =====
-      if (goldCount === 3) {
-        const ks = nonGoldUnlocked.map(s => s.pity);
+      // ===== STAGE 4: 2/4 Golds on Slots 1-4 — CORE 找孔找平 STAGE =====
+      if (gold4Count === 2) {
+        const ks = nonGold4Slots.map(s => s.pity);
         const costLock2 = dpCost3(ks[0], ks[1], dp);
         const costDrop1 = dpCost2(0, ks[0], ks[1], dp);
         const costDropAll = dpCost1([0, 0, ks[0], ks[1]], dp);
-        const dropCandidate = pickLowestPriorityGoldSlot(nonFixedGoldSlots);
-        const keepCandidate = nonFixedGoldSlots.find(s => s.id !== dropCandidate.id) || nonFixedGoldSlots[0];
-        const twoHolePct = (calcCombinedGoldChance(nonGoldUnlocked, confiscated) * 100).toFixed(1);
+        const dropCandidate = pickLowestPriorityGoldSlot(gold4Slots);
+        const keepCandidate = gold4Slots.find(s => s.id !== dropCandidate.id) || gold4Slots[0];
+        const twoHolePct = (calcCombinedGoldChance(nonGold4Slots, confiscated) * 100).toFixed(1);
         const minK = Math.min(...ks);
 
         const bestCost = Math.min(costLock2, costDrop1, costDropAll);
         if (costDrop1 < costLock2 - 3) {
           box.classList.add('warn');
           const saveStones = costLock2 - costDrop1;
-          titleEl.textContent = `⚖️ 找孔找平關鍵決策：建議放掉第 ${dropCandidate.id + 1} 孔，只鎖第 ${keepCandidate.id + 1} 孔 (2 石)！`;
+          titleEl.textContent = `⚖️ 找孔找平（前四孔 2/4 金）：建議放掉第 ${dropCandidate.id + 1} 孔，只鎖第 ${keepCandidate.id + 1} 孔 (2 石)！`;
           tagEl.textContent = `比鎖 2 孔省 ${saveStones.toFixed(1)} 石 (${formatHKD(saveStones * unitPrice)})`;
           bodyEl.innerHTML = `
             剩餘兩孔水位 <strong>(${ks[0]}/90、${ks[1]}/90)</strong> 偏低或嚴重不平（較低孔僅 ${minK}/90）。若硬用 5 石/抽追，高水位孔先出金後會把 ${minK}/90 那孔卡進 10 石/抽深坑！<br>
@@ -3177,44 +3212,44 @@
             <div class="dp-compare-grid">
               <div class="dp-opt-card ${costDrop1 <= bestCost + 0.5 ? 'best' : ''}">
                 <div class="dp-opt-title">${costDrop1 <= bestCost + 0.5 ? '✅ ' : ''}放 1 孔 → 鎖 1 孔 (2石/抽)</div>
-                至五金預計：${fmtStoneHKD(costDrop1, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costDrop1, unitPrice)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">硬鎖 2 孔 (5石/抽)</div>
-                至五金預計：${fmtStoneHKD(costLock2, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costLock2, unitPrice)}
               </div>
               ${costDropAll < costDrop1 - 15 ? `
               <div class="dp-opt-card ${costDropAll <= bestCost + 0.5 ? 'best' : ''}">
                 <div class="dp-opt-title">✅ 全放 → 0 鎖 (1石/抽)</div>
-                至五金預計：${fmtStoneHKD(costDropAll, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costDropAll, unitPrice)}
               </div>` : ''}
             </div>
-            ${probStripHtml}
+            ${slot5Note}${probStripHtml}
           `;
         } else {
-          titleEl.textContent = '🎯 階段 4（3 金）：水位均衡，鎖定 2 金孔 (5 石/抽) 追第 4 金！';
-          tagEl.textContent = `雙未出金孔合率 ${twoHolePct}% · 預計至五金 ${costLock2.toFixed(0)} 石`;
+          titleEl.textContent = '🎯 階段 4（前四孔 2/4 金）：水位均衡，鎖定 2 金孔 (5 石/抽) 追第 3 金！';
+          tagEl.textContent = `雙未金孔合率 ${twoHolePct}% · 前四孔全金預計 ${costLock2.toFixed(0)} 石`;
           bodyEl.innerHTML = `
             剩餘兩孔水位 <strong>(${ks[0]}/90、${ks[1]}/90)</strong> 已達均衡門檻，直接鎖 2 孔 (5 石/抽) 比放孔重練更划算！${lockedCount < 2 ? '<br>⚠️ <strong>請先將 2 個金孔都點「鎖定」再按重鑄。</strong>' : ''}
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 鎖定 2 金孔 (5石/抽)</div>
-                至五金預計：${fmtStoneHKD(costLock2, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costLock2, unitPrice)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">放 1 孔 → 鎖 1 孔 (2石/抽)</div>
-                至五金預計：${fmtStoneHKD(costDrop1, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costDrop1, unitPrice)}
               </div>
             </div>
-            ${probStripHtml}
+            ${slot5Note}${probStripHtml}
           `;
         }
         return;
       }
 
-      // ===== STAGE 5: 4 Golds (3 non-fixed Golds + Slot 5) =====
-      if (goldCount === 4) {
-        const lastHole = nonGoldUnlocked[0];
+      // ===== STAGE 5: 3/4 Golds on Slots 1-4 (1 rollable hole left) =====
+      if (gold4Count === 3) {
+        const lastHole = nonGold4Slots[0];
         const k = lastHole ? lastHole.pity : 0;
         const lastIdx = lastHole ? lastHole.id + 1 : '?';
         const lastProbPct = lastHole ? (getNextGoldChanceForSlot(lastHole) * 100).toFixed(1) : '0.0';
@@ -3222,35 +3257,35 @@
         const costDrop1 = dpCost3(0, k, dp);
         const costDrop2 = dpCost2(0, 0, k, dp);
         const costReset0 = dpCost1([0, 0, 0, k], dp);
-        const bestKeepSlot = nonFixedGoldSlots.find(s => s.id === 1) || nonFixedGoldSlots.find(s => s.id === 2) || nonFixedGoldSlots[0];
+        const bestKeepSlot = gold4Slots.find(s => s.id === 1) || gold4Slots.find(s => s.id === 2) || gold4Slots[0];
 
         if (k >= 26) {
-          titleEl.textContent = `🔥 階段 5（4 金收尾）：第 ${lastIdx} 孔水位 ${k}/90，直接鎖 3 孔 (10 石) 衝五金！`;
+          titleEl.textContent = `🔥 階段 5（前四孔 3/4 金收尾）：第 ${lastIdx} 孔水位 ${k}/90，鎖 3 孔 (10 石) 直衝 4/4 金！`;
           tagEl.textContent = `下抽 ${lastProbPct}% · 預計剩餘 ${costLock3.toFixed(0)} 石 (${formatHKD(costLock3 * unitPrice)})`;
           bodyEl.innerHTML = `
-            第 ${lastIdx} 孔水位已達 <strong>${k}/90</strong>，直接鎖 3 孔收尾（預計 <strong>${(costLock3 / 10).toFixed(1)} 抽 / ${costLock3.toFixed(0)} 石</strong>）嚴格優於任何放孔或重洗方案！${lockedCount < 3 ? '<br>⚠️ <strong>請先把 3 個金孔都點「鎖定」再按重鑄！</strong>' : ''}
+            最後一個滾動孔（第 ${lastIdx} 孔）水位已達 <strong>${k}/90</strong>，直接鎖 3 孔收尾（預計 <strong>${(costLock3 / 10).toFixed(1)} 抽 / ${costLock3.toFixed(0)} 石</strong>）嚴格優於任何放孔或重洗方案！${lockedCount < 3 ? '<br>⚠️ <strong>請先把 3 個金孔都點「鎖定」再按重鑄！</strong>' : ''}
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 鎖 3 孔直衝 (10石/抽)</div>
-                預計花費：${fmtStoneHKD(costLock3, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costLock3, unitPrice)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">放 1 孔 → 鎖 2 孔 (5石/抽)</div>
-                預計花費：${fmtStoneHKD(costDrop1, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costDrop1, unitPrice)}
               </div>
             </div>
-            ${probStripHtml}
+            ${slot5Note}${probStripHtml}
           `;
         } else if (k >= 15) {
           box.classList.add('warn');
-          titleEl.textContent = `🎯 階段 5（4 金中水位）：若滿意現有 3 金詞條，鎖 3 孔 (10 石) 收尾`;
+          titleEl.textContent = `🎯 階段 5（前四孔 3/4 金中水位）：滿意詞條就鎖 3 孔 (10 石) 收尾`;
           tagEl.textContent = `第 ${lastIdx} 孔 ${k}/90 · 預計剩餘 ${costLock3.toFixed(0)} 石`;
           bodyEl.innerHTML = `
-            第 ${lastIdx} 孔水位 <strong>${k}/90</strong>。此區間「放 1 孔變鎖 2 孔」反而更貴，只有【鎖 3 孔保詞條】或【純省預算全解重來】兩個合理選項（⚠️ 嚴禁存檔解鎖墊孔還原，會沒收軟保底！）。${lockedCount < 3 ? '<br>👉 若決定鎖 3 孔，請先鎖滿 3 金孔。' : ''}
+            第 ${lastIdx} 孔水位 <strong>${k}/90</strong>。此區間「放 1 孔變鎖 2 孔」反而更貴，只有【鎖 3 孔保詞條】或【純省預算全解重來】兩個合理選項（⚠️ 嚴禁五孔後存檔解鎖墊孔還原，會沒收軟保底！）。${lockedCount < 3 ? '<br>👉 若決定鎖 3 孔，請先鎖滿 3 金孔。' : ''}
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 鎖 3 孔保詞條 (10石/抽)</div>
-                預計花費：${fmtStoneHKD(costLock3, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costLock3, unitPrice)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">純省錢全放 → 0 鎖 (1石/抽)</div>
@@ -3258,18 +3293,18 @@
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">❌ 放 1 孔鎖 2 (較虧)</div>
-                預計花費：${fmtStoneHKD(costDrop1, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costDrop1, unitPrice)}
               </div>
             </div>
-            ${probStripHtml}
+            ${slot5Note}${probStripHtml}
           `;
         } else {
           box.classList.add('danger');
-          titleEl.textContent = `🚨 4 金高風險低水位陷阱！第 ${lastIdx} 孔僅 ${k}/90，硬點 10 石極貴！`;
+          titleEl.textContent = `🚨 前四孔 3/4 金低水位陷阱！第 ${lastIdx} 孔僅 ${k}/90，硬點 10 石極貴！`;
           tagEl.textContent = `硬鎖預計 ${costLock3.toFixed(0)} 石 (${formatHKD(costLock3 * unitPrice)})`;
           bodyEl.innerHTML = `
-            第 ${lastIdx} 孔水位才 <strong>${k}/90</strong>，硬鎖 3 孔 (10 石/抽) 單追這孔就要燒掉約 <strong>${costLock3.toFixed(0)} 石 (${formatHKD(costLock3 * unitPrice)})</strong>！<br>
-            🚫 <strong>絕對禁忌：</strong>切勿「保存方案 → 全解鎖 1 石墊水位 → 還原」，實戰會觸發<strong>沒收額外出金率</strong>懲罰！請從以下合法方案取捨：
+            最後一孔（第 ${lastIdx} 孔）水位才 <strong>${k}/90</strong>，硬鎖 3 孔 (10 石/抽) 單追這孔就要燒掉約 <strong>${costLock3.toFixed(0)} 石 (${formatHKD(costLock3 * unitPrice)})</strong>！<br>
+            🚫 <strong>絕對禁忌：</strong>切勿「保存方案 → 全解鎖 1 石墊水位 → 還原」，五孔後會觸發<strong>沒收額外出金率</strong>懲罰！請從以下合法方案取捨：
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 純省預算：全放 0 鎖 (1石/抽)</div>
@@ -3281,10 +3316,10 @@
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">💎 僅極品詞條：硬鎖 3 孔 (10石)</div>
-                預計花費：${fmtStoneHKD(costLock3, unitPrice)}
+                前四孔全金預計：${fmtStoneHKD(costLock3, unitPrice)}
               </div>
             </div>
-            ${probStripHtml}
+            ${slot5Note}${probStripHtml}
           `;
         }
         return;
@@ -3298,54 +3333,61 @@
       const bodyEl = document.getElementById('rlStrategyBody');
       if (!box) return;
 
-      const dp = getDpTables(false);
       const unitPrice = parseFloat(document.getElementById('rlUnitPrice').value) || 0;
       const cur = document.getElementById('rlCurrency').value || 'HK$';
-      const openedCount = rlState.slots.filter(s => s.opened).length;
+      // STRICTLY use ONLY the first 4 rollable holes (Slots 1-4); Slot 5 明光 is fixed Gold and excluded from calculation
+      const rollableRl = rlState.slots.slice(0, 4);
+      const opened4Count = rollableRl.filter(s => s.opened).length;
+      const slot5Open = !!(rlState.slots[4] && rlState.slots[4].opened);
       const lockedCount = rlState.locks;
-      const activeSlots = rlState.slots.filter(s => s.opened && !s.locked && !s.fixedGold);
+      const activeSlots = rollableRl.filter(s => s.opened && !s.locked);
       const activeKs = activeSlots.map(s => s.pity);
 
       const combinedNextProb = calcCombinedGoldChance(activeSlots, false);
       const combinedNextPct = (combinedNextProb * 100).toFixed(1);
       const perHoleProbHtml = activeSlots.length > 0
         ? activeSlots.map(s => `第${rlState.slots.indexOf(s) + 1}孔 <strong>${(getGoldChanceByRoll(s.pity + 1, false) * 100).toFixed(1)}%</strong> (${s.pity}/90)`).join(' · ')
-        : '所有已開孔位已鎖定';
+        : '前四孔已全鎖定';
 
       const probStripHtml = `
         <div class="strategy-prob-strip">
-          <span>📊 <strong>全孔下抽出金率：${combinedNextPct}%</strong></span>
+          <span>📊 <strong>前四孔下抽出金率：${combinedNextPct}%</strong></span>
           <span>${perHoleProbHtml}</span>
         </div>
       `;
 
       box.className = 'strategy-box';
 
-      // Before 5 holes open in Real-Life Counter
-      if (openedCount < 5) {
-        const unopenedCount = 5 - openedCount;
-        const maxRemainTo5 = (unopenedCount - 1) * 30 + Math.max(0, 30 - rlState.rollsSinceLastHole);
-        const hitInRemainPct = (calcMultiClickHitProb(activeSlots, Math.min(maxRemainTo5, 10), false) * 100).toFixed(1);
+      // Before first 4 rollable holes are open in Real-Life Counter
+      if (opened4Count < 4) {
+        const unopened4 = 4 - opened4Count;
+        const maxRemainTo4 = (unopened4 - 1) * 30 + Math.max(0, 30 - rlState.rollsSinceLastHole);
+        const hitInRemainPct = (calcMultiClickHitProb(activeSlots, Math.min(maxRemainTo4, 10), false) * 100).toFixed(1);
 
-        if (maxRemainTo5 <= 10 && lockedCount >= 1 && lockedCount <= 2 && parseFloat(hitInRemainPct) >= (lockedCount === 1 ? 2.8 * maxRemainTo5 : 5.3 * maxRemainTo5)) {
+        if (maxRemainTo4 <= 10 && lockedCount >= 1 && lockedCount <= 2 && parseFloat(hitInRemainPct) >= (lockedCount === 1 ? 2.8 * maxRemainTo4 : 5.3 * maxRemainTo4)) {
           box.classList.add('warn');
-          titleEl.textContent = `⚡ 實況臨門五孔（最多差 ${maxRemainTo5} 抽）：維持 ${lockedCount} 鎖為正期望值 (+EV)`;
-          tagEl.textContent = `${maxRemainTo5} 抽內出金率 ${hitInRemainPct}%`;
-          bodyEl.innerHTML = `距第 5 孔最多只剩 <strong>${maxRemainTo5} 抽</strong>，其餘未鎖孔出金率高達 <strong>${hitInRemainPct}%</strong>，此時維持 ${lockedCount} 鎖賭多金起跳划算！${probStripHtml}`;
+          titleEl.textContent = `⚡ 實況臨門四孔（最多差 ${maxRemainTo4} 抽）：維持 ${lockedCount} 鎖為正期望值 (+EV)`;
+          tagEl.textContent = `${maxRemainTo4} 抽內出金率 ${hitInRemainPct}%`;
+          bodyEl.innerHTML = `距開第 4 孔最多只剩 <strong>${maxRemainTo4} 抽</strong>，其餘未鎖孔出金率高達 <strong>${hitInRemainPct}%</strong>，此時維持 ${lockedCount} 鎖賭前四孔多金划算！${probStripHtml}`;
         } else if (lockedCount > 0) {
           box.classList.add('warn');
-          titleEl.textContent = '⚠️ 實況警告：未開滿五孔建議不要鎖孔！';
-          tagEl.textContent = `目前 ${lockedCount} 鎖 (${LOCK_COSTS[lockedCount]} 石/抽) · 最多差 ${maxRemainTo5} 抽開五孔`;
-          bodyEl.innerHTML = `第 5 孔【明光】開孔必送 1 金。現在鎖孔開五孔成本翻倍，建議<strong>先在遊戲內保存方案 → 解鎖用 1 石/抽</strong> 開滿五孔當下再還原！${probStripHtml}`;
+          titleEl.textContent = `⚠️ 實況警告：前四孔尚未開滿 (${opened4Count}/4)，不建議提早鎖孔！`;
+          tagEl.textContent = `目前 ${lockedCount} 鎖 (${LOCK_COSTS[lockedCount]} 石/抽) · 最多差 ${maxRemainTo4} 抽開第 4 孔`;
+          bodyEl.innerHTML = `前四孔（1～4 孔）尚未全開前鎖孔會拉大孔位水位落差並倍增成本，建議<strong>先保存方案 → 解鎖用 1 石/抽</strong> 開滿前四孔再進入找孔找平！${probStripHtml}`;
         } else {
-          titleEl.textContent = '🧭 實況建議：0 鎖 (1 石/抽) 衝開五孔';
-          tagEl.textContent = `已開 ${openedCount}/5 孔 · 下孔保底 ${rlState.rollsSinceLastHole}/30`;
-          bodyEl.innerHTML = `繼續保持 <strong>0 鎖 (1 石/抽)</strong> 開孔並讓已開孔平行成長。若中途出多金，於遊戲內先保存方案並點擊對應孔位「出金歸零」。${probStripHtml}`;
+          titleEl.textContent = `🧭 實況建議：0 鎖 (1 石/抽) 衝開前四孔 (${opened4Count}/4)`;
+          tagEl.textContent = `已開 ${opened4Count}/4 滾動孔 · 下孔保底 ${rlState.rollsSinceLastHole}/30`;
+          bodyEl.innerHTML = `繼續保持 <strong>0 鎖 (1 石/抽)</strong> 開滿前四孔（第 5 孔明光固定必金，不計入前四孔預算）。中途出金請點擊對應孔位「出金歸零」。${probStripHtml}`;
         }
         return;
       }
 
-      // ===== ALL 5 HOLES OPEN IN REAL-LIFE COUNTER: EXACT DP 找孔找平 =====
+      // ===== ALL 4 ROLLABLE HOLES OPEN IN REAL-LIFE COUNTER: EXACT 4-HOLE DP 找孔找平 =====
+      const dp = getDpTables(false);
+      const rlSlot5Note = !slot5Open
+        ? `<div style="font-size:11px; color:var(--text-muted); margin-top:6px;">ℹ️ 前四孔已全開，以下預算僅計前四孔（第 5 孔明光固定必金，下孔保底 ${rlState.rollsSinceLastHole}/30 會自動解鎖）。</div>`
+        : '';
+
       if (lockedCount === 3) {
         const k = activeKs.length > 0 ? activeKs[0] : 0;
         const costLock3 = dpCost4(k, dp);
@@ -3354,40 +3396,40 @@
         const costReset0 = dpCost1([0, 0, 0, k], dp);
 
         if (k >= 26) {
-          titleEl.textContent = `🔥 衝五金收尾最佳區！維持鎖 3 孔 (10 石/抽)`;
+          titleEl.textContent = `🔥 前四孔 3/4 金收尾最佳區！維持鎖 3 孔 (10 石/抽)`;
           tagEl.textContent = `未鎖孔 ${k}/90 · 預計剩餘 ${costLock3.toFixed(0)} 石`;
           bodyEl.innerHTML = `
-            未鎖孔水位已達 <strong>${k}/90</strong>，直接鎖 3 孔衝五金（預計 ${fmtStoneHKD(costLock3, unitPrice, cur)}）嚴格優於放孔！
-            ${probStripHtml}
+            最後一個滾動孔水位已達 <strong>${k}/90</strong>，直接鎖 3 孔收尾（預計 ${fmtStoneHKD(costLock3, unitPrice, cur)}）嚴格優於放孔！
+            ${rlSlot5Note}${probStripHtml}
           `;
         } else if (k >= 15) {
           box.classList.add('warn');
-          titleEl.textContent = `🎯 4 金中水位 (${k}/90)：滿意詞條就鎖 3 孔，勿解鎖墊孔！`;
+          titleEl.textContent = `🎯 前四孔 3/4 金中水位 (${k}/90)：滿意詞條就鎖 3 孔，勿解鎖墊孔！`;
           tagEl.textContent = `鎖 3 孔預計 ${costLock3.toFixed(0)} 石`;
           bodyEl.innerHTML = `
-            未鎖孔水位 <strong>${k}/90</strong>。放 1 孔變鎖 2 孔反而更貴（${costDrop1.toFixed(0)} 石），且<strong>嚴禁存檔解鎖墊孔還原（會沒收軟保底）</strong>。
+            最後一孔水位 <strong>${k}/90</strong>。放 1 孔變鎖 2 孔反而更貴（${costDrop1.toFixed(0)} 石），且<strong>嚴禁五孔後存檔解鎖墊孔還原（會沒收軟保底）</strong>。
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 鎖 3 孔保詞條 (10石/抽)</div>
-                預計：${fmtStoneHKD(costLock3, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costLock3, unitPrice, cur)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">純省錢全放 → 0 鎖 (1石)</div>
                 重平預計：${fmtStoneHKD(costReset0, unitPrice, cur)}
               </div>
             </div>
-            ${probStripHtml}
+            ${rlSlot5Note}${probStripHtml}
           `;
         } else {
           box.classList.add('danger');
-          titleEl.textContent = `🚨 4 金低水位陷阱！未鎖孔僅 ${k}/90，硬點 10 石極貴！`;
+          titleEl.textContent = `🚨 前四孔 3/4 金低水位陷阱！未鎖孔僅 ${k}/90，硬點 10 石極貴！`;
           tagEl.textContent = `硬點預計 ${costLock3.toFixed(0)} 石`;
           bodyEl.innerHTML = `
-            未鎖孔水位僅 <strong>${k}/90</strong>，硬鎖 3 孔預計燒掉 ${fmtStoneHKD(costLock3, unitPrice, cur)}！🚫 <strong>嚴禁解鎖墊孔再還原（會沒收軟保底）</strong>，請比較合法取捨：
+            最後一孔水位僅 <strong>${k}/90</strong>，硬鎖 3 孔預計燒掉 ${fmtStoneHKD(costLock3, unitPrice, cur)}！🚫 <strong>嚴禁五孔後解鎖墊孔再還原（會沒收軟保底）</strong>，請比較合法取捨：
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 全放重平 → 0 鎖 (1石)</div>
-                預計：${fmtStoneHKD(costReset0, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costReset0, unitPrice, cur)}
               </div>
               <div class="dp-opt-card ${costDrop2 < costLock3 ? 'best' : ''}">
                 <div class="dp-opt-title">⚖️ 只留 1 核心孔 (2石)</div>
@@ -3395,10 +3437,10 @@
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">💎 極品詞條硬鎖 3 (10石)</div>
-                預計：${fmtStoneHKD(costLock3, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costLock3, unitPrice, cur)}
               </div>
             </div>
-            ${probStripHtml}
+            ${rlSlot5Note}${probStripHtml}
           `;
         }
       } else if (lockedCount === 2) {
@@ -3408,38 +3450,38 @@
         const costDrop1 = dpCost2(0, k1, k2, dp);
         if (costDrop1 < costLock2 - 3) {
           box.classList.add('warn');
-          titleEl.textContent = `⚖️ 實況找孔找平：建議放掉 1 孔改鎖 1 孔 (2 石/抽)！`;
+          titleEl.textContent = `⚖️ 實況找孔找平（前四孔 2/4 金）：建議放 1 孔改鎖 1 孔 (2 石/抽)！`;
           tagEl.textContent = `放 1 孔可省 ${(costLock2 - costDrop1).toFixed(1)} 石`;
           bodyEl.innerHTML = `
             剩餘兩孔水位 <strong>(${k1}/90、${k2}/90)</strong> 偏低或不平，硬鎖 2 孔 (5 石/抽) 容易卡 10 石陷阱！建議保留較重要的核心結構金孔，放掉次要金孔（如顏色孔）改 2 石找平。
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 放 1 孔 → 鎖 1 孔 (2石)</div>
-                至五金預計：${fmtStoneHKD(costDrop1, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costDrop1, unitPrice, cur)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">維持鎖 2 孔 (5石)</div>
-                至五金預計：${fmtStoneHKD(costLock2, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costLock2, unitPrice, cur)}
               </div>
             </div>
-            ${probStripHtml}
+            ${rlSlot5Note}${probStripHtml}
           `;
         } else {
-          titleEl.textContent = '🎯 3 金進攻期：水位均衡，維持鎖 2 孔 (5 石/抽) 追第 4 金';
-          tagEl.textContent = `至五金預計 ${costLock2.toFixed(0)} 石`;
+          titleEl.textContent = '🎯 前四孔 2/4 金進攻期：水位均衡，維持鎖 2 孔 (5 石/抽) 追第 3 金';
+          tagEl.textContent = `前四孔全金預計 ${costLock2.toFixed(0)} 石`;
           bodyEl.innerHTML = `
-            兩未鎖孔水位 <strong>(${k1}/90、${k2}/90)</strong> 均衡，鎖 2 孔直接追第 4 金比放孔更省！
+            兩未鎖孔水位 <strong>(${k1}/90、${k2}/90)</strong> 均衡，鎖 2 孔直接追第 3 金比放孔更省！
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 維持鎖 2 孔 (5石)</div>
-                至五金預計：${fmtStoneHKD(costLock2, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costLock2, unitPrice, cur)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">放 1 孔 → 鎖 1 孔 (2石)</div>
-                至五金預計：${fmtStoneHKD(costDrop1, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costDrop1, unitPrice, cur)}
               </div>
             </div>
-            ${probStripHtml}
+            ${rlSlot5Note}${probStripHtml}
           `;
         }
       } else if (lockedCount === 1) {
@@ -3450,46 +3492,46 @@
         const costDrop0 = dpCost1([0, k1, k2, k3], dp);
         if (costDrop0 < costLock1 - 5) {
           box.classList.add('warn');
-          titleEl.textContent = `⚖️ 實況找孔找平：水位落差過大，建議放掉改 0 鎖 (1 石)！`;
+          titleEl.textContent = `⚖️ 實況找孔找平（前四孔 1/4 金）：水位落差過大，建議放掉改 0 鎖 (1 石)！`;
           tagEl.textContent = `放孔省 ${(costLock1 - costDrop0).toFixed(1)} 石`;
           bodyEl.innerHTML = `
             未鎖 3 孔水位 <strong>(${k1}/${k2}/${k3})</strong> 落差過大或過低，若鎖的不是極品核心孔，放掉改 1 石/抽重平更省錢！
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 放掉改 0 鎖 (1石/抽)</div>
-                至五金預計：${fmtStoneHKD(costDrop0, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costDrop0, unitPrice, cur)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">維持鎖 1 孔 (2石/抽)</div>
-                至五金預計：${fmtStoneHKD(costLock1, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costLock1, unitPrice, cur)}
               </div>
             </div>
-            ${probStripHtml}
+            ${rlSlot5Note}${probStripHtml}
           `;
         } else {
-          titleEl.textContent = '🎯 2 金穩定推進：鎖 1 孔 (2 石/抽) 平行追第 3 金';
-          tagEl.textContent = `至五金預計 ${costLock1.toFixed(0)} 石`;
+          titleEl.textContent = '🎯 前四孔 1/4 金推進期：鎖 1 孔 (2 石/抽) 平行追第 2 金';
+          tagEl.textContent = `前四孔全金預計 ${costLock1.toFixed(0)} 石`;
           bodyEl.innerHTML = `
             未鎖 3 孔水位 <strong>(${k1}/${k2}/${k3})</strong> 分布健康，維持鎖 1 孔 (2 石/抽) 同時滾動 3 孔性價比最高！
             <div class="dp-compare-grid">
               <div class="dp-opt-card best">
                 <div class="dp-opt-title">✅ 維持鎖 1 孔 (2石/抽)</div>
-                至五金預計：${fmtStoneHKD(costLock1, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costLock1, unitPrice, cur)}
               </div>
               <div class="dp-opt-card">
                 <div class="dp-opt-title">放掉改 0 鎖 (1石/抽)</div>
-                至五金預計：${fmtStoneHKD(costDrop0, unitPrice, cur)}
+                前四孔全金預計：${fmtStoneHKD(costDrop0, unitPrice, cur)}
               </div>
             </div>
-            ${probStripHtml}
+            ${rlSlot5Note}${probStripHtml}
           `;
         }
       } else {
         const ks4 = [activeKs[0] ?? 0, activeKs[1] ?? 0, activeKs[2] ?? 0, activeKs[3] ?? 0];
         const cost0 = dpCost1(ks4, dp);
-        titleEl.textContent = '🧭 0 鎖 (1 石/抽) 四孔平行找孔找平中';
-        tagEl.textContent = `至五金預計 ${cost0.toFixed(0)} 石 (${cur}${(cost0 * unitPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })})`;
-        bodyEl.innerHTML = `五孔已全開，保持 <strong>0 鎖 (1 石/抽)</strong> 讓 1～4 孔同步推高水位，直到出滿意核心金孔再決定鎖 1 孔。${probStripHtml}`;
+        titleEl.textContent = '🧭 前四孔 0/4 金：0 鎖 (1 石/抽) 四孔平行找孔找平中';
+        tagEl.textContent = `前四孔全金預計 ${cost0.toFixed(0)} 石 (${cur}${(cost0 * unitPrice).toLocaleString('en-US', { maximumFractionDigits: 0 })})`;
+        bodyEl.innerHTML = `前四孔已全開，保持 <strong>0 鎖 (1 石/抽)</strong> 讓 1～4 孔同步推高水位，直到出滿意核心金孔再決定鎖 1 孔。${rlSlot5Note}${probStripHtml}`;
       }
     }
 
